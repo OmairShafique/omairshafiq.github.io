@@ -1,44 +1,1000 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Omair Shafiq</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: #faf9f6;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Jost', sans-serif;
-    }
-    .wrap { text-align: center; }
-    .rule { width: 40px; height: 1px; background: #9a7530; margin: 1.4rem auto; }
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.5rem, 6vw, 4rem);
-      font-weight: 600;
-      color: #1c1a17;
-      letter-spacing: 0.02em;
-    }
-    h1 em { font-style: italic; color: #9a7530; }
-    p {
-      font-size: 0.8rem;
-      font-weight: 300;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #7a7060;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr. Eng. Omair Shafiq — Structural, Transportation & Computational Engineering</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F5F0E8;
+    --surface: #FFFFFF;
+    --surface2: #EDE8DF;
+    --ink: #1A1A17;
+    --gold: #A07828;
+    --gold-light: #C9A84C;
+    --gold-dim: rgba(160,120,40,0.10);
+    --gold-border: rgba(160,120,40,0.28);
+    --text: #1A1A17;
+    --text-muted: rgba(26,26,23,0.52);
+    --divider: rgba(26,26,23,0.10);
+    --red-risk: #B83A2A;
+    --amber-risk: #B8640A;
+    --green-risk: #2E7A48;
+    --radius: 6px;
+    --radius-lg: 12px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(245,240,232,0.90);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--divider);
+    padding: 0 2rem;
+    height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 15px;
+    color: var(--gold);
+    letter-spacing: 0.02em;
+  }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 100px 4rem 4rem;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 6px solid var(--ink);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: var(--ink);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -20%; right: -10%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(160,120,40,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .hero-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(52px, 7vw, 96px);
+    line-height: 1.0;
+    color: var(--ink);
+    margin-bottom: 0.2em;
+  }
+  .hero-name em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero-title {
+    font-size: clamp(16px, 2vw, 21px);
+    color: var(--text-muted);
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+    line-height: 1.5;
+  }
+  .hero-tags {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    margin-bottom: 3rem;
+  }
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    background: var(--gold-dim);
+    border: 0.5px solid var(--gold-border);
+    padding: 5px 12px;
+    border-radius: var(--radius);
+  }
+  .hero-creds {
+    display: flex; gap: 2rem; flex-wrap: wrap;
+  }
+  .cred {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .cred strong { color: rgba(26,26,23,0.65); font-weight: 500; }
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 4rem;
+    font-size: 12px; color: var(--text-muted); letter-spacing: 0.08em;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .hero-scroll::before {
+    content: '';
+    display: block; width: 32px; height: 0.5px;
+    background: var(--gold-border);
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 6rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .section-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-eyebrow::after {
+    content: '';
+    flex: 0 0 40px; height: 0.5px;
+    background: var(--gold-border);
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 4vw, 44px);
+    color: var(--ink);
+    line-height: 1.15;
+    margin-bottom: 2.5rem;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+  .about-text p {
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .about-text p strong { color: var(--ink); font-weight: 500; }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--divider);
+    border: 0.5px solid var(--divider);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    align-self: start;
+  }
+  .stat-cell {
+    background: var(--surface);
+    padding: 1.5rem;
+  }
+  .stat-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    line-height: 1.4;
+  }
+
+  /* PHD RESEARCH */
+  #research { max-width: 1100px; margin: 0 auto; padding: 6rem 4rem; }
+  .eida-card {
+    background: var(--surface);
+    border: 0.5px solid var(--divider);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+  }
+  .eida-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .eida-sub {
+    font-size: 13px;
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.06em;
+    margin-bottom: 1.5rem;
+  }
+  .eida-body {
+    color: var(--text-muted);
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+  }
+  .eida-body strong { color: var(--ink); font-weight: 500; }
+  .pipeline {
+    display: flex; align-items: center; gap: 0;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+  }
+  .pipe-step {
+    background: var(--surface2);
+    border: 0.5px solid var(--gold-border);
+    border-radius: var(--radius);
+    padding: 6px 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+  .pipe-arrow {
+    color: var(--gold-border);
+    padding: 0 6px;
+    font-size: 14px;
+  }
+
+  /* SCREENER */
+  .screener-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 2rem; gap: 2rem;
+  }
+  .input-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .screener-card {
+    background: var(--ink);
+    border: 0.5px solid rgba(26,26,23,0.8);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem;
+    margin-top: 2rem;
+  }
+  .screener-title { font-family: 'DM Serif Display', serif; font-size: 22px; color: #F5F0E8; margin-bottom: 0.25rem; }
+  .screener-desc { font-size: 13px; color: rgba(245,240,232,0.55); max-width: 460px; line-height: 1.6; }
+  .screener-badge { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: var(--gold-light); background: rgba(201,168,76,0.15); border: 0.5px solid rgba(201,168,76,0.3); padding: 4px 10px; border-radius: var(--radius); white-space: nowrap; align-self: start; flex-shrink: 0; }
+  .input-group label { display: block; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gold-light); letter-spacing: 0.08em; margin-bottom: 6px; }
+  .input-group input { width: 100%; background: rgba(245,240,232,0.07); border: 0.5px solid rgba(245,240,232,0.18); border-radius: var(--radius); padding: 10px 14px; color: #F5F0E8; font-family: 'DM Mono', monospace; font-size: 14px; outline: none; transition: border-color 0.2s; }
+  .input-group input:focus { border-color: rgba(201,168,76,0.5); }
+  .input-hint { font-size: 11px; color: rgba(245,240,232,0.35); margin-top: 4px; font-family: 'DM Mono', monospace; }
+  .screener-note { font-size: 12px; color: rgba(245,240,232,0.35); margin-top: 1.5rem; padding-top: 1rem; border-top: 0.5px solid rgba(245,240,232,0.08); line-height: 1.6; }
+  .calc-btn {
+    background: var(--gold);
+    color: #FFFFFF;
+    border: none;
+    border-radius: var(--radius);
+    padding: 12px 28px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    letter-spacing: 0.02em;
+  }
+  .calc-btn:hover { background: var(--gold-light); }
+  .calc-btn:active { transform: scale(0.98); }
+
+  .result-panel {
+    display: none;
+    margin-top: 1.5rem;
+    border-top: 0.5px solid rgba(245,240,232,0.1);
+    padding-top: 1.5rem;
+  }
+  .result-panel.visible { display: block; }
+  .result-params {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .param-box {
+    background: rgba(245,240,232,0.06);
+    border: 0.5px solid rgba(245,240,232,0.1);
+    border-radius: var(--radius);
+    padding: 1rem;
+    text-align: center;
+  }
+  .param-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: rgba(245,240,232,0.45);
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+  }
+  .param-value {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--gold-light);
+  }
+  .risk-banner {
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .risk-banner.low { background: rgba(90,158,110,0.12); border: 0.5px solid rgba(90,158,110,0.3); }
+  .risk-banner.moderate { background: rgba(212,137,58,0.12); border: 0.5px solid rgba(212,137,58,0.3); }
+  .risk-banner.high { background: rgba(224,90,74,0.12); border: 0.5px solid rgba(224,90,74,0.3); }
+  .risk-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .risk-banner.low .risk-dot { background: var(--green-risk); }
+  .risk-banner.moderate .risk-dot { background: var(--amber-risk); }
+  .risk-banner.high .risk-dot { background: var(--red-risk); }
+  .risk-label {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+  .risk-banner.low .risk-label { color: var(--green-risk); }
+  .risk-banner.moderate .risk-label { color: var(--amber-risk); }
+  .risk-banner.high .risk-label { color: var(--red-risk); }
+  .risk-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+  .mu-values {
+    display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;
+  }
+  .mu-chip {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    background: rgba(245,240,232,0.07);
+    border: 0.5px solid rgba(245,240,232,0.12);
+    border-radius: var(--radius);
+    padding: 5px 12px;
+    color: rgba(245,240,232,0.5);
+  }
+  .mu-chip strong { color: #F5F0E8; }
+  .out-of-range { font-size: 12px; color: #D4893A; font-family: 'DM Mono', monospace; margin-top: 8px; }
+
+  /* PUBLICATIONS */
+  .pub-list { display: flex; flex-direction: column; gap: 1px; background: var(--divider); border: 0.5px solid var(--divider); border-radius: var(--radius-lg); overflow: hidden; }
+  .pub-item {
+    background: var(--surface);
+    padding: 1.25rem 1.5rem;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    align-items: start;
+    transition: background 0.15s;
+  }
+  .pub-item:hover { background: var(--surface2); }
+  .pub-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    padding-top: 2px;
+  }
+  .pub-title {
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 500;
+    line-height: 1.5;
+    margin-bottom: 3px;
+  }
+  .pub-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+  .pub-q {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: var(--radius);
+    align-self: start;
+    white-space: nowrap;
+  }
+  .q1 { background: rgba(90,158,110,0.15); color: #7DC494; border: 0.5px solid rgba(90,158,110,0.3); }
+  .q2 { background: rgba(201,168,76,0.12); color: var(--gold); border: 0.5px solid var(--gold-border); }
+  .q3 { background: rgba(240,235,224,0.06); color: var(--text-muted); border: 0.5px solid var(--divider); }
+  .under-review { background: rgba(90,120,180,0.12); color: #8AABDE; border: 0.5px solid rgba(90,120,180,0.3); }
+
+  /* EXPERIENCE */
+  .exp-list { display: flex; flex-direction: column; gap: 0; }
+  .exp-item {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 2rem;
+    padding: 2rem 0;
+    border-bottom: 0.5px solid var(--divider);
+  }
+  .exp-item:last-child { border-bottom: none; }
+  .exp-period {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    padding-top: 3px;
+    line-height: 1.5;
+  }
+  .exp-role { font-size: 16px; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+  .exp-org { font-size: 13px; color: var(--gold); margin-bottom: 0.75rem; }
+  .exp-desc { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+  .exp-desc ul { padding-left: 1.2rem; }
+  .exp-desc li { margin-bottom: 4px; }
+
+  /* CONTACT */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .contact-item {
+    background: var(--surface);
+    border: 0.5px solid var(--divider);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    display: flex; align-items: flex-start; gap: 1rem;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .contact-item:hover { border-color: var(--gold-border); background: var(--surface2); }
+  .contact-icon {
+    font-size: 20px; color: var(--gold);
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .contact-label { font-size: 12px; color: var(--text-muted); margin-bottom: 2px; letter-spacing: 0.04em; }
+  .contact-value { font-size: 14px; color: var(--ink); font-weight: 500; }
+
+  /* FOOTER */
+  footer {
+    border-top: 0.5px solid var(--divider);
+    padding: 2.5rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 1100px; margin: 0 auto;
+    font-size: 12px; color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* CV DOWNLOAD BAR */
+  .cv-bar {
+    background: var(--surface);
+    border: 0.5px solid var(--divider);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 2rem; flex-wrap: wrap; gap: 1rem;
+  }
+  .cv-bar-text { font-size: 14px; color: var(--text-muted); }
+  .cv-bar-text strong { color: var(--ink); }
+  .cv-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .cv-link {
+    font-size: 13px;
+    color: var(--gold);
+    background: var(--gold-dim);
+    border: 0.5px solid var(--gold-border);
+    border-radius: var(--radius);
+    padding: 7px 16px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
+  .cv-link:hover { background: rgba(201,168,76,0.25); }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 1.5rem; }
+    .nav-links { gap: 1.2rem; }
+    .hero, section, #research { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .hero { padding-top: 80px; }
+    .about-grid { grid-template-columns: 1fr; }
+    .input-grid { grid-template-columns: 1fr 1fr; }
+    .result-params { grid-template-columns: 1fr 1fr 1fr; }
+    .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    .contact-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    .screener-header { flex-direction: column; }
+  }
+  @media (max-width: 480px) {
+    .input-grid { grid-template-columns: 1fr; }
+    .result-params { grid-template-columns: 1fr 1fr; }
+    .pub-item { grid-template-columns: auto 1fr; }
+    .pub-q { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <h1>Omair <em>Shafiq</em></h1>
-    <div class="rule"></div>
-    <p>Coming Soon</p>
+
+<nav>
+  <div class="nav-name">Dr. Omair Shafiq</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#research">Research</a>
+    <a href="#publications">Publications</a>
+    <a href="#experience">Experience</a>
+    <a href="#contact">Contact</a>
   </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="top">
+  <div class="hero-eyebrow">Structural · Transportation · Computational Engineering</div>
+  <h1 class="hero-name">Dr. <em>Eng.</em><br>Omair Shafiq</h1>
+  <p class="hero-title">P.E. · PhD Researcher · Senior Design Engineer<br>Pakistan & Malaysia</p>
+  <div class="hero-tags">
+    <span class="tag">Seismic Fragility</span>
+    <span class="tag">EIDA Framework</span>
+    <span class="tag">Road Asset Management</span>
+    <span class="tag">ML · XGBoost · ANN</span>
+    <span class="tag">ETABS API</span>
+    <span class="tag">C# · MATLAB</span>
+    <span class="tag">Software Development</span>
+  </div>
+  <div class="hero-creds">
+    <span class="cred"><strong>PEC PE</strong> CIVIL/54467</span>
+    <span class="cred"><strong>BEM</strong> G2263729A</span>
+    <span class="cred"><strong>10</strong> journal publications</span>
+    <span class="cred"><strong>6+</strong> years industry experience</span>
+  </div>
+  <div class="hero-scroll">scroll to explore</div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-eyebrow">About</div>
+  <h2 class="section-title">Engineer, researcher,<br>software builder.</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>PhD researcher at UMPSA Malaysia specialising in <strong>AI-integrated seismic fragility assessment</strong>. Creator of the EIDA Framework — an automated C# + MATLAB pipeline that has generated over <strong>50,000 fragility curves</strong> across 180 structural archetypes via the ETABS API.</p>
+      <p>Alongside doctoral research, I hold <strong>6+ years of industry experience</strong> as a Senior Design Engineer with CEC Minconsult, delivering transportation and structural projects across Pakistan. My work spans national highway RAMS reporting, road safety audits, and multi-million-dollar urban mobility schemes.</p>
+      <p>I build production-grade desktop engineering software in <strong>C# .NET</strong> — including <em>Conc</em> (RC beam/slab capacity checks) and <em>Flexpave</em> (flexible pavement design to AASHTO 2007) — tools deployed to practising engineers.</p>
+
+      <div class="cv-bar">
+        <span class="cv-bar-text">Download <strong>full CVs</strong></span>
+        <div class="cv-links">
+          <a href="#" class="cv-link">Academic CV</a>
+          <a href="#" class="cv-link">Industry CV</a>
+          <a href="#" class="cv-link">1-Page Summary</a>
+        </div>
+      </div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-cell">
+        <div class="stat-number">10</div>
+        <div class="stat-label">Journal publications<br>Q1–Q3 venues</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-number">50k+</div>
+        <div class="stat-label">Fragility curves generated</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-number">180</div>
+        <div class="stat-label">RC archetypes analysed</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-number">6+</div>
+        <div class="stat-label">Years industry experience</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-number">~11k</div>
+        <div class="stat-label">Nonlinear analyses run</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-number">4</div>
+        <div class="stat-label">Papers under review in Q1 venues</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section id="research" style="padding-top: 0;">
+  <div class="section-eyebrow">PhD Research</div>
+  <h2 class="section-title">EIDA Framework &<br>seismic fragility at scale.</h2>
+
+  <div class="eida-card">
+    <div class="eida-title">EIDA Framework — Automated Extended IDA Pipeline</div>
+    <div class="eida-sub">Core PhD output · Under review in MethodsX (Q1)</div>
+    <p class="eida-body">
+      Designed and deployed an end-to-end high-throughput automation pipeline that runs <strong>parametric nonlinear time-history analyses</strong> across thousands of RC frame configurations without manual intervention. The system handles automated topology extraction, stochastic material assignment, Hunt-and-Fill ground motion scaling to global collapse (DS1–DS5), Soil–Structure Interaction via Gazetas spring formulations, and real-time fragility curve generation.
+    </p>
+    <p class="eida-body">
+      A <strong>Direct Text Injection Protocol</strong> modifies nonlinear hinge properties and boundary conditions in real time via COM marshalling — enabling bulk parameter sweeps that would otherwise require weeks of manual ETABS setup.
+    </p>
+    <div class="pipeline">
+      <span class="pipe-step">ETABS 3D FE Model</span>
+      <span class="pipe-arrow">→</span>
+      <span class="pipe-step">C# API Controller</span>
+      <span class="pipe-arrow">→</span>
+      <span class="pipe-step">Hunt-and-Fill IDA</span>
+      <span class="pipe-arrow">→</span>
+      <span class="pipe-step">MATLAB Post-processing</span>
+      <span class="pipe-arrow">→</span>
+      <span class="pipe-step">GLME Meta-Regression</span>
+      <span class="pipe-arrow">→</span>
+      <span class="pipe-step">ML Closed-Form Equations</span>
+    </div>
+  </div>
+
+  <!-- LIVE SCREENER -->
+  <div class="screener-card">
+    <div class="screener-header">
+      <div>
+        <div class="screener-title">Seismic Performance Screener</div>
+        <div class="screener-desc">Try the closed-form fragility equations from my PhD. Enter your RC frame geometry to get an instant damage-state screening — no nonlinear modelling required. Compatible with BCP-2021 and MS EN 1998.</div>
+      </div>
+      <div class="screener-badge">LIVE DEMO · PhD OUTPUT</div>
+    </div>
+
+    <div class="input-grid">
+      <div class="input-group">
+        <label>N — Number of storeys</label>
+        <input type="number" id="inp-N" min="1" max="10" value="5" step="1">
+        <div class="input-hint">Scope: 1–10 storeys</div>
+      </div>
+      <div class="input-group">
+        <label>H — Total height (m)</label>
+        <input type="number" id="inp-H" min="3" max="40" value="15" step="0.5">
+        <div class="input-hint">e.g. 15 m for 5-storey</div>
+      </div>
+      <div class="input-group">
+        <label>B — Plan width (m)</label>
+        <input type="number" id="inp-B" min="3" max="30" value="12" step="0.5">
+        <div class="input-hint">Bay width × no. of bays</div>
+      </div>
+      <div class="input-group">
+        <label>bc — Column width (mm)</label>
+        <input type="number" id="inp-bc" min="150" max="800" value="400" step="25">
+        <div class="input-hint">e.g. 400 mm</div>
+      </div>
+      <div class="input-group">
+        <label>hc — Column depth (mm)</label>
+        <input type="number" id="inp-hc" min="150" max="800" value="400" step="25">
+        <div class="input-hint">e.g. 400 mm</div>
+      </div>
+      <div class="input-group">
+        <label>bb × hb — Beam (mm × mm)</label>
+        <input type="number" id="inp-bb" min="150" max="600" value="300" step="25">
+        <input type="number" id="inp-hb" min="200" max="800" value="500" step="25" style="margin-top:6px;">
+        <div class="input-hint">Width × Depth</div>
+      </div>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+      <div class="input-group" style="min-width:200px;">
+        <label>ag — Site PGA (g)</label>
+        <input type="number" id="inp-ag" min="0.01" max="1.5" value="0.25" step="0.01">
+        <div class="input-hint">From national hazard map</div>
+      </div>
+      <button class="calc-btn" onclick="runScreener()" style="margin-top:1.5rem;">Run screening →</button>
+    </div>
+
+    <div class="result-panel" id="result-panel">
+      <div class="result-params" id="param-boxes"></div>
+      <div id="risk-output"></div>
+      <div class="mu-values" id="mu-values"></div>
+      <div class="out-of-range" id="range-warn"></div>
+    </div>
+
+    <div class="screener-note">
+      Scope: 1–10 storeys · 1–3 bays · fixed-base and SSI · C20–C35 concrete · rectangular RC bare frames without shear walls.
+      DS3–DS5 equations available in the full spreadsheet tool — contact the author. Dispersion β = 0.40 (default).
+      This screener is a supplementary check only and adds no regulatory burden.
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="section-eyebrow">Publications</div>
+  <h2 class="section-title">10 journal papers,<br>4 under review at Q1 venues.</h2>
+
+  <div class="pub-list">
+    <div class="pub-item">
+      <span class="pub-num">11</span>
+      <div>
+        <div class="pub-title">An Automated Extended IDA Pipeline for High-Throughput Fragility Data Generation of RC Moment-Frame Buildings with SSI in ETABS</div>
+        <div class="pub-meta">Shafiq, O. et al. · MethodsX · Submitted 2025</div>
+      </div>
+      <span class="pub-q under-review">Under Review · Q1</span>
+    </div>
+    <div class="pub-item">
+      <span class="pub-num">10</span>
+      <div>
+        <div class="pub-title">Transparent ML Framework for Seismic Fragility Derivation: A Closed-Form Dimensionless Approach</div>
+        <div class="pub-meta">Shafiq, O. et al. · Structures · Submitted 2025</div>
+      </div>
+      <span class="pub-q under-review">Under Review · Q1</span>
+    </div>
+    <div class="pub-item">
+      <span class="pub-num">09</span>
+      <div>
+        <div class="pub-title">Parametric Sensitivity of the Seismic Demand Scaling Exponent to Design Variability and SSI in Structurally Similar RC Bare Frame Systems</div>
+        <div class="pub-meta">Shafiq, O. et al. · Structures · With Editor 2025</div>
+      </div>
+      <span class="pub-q under-review">With Editor · Q1</span>
+    </div>
+    <div class="pub-item">
+      <span class="pub-num">07</span>
+      <div>
+        <div class="pub-title">Factors Affecting Seismic Fragility of RC Grid-Like Frame Structures: A Parametric Meta-Regression Approach</div>
+        <div class="pub-meta">Shafiq, O. et al. · Structures · Revision Submitted R1 · MS No. STRUCTURES-D-25-09760</div>
+      </div>
+      <span class="pub-q under-review">R1 Review · Q1</span>
+    </div>
+    <div class="pub-item">
+      <span class="pub-num">08</span>
+      <div>
+        <div class="pub-title">Probabilistic Seismic Demand Modeling of RC Grid-Like Frames: Assessing Response Sensitivity Across Parametric Structural Configurations</div>
+        <div class="pub-meta">Shafiq, O. et al. · Construction · Under Review 2026</div>
+      </div>
+      <span class="pub-q q3">Under Review · Q3</span>
+    </div>
+    <div class="pub-item">
+      <span class="pub-num">04</span>
+      <div>
+        <div class="pub-title">Seismic Fragility Characterization of Grid-Like Frame Structures</div>
+        <div class="pub-meta">Waqas, M., Wan Ahmad, S., Shafiq, O. et al. · Construction, 5(2) · 2025 · DOI: 10.15282/construction.v5i2.13231</div>
+      </div>
+      <span class="pub-q q3">Published · Q3</span>
+    </div>
+    <div class="pub-item">
+      <span class="pub-num">06</span>
+      <div>
+        <div class="pub-title">Advances in Earthquake Mitigation in Malaysia: A Review of Global Context and Local Progress</div>
+        <div class="pub-meta">Waqas, M., Wan Ahmad, S., Shafiq, O. et al. · Jurnal Teknologi · In Press 2025</div>
+      </div>
+      <span class="pub-q q3">In Press · Q3</span>
+    </div>
+    <div class="pub-item">
+      <span class="pub-num">01</span>
+      <div>
+        <div class="pub-title">Fragility Curves Development for Single Span Slab Bridges: A Case Study for Peshawar, Pakistan</div>
+        <div class="pub-meta">Shafiq, O. et al. · J. Advanced Research in Applied Mechanics, 133(1), 177–190 · 2025 · DOI: 10.37934/aram.133.1.177190</div>
+      </div>
+      <span class="pub-q q3">Published · Scopus</span>
+    </div>
+    <div class="pub-item">
+      <span class="pub-num">02</span>
+      <div>
+        <div class="pub-title">Advancements in Earthquake Research and Seismic Risk Analysis: An In-Depth Review Centered on Malaysia</div>
+        <div class="pub-meta">Syed Mustorpha, S.I., … Shafiq, O. · J. Advanced Research in Applied Sciences & Eng. Tech., 63(2) · 2025</div>
+      </div>
+      <span class="pub-q q2">Published · Q2</span>
+    </div>
+    <div class="pub-item">
+      <span class="pub-num">03</span>
+      <div>
+        <div class="pub-title">The Assessment of Tall Building Structure Performance Due to Seismic Effect in Malaysia</div>
+        <div class="pub-meta">Kamarudin, M.A.A., … Shafiq, O. · J. Advanced Research Design, 129(1) · 2025</div>
+      </div>
+      <span class="pub-q q3">Published · Q4</span>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-eyebrow">Experience</div>
+  <h2 class="section-title">Industry, academia,<br>and independent practice.</h2>
+
+  <div class="exp-list">
+    <div class="exp-item">
+      <div class="exp-period">2024–2027<br>Malaysia</div>
+      <div>
+        <div class="exp-role">PhD Researcher — Computational Structural & Earthquake Engineering</div>
+        <div class="exp-org">Universiti Malaysia Pahang Al-Sultan Abdullah (UMPSA)</div>
+        <div class="exp-desc">Thesis: AI-integrated seismic fragility assessment and performance-based structural design. Supervisor: Ir. Ts. Dr. Saffuan bin Wan Ahmad. Originator of the EIDA Framework and transparent ML fragility equations.</div>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-period">2022–2026<br>Pakistan</div>
+      <div>
+        <div class="exp-role">Design Engineer (Transportation)</div>
+        <div class="exp-org">CEC Minconsult</div>
+        <div class="exp-desc">Led delivery of transportation projects individually valued at over $1M USD. Compiled the RAMS 2023 national reporting dataset for the NHA road network. Conducted Road Safety Audit on N-55 Indus Highway (KPRAP). Prepared Technical Sanctions for four Urban Mobility Projects in Sahiwal and Sialkot.</div>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-period">2024–2025<br>Pakistan</div>
+      <div>
+        <div class="exp-role">Visiting Lecturer</div>
+        <div class="exp-org">University of Engineering and Technology (UET), Peshawar</div>
+        <div class="exp-desc">Delivered undergraduate courses in Structural Analysis, Dynamics, Transportation Engineering, and Building Construction. Designed coursework, assessments, and supervised laboratory experiments.</div>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-period">2022–2023<br>Pakistan</div>
+      <div>
+        <div class="exp-role">Structural Engineer</div>
+        <div class="exp-org">CEC Minconsult</div>
+        <div class="exp-desc">Reviewed and fully redesigned the Women's Business Development Centre, Kohat under KPCIP standards. Delivered foundation designs for multiple KPCIP buildings and culvert designs for RRDP and KPRAP road schemes.</div>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-period">2020–present<br>Freelance</div>
+      <div>
+        <div class="exp-role">Structural Engineer & Software Developer</div>
+        <div class="exp-org">Independent Practice</div>
+        <div class="exp-desc">Developed <em>Conc</em> (RC beam/slab capacity checks and column interaction diagrams) and <em>Flexpave</em> (flexible pavement design to AASHTO 2007) — both production-grade C# WPF .NET desktop applications deployed to practising engineers. Built FEM-based analysis tools for masonry structures in MATLAB.</div>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-period">2021–2022<br>Pakistan</div>
+      <div>
+        <div class="exp-role">Site Engineer</div>
+        <div class="exp-org">Pakhtunkhwa Highway Authority</div>
+        <div class="exp-desc">Managed on-site execution of highway works. Coordinated site staff, set daily production targets, and served as the direct interface between the Resident Engineer and contractor.</div>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-period">2019–2020<br>Pakistan</div>
+      <div>
+        <div class="exp-role">Trainee Civil Engineer</div>
+        <div class="exp-org">Pakhtunkhwa Highway Authority</div>
+        <div class="exp-desc">Operated Profilometer and Falling Weight Deflectometer (FWD) for network-level pavement condition surveys. Processed data through HDM-4 to support road maintenance policy decisions.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-eyebrow">Contact</div>
+  <h2 class="section-title">Open to postdoc positions,<br>research collaborations & consulting.</h2>
+
+  <div class="contact-grid">
+    <a href="mailto:omair.shafiq1998@gmail.com" class="contact-item">
+      <span class="contact-icon">✉</span>
+      <div>
+        <div class="contact-label">Email</div>
+        <div class="contact-value">omair.shafiq1998@gmail.com</div>
+      </div>
+    </a>
+    <a href="https://linkedin.com/in/omair-shafiq" target="_blank" class="contact-item">
+      <span class="contact-icon">in</span>
+      <div>
+        <div class="contact-label">LinkedIn</div>
+        <div class="contact-value">linkedin.com/in/omair-shafiq</div>
+      </div>
+    </a>
+    <a href="https://researchgate.net/profile/Omair-Shafiq" target="_blank" class="contact-item">
+      <span class="contact-icon">RG</span>
+      <div>
+        <div class="contact-label">ResearchGate</div>
+        <div class="contact-value">researchgate.net/profile/Omair-Shafiq</div>
+      </div>
+    </a>
+    <div class="contact-item" style="cursor:default;">
+      <span class="contact-icon">📞</span>
+      <div>
+        <div class="contact-label">WhatsApp / Phone</div>
+        <div class="contact-value">+60 11 2758 8189 · +92 340 465 5150</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer style="padding: 2.5rem 4rem; border-top: 0.5px solid var(--divider); display:flex; justify-content:space-between; max-width:1100px; margin:0 auto; font-size:12px; color:var(--text-muted); font-family:'DM Mono',monospace; flex-wrap:wrap; gap:0.5rem; background:var(--ink);">
+  <span style="color:rgba(245,240,232,0.5);">Dr. Eng. Omair Shafiq · P.E. · PhD</span>
+  <span style="color:rgba(245,240,232,0.5);">PEC PE CIVIL/54467 · BEM G2263729A · UMPSA PDZ24005</span>
+</footer>
+
+<script>
+function runScreener() {
+  const N   = parseFloat(document.getElementById('inp-N').value);
+  const H   = parseFloat(document.getElementById('inp-H').value);
+  const B   = parseFloat(document.getElementById('inp-B').value);
+  const bc  = parseFloat(document.getElementById('inp-bc').value) / 1000;
+  const hc  = parseFloat(document.getElementById('inp-hc').value) / 1000;
+  const bb  = parseFloat(document.getElementById('inp-bb').value) / 1000;
+  const hb  = parseFloat(document.getElementById('inp-hb').value) / 1000;
+  const ag  = parseFloat(document.getElementById('inp-ag').value);
+
+  if ([N,H,B,bc,hc,bb,hb,ag].some(isNaN) || H<=0 || B<=0 || bc<=0 || hc<=0 || bb<=0 || hb<=0) {
+    alert('Please fill in all fields with valid positive values.'); return;
+  }
+
+  const g = 9.81;
+  const T = 0.075 * Math.pow(H, 0.75);
+  const Tbar = T * Math.sqrt(g / H);
+  const SR = (bc * Math.pow(hc,3)) / (bb * Math.pow(hb,3)) * Math.pow(B/H, 3);
+  const lam = (H / B) * 1.0;
+
+  const muDS1 = 0.4522 - 0.7877*Tbar + 0.1619*SR - 0.0579*lam
+    + 0.4086*Tbar*Tbar - 0.0952*Tbar*SR + 0.0260*Tbar*lam
+    - 0.0030*SR*SR - 0.0246*SR*lam + 0.0047*lam*lam;
+
+  const muDS2 = 1.2435 - 1.8232*Tbar + 0.1366*SR - 0.0959*lam
+    + 0.7649*Tbar*Tbar - 0.0655*Tbar*SR + 0.0856*Tbar*lam
+    - 0.0021*SR*SR - 0.0164*SR*lam;
+
+  const warnings = [];
+  if (Tbar < 0.174 || Tbar > 1.486) warnings.push('T̄ = '+Tbar.toFixed(3)+' outside training domain [0.174–1.486]');
+  if (SR < 0.004 || SR > 13.053) warnings.push('SR = '+SR.toFixed(3)+' outside training domain [0.004–13.053]');
+  if (lam < 0.125 || lam > 4.839) warnings.push('λeff = '+lam.toFixed(3)+' outside training domain [0.125–4.839]');
+
+  document.getElementById('param-boxes').innerHTML = `
+    <div class="param-box">
+      <div class="param-label">T̄ — NORMALISED PERIOD</div>
+      <div class="param-value">${Tbar.toFixed(3)}</div>
+    </div>
+    <div class="param-box">
+      <div class="param-label">SR — STIFFNESS RATIO</div>
+      <div class="param-value">${SR.toFixed(3)}</div>
+    </div>
+    <div class="param-box">
+      <div class="param-label">λeff — EFF. SLENDERNESS</div>
+      <div class="param-value">${lam.toFixed(3)}</div>
+    </div>`;
+
+  let riskClass, riskLabel, riskMsg;
+  if (ag < muDS1) {
+    riskClass = 'low'; riskLabel = 'LOW RISK';
+    riskMsg = 'ag (' + ag.toFixed(2) + 'g) &lt; μ̂DS1 (' + muDS1.toFixed(3) + 'g) — Proceed. No further action required under this screening.';
+  } else if (ag < muDS2) {
+    riskClass = 'moderate'; riskLabel = 'MODERATE RISK';
+    riskMsg = 'μ̂DS1 (' + muDS1.toFixed(3) + 'g) ≤ ag (' + ag.toFixed(2) + 'g) &lt; μ̂DS2 (' + muDS2.toFixed(3) + 'g) — Review ductility detailing. Engineering judgement required.';
+  } else {
+    riskClass = 'high'; riskLabel = 'HIGH RISK';
+    riskMsg = 'ag (' + ag.toFixed(2) + 'g) ≥ μ̂DS2 (' + muDS2.toFixed(3) + 'g) — Full IDA or site-specific fragility study required before sign-off.';
+  }
+
+  document.getElementById('risk-output').innerHTML = `
+    <div class="risk-banner ${riskClass}">
+      <div class="risk-dot"></div>
+      <div>
+        <div class="risk-label">${riskLabel}</div>
+        <div class="risk-desc">${riskMsg}</div>
+      </div>
+    </div>`;
+
+  document.getElementById('mu-values').innerHTML = `
+    <div class="mu-chip"><strong>μ̂DS1</strong> = ${muDS1.toFixed(3)} g</div>
+    <div class="mu-chip"><strong>μ̂DS2</strong> = ${muDS2.toFixed(3)} g</div>
+    <div class="mu-chip"><strong>ag (site)</strong> = ${ag.toFixed(3)} g</div>
+    <div class="mu-chip"><strong>T (EC8)</strong> = ${T.toFixed(3)} s</div>`;
+
+  document.getElementById('range-warn').innerHTML = warnings.length
+    ? '⚠ Extrapolation warning: ' + warnings.join(' · ')
+    : '';
+
+  const panel = document.getElementById('result-panel');
+  panel.classList.add('visible');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && document.activeElement && document.activeElement.closest('.screener-card')) {
+    runScreener();
+  }
+});
+</script>
 </body>
 </html>
