@@ -364,7 +364,7 @@
   .risk-banner.low .risk-label { color: var(--green-risk); }
   .risk-banner.moderate .risk-label { color: var(--amber-risk); }
   .risk-banner.high .risk-label { color: var(--red-risk); }
-  .risk-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+  .risk-desc { font-size: 13px; color: rgba(245,240,232,0.75); line-height: 1.5; }
   .mu-values {
     display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;
   }
@@ -379,6 +379,29 @@
   }
   .mu-chip strong { color: #F5F0E8; }
   .out-of-range { font-size: 12px; color: #D4893A; font-family: 'DM Mono', monospace; margin-top: 8px; }
+  .fragility-chart {
+    margin-top: 1.5rem;
+    background: rgba(245,240,232,0.04);
+    border: 0.5px solid rgba(245,240,232,0.1);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.25rem 0.75rem;
+  }
+  .fragility-chart-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: rgba(245,240,232,0.45);
+    margin-bottom: 0.75rem;
+  }
+  .fragility-chart svg { width: 100%; height: auto; display: block; }
+  .fragility-legend {
+    display: flex; gap: 1.25rem; flex-wrap: wrap;
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: rgba(245,240,232,0.55);
+    margin-top: 0.5rem;
+  }
+  .fragility-legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .fragility-legend i { width: 14px; height: 2px; display: inline-block; }
 
   /* PUBLICATIONS */
   .pub-list { display: flex; flex-direction: column; gap: 1px; background: var(--divider); border: 0.5px solid var(--divider); border-radius: var(--radius-lg); overflow: hidden; }
@@ -655,7 +678,7 @@
     <div class="input-grid">
       <div class="input-group">
         <label>N — Number of storeys</label>
-        <input type="number" id="inp-N" min="1" max="10" value="5" step="1">
+        <input type="number" id="inp-N" min="1" max="10" value="5" step="1" oninput="syncHfromN()">
         <div class="input-hint">Scope: 1–10 storeys</div>
       </div>
       <div class="input-group">
@@ -700,6 +723,7 @@
       <div id="risk-output"></div>
       <div class="mu-values" id="mu-values"></div>
       <div class="out-of-range" id="range-warn"></div>
+      <div class="fragility-chart" id="fragility-chart"></div>
     </div>
 
     <div class="screener-note">
@@ -907,6 +931,13 @@
 </footer>
 
 <script>
+function syncHfromN() {
+  const N = parseFloat(document.getElementById('inp-N').value);
+  if (!isNaN(N) && N > 0) {
+    document.getElementById('inp-H').value = (N * 3).toFixed(1);
+  }
+}
+
 function runScreener() {
   const N   = parseFloat(document.getElementById('inp-N').value);
   const H   = parseFloat(document.getElementById('inp-H').value);
@@ -985,10 +1016,93 @@ function runScreener() {
     ? '⚠ Extrapolation warning: ' + warnings.join(' · ')
     : '';
 
+  renderFragilityChart(muDS1, muDS2, ag, riskClass);
+
   const panel = document.getElementById('result-panel');
   panel.classList.add('visible');
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
+
+function renderFragilityChart(muDS1, muDS2, ag, riskClass) {
+  const beta = 0.40;
+  const W = 720, H = 320;
+  const ml = 50, mr = 20, mt = 20, mb = 40;
+  const pw = W - ml - mr, ph = H - mt - mb;
+
+  const PGAmax = Math.max(muDS1, muDS2, ag) * 2.2;
+
+  // standard normal CDF
+  function Phi(x) {
+    return 0.5 * (1 + erf(x / Math.SQRT2));
+  }
+  function erf(x) {
+    const a1=0.254829592, a2=-0.284496736, a3=1.421413741, a4=-1.453152027, a5=1.061405429, p=0.3275911;
+    const sign = x < 0 ? -1 : 1;
+    x = Math.abs(x);
+    const t = 1/(1+p*x);
+    const y = 1-(((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x);
+    return sign*y;
+  }
+  function P(pga, mu) { return mu > 0 ? Phi(Math.log(pga/mu)/beta) : 0; }
+
+  const n = 80;
+  let pathDS1 = '', pathDS2 = '';
+  for (let i = 0; i <= n; i++) {
+    const pga = PGAmax * i / n;
+    const x = ml + (pga/PGAmax)*pw;
+    const yDS1 = mt + (1 - P(pga, muDS1)) * ph;
+    const yDS2 = mt + (1 - P(pga, muDS2)) * ph;
+    pathDS1 += (i===0 ? 'M' : 'L') + x.toFixed(2) + ',' + yDS1.toFixed(2) + ' ';
+    pathDS2 += (i===0 ? 'M' : 'L') + x.toFixed(2) + ',' + yDS2.toFixed(2) + ' ';
+  }
+
+  const agX = ml + Math.min(ag/PGAmax, 1) * pw;
+  const agProbDS1 = P(ag, muDS1);
+  const agProbDS2 = P(ag, muDS2);
+  const riskColor = riskClass === 'low' ? 'var(--green-risk)' : riskClass === 'moderate' ? 'var(--amber-risk)' : 'var(--red-risk)';
+
+  // axis ticks
+  let xTicks = '';
+  for (let i = 0; i <= 4; i++) {
+    const pga = PGAmax * i / 4;
+    const x = ml + (i/4)*pw;
+    xTicks += `<text x="${x.toFixed(1)}" y="${H-mb+18}" font-size="10" fill="rgba(245,240,232,0.4)" font-family="DM Mono, monospace" text-anchor="middle">${pga.toFixed(2)}</text>`;
+    xTicks += `<line x1="${x.toFixed(1)}" y1="${mt}" x2="${x.toFixed(1)}" y2="${H-mb}" stroke="rgba(245,240,232,0.06)" stroke-width="1"/>`;
+  }
+  let yTicks = '';
+  for (let i = 0; i <= 4; i++) {
+    const prob = 1 - i/4;
+    const y = mt + (i/4)*ph;
+    yTicks += `<text x="${ml-8}" y="${y.toFixed(1)+3}" font-size="10" fill="rgba(245,240,232,0.4)" font-family="DM Mono, monospace" text-anchor="end">${prob.toFixed(2)}</text>`;
+    yTicks += `<line x1="${ml}" y1="${y.toFixed(1)}" x2="${W-mr}" y2="${y.toFixed(1)}" stroke="rgba(245,240,232,0.06)" stroke-width="1"/>`;
+  }
+
+  const svg = `
+  <svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+    ${yTicks}
+    ${xTicks}
+    <line x1="${ml}" y1="${mt}" x2="${ml}" y2="${H-mb}" stroke="rgba(245,240,232,0.2)" stroke-width="1"/>
+    <line x1="${ml}" y1="${H-mb}" x2="${W-mr}" y2="${H-mb}" stroke="rgba(245,240,232,0.2)" stroke-width="1"/>
+    <path d="${pathDS1}" fill="none" stroke="var(--gold-light)" stroke-width="2"/>
+    <path d="${pathDS2}" fill="none" stroke="#E05A4A" stroke-width="2" stroke-dasharray="5,4"/>
+    <line x1="${agX.toFixed(2)}" y1="${mt}" x2="${agX.toFixed(2)}" y2="${H-mb}" stroke="${riskColor}" stroke-width="1.5" stroke-dasharray="3,3"/>
+    <circle cx="${agX.toFixed(2)}" cy="${(mt+(1-agProbDS1)*ph).toFixed(2)}" r="4" fill="var(--gold-light)"/>
+    <circle cx="${agX.toFixed(2)}" cy="${(mt+(1-agProbDS2)*ph).toFixed(2)}" r="4" fill="#E05A4A"/>
+    <text x="${agX.toFixed(2)}" y="${mt-6}" font-size="11" fill="${riskColor}" font-family="DM Mono, monospace" text-anchor="middle" font-weight="600">ag = ${ag.toFixed(2)}g</text>
+    <text x="${(ml+pw/2).toFixed(1)}" y="${H-6}" font-size="11" fill="rgba(245,240,232,0.45)" font-family="DM Mono, monospace" text-anchor="middle">PGA (g)</text>
+    <text x="14" y="${(mt+ph/2).toFixed(1)}" font-size="11" fill="rgba(245,240,232,0.45)" font-family="DM Mono, monospace" text-anchor="middle" transform="rotate(-90, 14, ${(mt+ph/2).toFixed(1)})">P(Survival)</text>
+  </svg>`;
+
+  document.getElementById('fragility-chart').innerHTML = `
+    <div class="fragility-chart-title">PROJECTED SURVIVAL CURVES (1 − P[DS≥ds | PGA]) · β = ${beta.toFixed(2)}</div>
+    ${svg}
+    <div class="fragility-legend">
+      <span><i style="background:var(--gold-light);"></i>DS1 capacity — μ̂ = ${muDS1.toFixed(3)} g</span>
+      <span><i style="background:#E05A4A; border-bottom:1px dashed #E05A4A; height:0;"></i>DS2 capacity — μ̂ = ${muDS2.toFixed(3)} g</span>
+      <span><i style="background:${riskColor};"></i>Site demand ag — exceedance P(DS1)=${agProbDS1.toFixed(2)}, P(DS2)=${agProbDS2.toFixed(2)}</span>
+    </div>`;
+}
+
 
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Enter' && document.activeElement && document.activeElement.closest('.screener-card')) {
