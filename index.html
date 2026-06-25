@@ -307,6 +307,42 @@
   }
   .calc-btn:hover { background: var(--gold-light); }
   .calc-btn:active { transform: scale(0.98); }
+  .screener-action-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .screener-button-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+  }
+  .screener-link-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    background: rgba(245,240,232,0.07);
+    color: var(--gold-light);
+    border: 0.5px solid rgba(201,168,76,0.45);
+    border-radius: var(--radius);
+    padding: 12px 18px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, transform 0.1s;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .screener-link-btn:hover {
+    background: rgba(201,168,76,0.16);
+    border-color: rgba(201,168,76,0.75);
+  }
+  .screener-link-btn:active { transform: scale(0.98); }
 
   .result-panel {
     display: none;
@@ -709,13 +745,17 @@
       </div>
     </div>
 
-    <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+    <div class="screener-action-row">
       <div class="input-group" style="min-width:200px;">
         <label>ag — Site PGA (g)</label>
         <input type="number" id="inp-ag" min="0.01" max="1.5" value="0.25" step="0.01">
         <div class="input-hint">From national hazard map</div>
       </div>
-      <button class="calc-btn" onclick="runScreener()" style="margin-top:1.5rem;">Run screening →</button>
+      <div class="screener-button-group">
+        <button class="calc-btn" onclick="runScreener()">Run screening →</button>
+        <a class="screener-link-btn" href="seismic_fragility_assessment.html" target="_blank" rel="noopener">Open WebApp</a>
+        <a class="screener-link-btn" href="EIDA_Screening_Calculator.xlsx" download>Download Excel Sheet</a>
+      </div>
     </div>
 
     <div class="result-panel" id="result-panel">
