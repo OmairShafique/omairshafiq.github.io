@@ -1,0 +1,3650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EIDA · Seismic Fragility Screening · RC Grid-Like Frames</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&family=Source+Sans+3:wght@400;500;600;700;800;900&family=STIX+Two+Text:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap');
+
+  :root {
+    --ink: #0f1117;
+    --ink-light: #3a3f52;
+    --ink-muted: #7a7f96;
+    --bg: #f7f6f2;
+    --bg-card: #ffffff;
+    --accent: #c8442b;
+    --accent-warm: #e8623d;
+    --accent-subtle: #fdf0ec;
+    --green: #1e6b47;
+    --green-bg: #eef6f1;
+    --amber: #b35c00;
+    --amber-bg: #fdf4e7;
+    --red: #b91c1c;
+    --red-bg: #fef2f2;
+    --blue: #1d4ed8;
+    --blue-bg: #eff6ff;
+    --border: #e2e0d8;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Inter', sans-serif;
+    --report-sans: 'Source Sans 3', 'Aptos', 'Segoe UI', Arial, sans-serif;
+    --math: 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif;
+    --serif: 'Playfair Display', serif;
+    --r: 6px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ─────────────────────────────────────────────── */
+  header {
+    background: var(--ink);
+    color: #fff;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 3px solid var(--accent);
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .logo {
+    font-family: var(--mono);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; display: inline-block; }
+  nav { display: flex; gap: 20px; flex-wrap: wrap; }
+  nav a {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: #fff; }
+
+  /* ── HERO ─────────────────────────────────────────────────── */
+  .hero {
+    background: var(--ink);
+    color: #fff;
+    padding: 72px 24px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 59px,
+      rgba(255,255,255,0.025) 59px,
+      rgba(255,255,255,0.025) 60px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 59px,
+      rgba(255,255,255,0.025) 59px,
+      rgba(255,255,255,0.025) 60px
+    );
+    pointer-events: none;
+  }
+  .hero-inner { max-width: 1100px; margin: 0 auto; position: relative; }
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-warm);
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.18;
+    max-width: 700px;
+    margin-bottom: 20px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent-warm);
+  }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.72);
+    max-width: 580px;
+    margin-bottom: 36px;
+    line-height: 1.7;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .stat { display: flex; flex-direction: column; gap: 2px; }
+  .stat-num {
+    font-family: var(--mono);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #fff;
+  }
+  .stat-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+  .stat-divider { width: 1px; background: rgba(255,255,255,0.12); }
+
+  /* ── SCOPE RIBBON ─────────────────────────────────────────── */
+  .scope-ribbon {
+    background: var(--accent);
+    color: #fff;
+    padding: 10px 24px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-align: center;
+  }
+
+  /* ── MAIN LAYOUT ──────────────────────────────────────────── */
+  .main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  /* ── SECTION LABELS ───────────────────────────────────────── */
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .section-desc {
+    font-size: 0.93rem;
+    color: var(--ink-light);
+    max-width: 680px;
+    margin-bottom: 28px;
+    line-height: 1.65;
+  }
+  .section-divider { height: 1px; background: var(--border); margin: 52px 0; }
+
+  /* ── STEP WORKFLOW ─────────────────────────────────────────── */
+  .workflow {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    overflow: hidden;
+    margin-bottom: 48px;
+    background: var(--bg-card);
+  }
+  .wf-step {
+    padding: 22px 20px;
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+  .wf-step:last-child { border-right: none; }
+  .wf-num {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .wf-title { font-size: 0.85rem; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .wf-desc { font-size: 0.78rem; color: var(--ink-muted); line-height: 1.5; }
+
+  /* ── CALCULATOR ───────────────────────────────────────────── */
+  .calc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  @media (max-width: 760px) { .calc-grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 28px;
+  }
+  .card-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-muted);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── INPUTS ───────────────────────────────────────────────── */
+  .input-group { margin-bottom: 18px; }
+  .input-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 6px;
+  }
+  .input-label span:first-child {
+    font-size: 0.83rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .input-param {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .input-domain {
+    font-size: 0.7rem;
+    color: var(--ink-muted);
+    margin-bottom: 6px;
+    font-family: var(--mono);
+  }
+  input[type="number"], input[type="range"] {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-family: var(--mono);
+    font-size: 0.88rem;
+    color: var(--ink);
+    background: var(--bg);
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  input[type="number"]:focus { border-color: var(--accent); background: #fff; }
+  input[type="range"] {
+    padding: 0;
+    height: 6px;
+    cursor: pointer;
+    accent-color: var(--accent);
+    border: none;
+    background: transparent;
+  }
+  .slider-row { display: flex; align-items: center; gap: 10px; }
+  .slider-val {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ink);
+    min-width: 48px;
+    text-align: right;
+  }
+
+  .divider-params { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 22px; margin-bottom: 20px; }
+  .param-badge {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 12px;
+    text-align: center;
+  }
+  .param-badge .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted); }
+  .param-badge .val { font-family: var(--mono); font-size: 1.05rem; font-weight: 600; color: var(--ink); margin-top: 2px; }
+  .param-badge .sym { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); font-weight: 600; }
+
+
+
+  /* ── DUAL MODE CALCULATOR ─────────────────────────────────── */
+  .mode-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 20px;
+  }
+  .mode-tab {
+    border: none;
+    border-radius: 4px;
+    background: transparent;
+    padding: 10px 12px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+  .mode-tab:hover { color: var(--ink); background: rgba(255,255,255,0.55); }
+  .mode-tab.active { background: var(--ink); color: #fff; }
+  .mode-panel { display: none; }
+  .mode-panel.active { display: block; }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 520px) { .form-grid { grid-template-columns: 1fr; } }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .field.full { grid-column: 1 / -1; }
+  .field span {
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .field small {
+    font-size: 0.65rem;
+    color: var(--ink-muted);
+    line-height: 1.35;
+  }
+  select {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-family: var(--sans);
+    font-size: 0.84rem;
+    color: var(--ink);
+    background: var(--bg);
+    outline: none;
+  }
+  select:focus { border-color: var(--accent); background: #fff; }
+
+  .subhead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin: 18px 0 10px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+  .subhead:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+  .subhead-title {
+    font-size: 0.7rem;
+    font-family: var(--mono);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .radio-stack {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .radio-stack label {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: var(--ink-light);
+    line-height: 1.45;
+    cursor: pointer;
+  }
+  .radio-stack input { margin-top: 3px; accent-color: var(--accent); }
+
+  .range-number-row {
+    display: grid;
+    grid-template-columns: 1fr 92px;
+    gap: 10px;
+    align-items: center;
+  }
+  .range-number-row input[type="number"] {
+    text-align: right;
+    padding: 7px 9px;
+  }
+
+  .formula-note, .derived-note {
+    background: var(--blue-bg);
+    border: 1px solid #bfdbfe;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-size: 0.74rem;
+    line-height: 1.55;
+    color: var(--ink-light);
+    margin-bottom: 16px;
+  }
+  .formula-note code, .derived-note code {
+    font-family: var(--math);
+    font-size: 0.80rem;
+    font-weight: 500;
+    color: #111827;
+    letter-spacing: 0.01em;
+  }
+  .derived-note {
+    background: var(--bg);
+    border-color: var(--border);
+    margin-bottom: 0;
+  }
+
+  .domain-summary {
+    border-radius: var(--r);
+    padding: 12px 14px;
+    margin-bottom: 14px;
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: var(--ink-light);
+  }
+  .domain-summary.ok { background: var(--green-bg); border: 1px solid #a7d4bc; }
+  .domain-summary.warn { background: var(--amber-bg); border: 1px solid #f5c97a; }
+  .domain-summary strong {
+    display: block;
+    font-size: 0.68rem;
+    font-family: var(--mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .domain-summary.ok strong { color: var(--green); }
+  .domain-summary.warn strong { color: var(--amber); }
+  .domain-summary ul { margin: 6px 0 0 17px; }
+  .domain-summary li { margin: 2px 0; }
+
+
+
+  .frame-preview {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 14px;
+    margin: 14px 0;
+    box-shadow: 0 12px 28px rgba(15, 17, 23, 0.06);
+  }
+  .preview-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .preview-title {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .preview-mode {
+    font-family: var(--mono);
+    font-size: 0.64rem;
+    color: var(--ink-muted);
+    text-align: right;
+  }
+  #frame-preview-viewer {
+    width: 100%;
+    height: 320px;
+    touch-action: none;
+    display: block;
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 50% 18%, #ffffff 0%, #f8fafc 48%, #eef2f7 100%),
+      linear-gradient(135deg, rgba(200,68,43,0.04), rgba(29,78,216,0.04));
+    border: 1px solid var(--border);
+    border-radius: 5px;
+  }
+  #frame-preview-viewer canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+  }
+  .preview-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    text-align: center;
+    font-size: 0.74rem;
+    line-height: 1.5;
+    color: var(--ink-muted);
+    font-family: var(--mono);
+  }
+  .preview-caption {
+    font-size: 0.7rem;
+    color: var(--ink-muted);
+    line-height: 1.45;
+    margin-top: 8px;
+  }
+  .preview-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .preview-stat {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 7px 8px;
+  }
+  .preview-stat span {
+    display: block;
+    font-size: 0.6rem;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-family: var(--mono);
+    margin-bottom: 2px;
+  }
+  .preview-stat strong {
+    font-size: 0.78rem;
+    color: var(--ink);
+    font-family: var(--mono);
+  }
+
+  .mini-warning {
+    background: var(--amber-bg);
+    border: 1px solid #f5c97a;
+    color: var(--amber);
+    border-radius: 4px;
+    padding: 8px 10px;
+    font-size: 0.72rem;
+    line-height: 1.45;
+    margin-bottom: 14px;
+  }
+
+  /* ── RESULTS ─────────────────────────────────────────────── */
+  .results-list { list-style: none; margin-bottom: 20px; }
+  .results-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.88rem;
+    gap: 8px;
+  }
+  .results-list li:last-child { border-bottom: none; }
+  .ds-label { font-weight: 600; color: var(--ink); min-width: 36px; }
+  .ds-method { color: var(--ink-muted); font-size: 0.75rem; font-family: var(--mono); }
+  .ds-val {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--ink);
+    margin-left: auto;
+  }
+  .ds-r2 { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-muted); }
+
+  /* ── RISK BADGE ───────────────────────────────────────────── */
+  .risk-box {
+    border-radius: var(--r);
+    padding: 16px 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .risk-box.low { background: var(--green-bg); border: 1px solid #a7d4bc; }
+  .risk-box.moderate { background: var(--amber-bg); border: 1px solid #f5c97a; }
+  .risk-box.high { background: var(--red-bg); border: 1px solid #fca5a5; }
+  .risk-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 1px; }
+  .risk-level { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 2px; }
+  .risk-box.low .risk-level { color: var(--green); }
+  .risk-box.moderate .risk-level { color: var(--amber); }
+  .risk-box.high .risk-level { color: var(--red); }
+  .risk-text { font-size: 0.82rem; line-height: 1.5; color: var(--ink-light); }
+
+  /* PGA input */
+  .pga-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 16px;
+  }
+  .pga-row label { font-size: 0.82rem; font-weight: 600; color: var(--ink); white-space: nowrap; }
+  .pga-row input {
+    max-width: 90px;
+    padding: 5px 8px;
+    font-size: 0.85rem;
+  }
+  .pga-row span { font-size: 0.75rem; color: var(--ink-muted); font-family: var(--mono); }
+
+  /* ── CHART ────────────────────────────────────────────────── */
+  .chart-section { margin-top: 48px; }
+  .chart-wrap {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 28px;
+    position: relative;
+  }
+  #fragility-canvas { width: 100%; display: block; }
+
+
+  .chart-action-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 12px 0 16px;
+  }
+  .advanced-curve-button {
+    border: 1px solid var(--accent);
+    background: var(--accent-subtle);
+    color: var(--accent);
+    border-radius: 999px;
+    padding: 9px 15px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s, transform 0.18s;
+  }
+  .advanced-curve-button:hover { transform: translateY(-1px); }
+  .advanced-curve-button.active {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .chart-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .chart-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .chart-toggle input { accent-color: var(--accent); }
+  .chart-toggle-note {
+    font-size: 0.73rem;
+    color: var(--ink-muted);
+    font-family: var(--mono);
+  }
+
+  .chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 16px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--ink-light);
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+  .legend-item.caution { color: var(--amber); }
+  .legend-line {
+    width: 28px;
+    height: 0;
+    border-top: 3px solid currentColor;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .legend-line.dashed { border-top-style: dotted; }
+
+  .damage-guide { margin-top: 28px; }
+  .damage-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 12px;
+  }
+  .damage-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 14px 16px;
+  }
+  .damage-card.caution {
+    background: var(--amber-bg);
+    border-color: #f5c97a;
+  }
+  .damage-card.muted {
+    background: var(--bg);
+    opacity: 0.82;
+  }
+  .damage-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 5px;
+    letter-spacing: 0.03em;
+  }
+  .damage-line {
+    width: 30px;
+    height: 0;
+    border-top: 3px solid currentColor;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .damage-line.dotted { border-top-style: dotted; }
+  .damage-desc {
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: var(--ink-light);
+  }
+
+  .eq-caution {
+    margin-top: 10px;
+    padding: 8px 10px;
+    background: var(--amber-bg);
+    border: 1px solid #f5c97a;
+    border-radius: 4px;
+    font-family: var(--sans);
+    font-size: 0.74rem;
+    line-height: 1.45;
+    color: var(--amber);
+  }
+
+  /* ── EQUATIONS PANEL ──────────────────────────────────────── */
+  .eq-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    overflow: hidden;
+  }
+  .eq-header {
+    display: grid;
+    grid-template-columns: 55px 1fr 112px 72px 72px 76px;
+    gap: 12px;
+    padding: 10px 20px;
+    background: var(--ink);
+    color: rgba(255,255,255,0.55);
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .eq-row {
+    display: grid;
+    grid-template-columns: 55px 1fr 112px 72px 72px 76px;
+    gap: 12px;
+    padding: 14px 20px;
+    align-items: start;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .eq-row:last-child { border-bottom: none; }
+  .eq-row:hover { background: #fafaf8; }
+  .eq-ds { font-family: var(--mono); font-weight: 700; color: var(--accent); font-size: 0.85rem; padding-top: 2px; }
+  .eq-formula {
+    font-family: var(--math);
+    font-size: 0.80rem;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.65;
+    word-break: break-word;
+    letter-spacing: 0.01em;
+  }
+  .eq-formula .coeff { color: var(--blue); }
+  .eq-formula .var { color: var(--green); font-style: italic; }
+  .eq-method { font-family: var(--mono); font-size: 0.72rem; color: var(--ink-muted); padding-top: 2px; }
+  .eq-use {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .eq-use.primary { background: var(--green-bg); color: var(--green); border: 1px solid #a7d4bc; }
+  .eq-use.support { background: var(--blue-bg); color: var(--blue); border: 1px solid #bfdbfe; }
+  .eq-use.trend { background: var(--amber-bg); color: var(--amber); border: 1px solid #f5c97a; }
+  .eq-use.caution { background: var(--red-bg); color: var(--red); border: 1px solid #fca5a5; }
+  .eq-use.research { background: var(--bg); color: var(--ink-muted); border: 1px solid var(--border); }
+  .eq-r2-val {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding-top: 2px;
+  }
+  .eq-r2-val.good { color: var(--green); }
+  .eq-r2-val.fair { color: var(--amber); }
+  .eq-r2-val.poor { color: var(--red); }
+  .eq-r2-val.muted { color: var(--ink-muted); }
+  .eq-rmse { font-family: var(--mono); font-size: 0.78rem; color: var(--ink-muted); padding-top: 2px; }
+
+  .eq-note {
+    padding: 12px 20px;
+    background: var(--accent-subtle);
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    line-height: 1.55;
+    border-top: 1px solid #f0d8d3;
+  }
+
+  /* ── ABOUT / CITATION ─────────────────────────────────────── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  @media (max-width: 700px) { .about-grid { grid-template-columns: 1fr; } }
+
+  .cite-box {
+    background: var(--ink);
+    color: #fff;
+    border-radius: var(--r);
+    padding: 22px;
+  }
+  .cite-box .cite-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 10px;
+  }
+  .cite-box p {
+    font-size: 0.82rem;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.78);
+  }
+  .cite-box p + p {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+  }
+  .cite-box .cite-author {
+    margin-top: 14px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--accent-warm);
+  }
+
+  .pipeline-list { list-style: none; }
+  .pipeline-list li {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--ink-light);
+    line-height: 1.5;
+    align-items: flex-start;
+  }
+  .pipeline-list li:last-child { border-bottom: none; }
+  .pipeline-list .arrow { color: var(--accent); font-weight: 700; flex-shrink: 0; font-family: var(--mono); }
+
+  .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .tag {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 4px 10px;
+    font-size: 0.72rem;
+    font-family: var(--mono);
+    color: var(--ink-muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── FOOTER ───────────────────────────────────────────────── */
+  footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.5);
+    padding: 28px 24px;
+    text-align: center;
+    font-size: 0.78rem;
+    font-family: var(--mono);
+    letter-spacing: 0.06em;
+  }
+  footer a { color: var(--accent-warm); text-decoration: none; }
+
+  /* ── VALIDATION TAGS ──────────────────────────────────────── */
+  .valid-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .valid-tag {
+    background: var(--green-bg);
+    border: 1px solid #a7d4bc;
+    color: var(--green);
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    padding: 3px 10px;
+    border-radius: 3px;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── DOMAIN WARNINGS ─────────────────────────────────────── */
+  .domain-warn {
+    font-size: 0.72rem;
+    color: var(--amber);
+    font-family: var(--mono);
+    margin-top: 4px;
+    display: none;
+  }
+
+  /* ── REPORT MODAL / PRINT SUMMARY ─────────────────────────── */
+  .report-action, .download-action {
+    margin: 12px 0 18px;
+    padding: 14px 16px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .download-action {
+    background: var(--blue-bg);
+    border-color: #bfdbfe;
+  }
+  .report-action.print-highlight {
+    background: var(--red-bg);
+    border: 2px solid var(--red);
+    box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.06);
+  }
+  .report-action-text, .download-action-text {
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    line-height: 1.45;
+    max-width: 360px;
+  }
+  .report-action-text strong { color: var(--red); }
+  .download-action-text strong { color: var(--blue); }
+  .report-button, .download-button {
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: #fff;
+    border-radius: 999px;
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.18s, border-color 0.18s, transform 0.18s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+  }
+  .report-button { background: var(--red); border-color: var(--red); }
+  .download-button { background: var(--blue); border-color: var(--blue); }
+  .report-button:hover, .download-button:hover { transform: translateY(-1px); }
+  .report-button:hover { background: var(--ink); border-color: var(--ink); }
+  .download-button:hover { background: var(--ink); border-color: var(--ink); }
+
+  .report-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    background: rgba(15,17,23,0.62);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .report-modal-backdrop.active { display: flex; }
+  .report-modal {
+    width: min(760px, 100%);
+    max-height: min(86vh, 780px);
+    overflow: auto;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.28);
+  }
+  .report-modal-head {
+    padding: 20px 24px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .report-modal-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 3px;
+  }
+  .report-modal-sub {
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+    line-height: 1.5;
+  }
+  .report-close {
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--ink-muted);
+    border-radius: 999px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 1.05rem;
+    line-height: 1;
+  }
+  .report-modal-body { padding: 20px 24px 24px; }
+  .report-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+  @media (max-width: 640px) { .report-form-grid { grid-template-columns: 1fr; } }
+  .report-field { display: flex; flex-direction: column; gap: 6px; }
+  .report-field.full { grid-column: 1 / -1; }
+  .report-field span {
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .report-field input, .report-field textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg);
+    padding: 9px 11px;
+    font-family: var(--sans);
+    font-size: 0.88rem;
+    color: var(--ink);
+    outline: none;
+  }
+  .report-field textarea { min-height: 78px; resize: vertical; }
+  .report-field input:focus, .report-field textarea:focus { border-color: var(--accent); background: #fff; }
+  .report-options {
+    margin-top: 18px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    background: var(--bg);
+    display: grid;
+    gap: 10px;
+  }
+  .report-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--ink-light);
+  }
+  .report-option input { margin-top: 3px; accent-color: var(--accent); }
+  .report-option strong { color: var(--ink); }
+  .report-modal-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .report-secondary {
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--ink-muted);
+    border-radius: 999px;
+    padding: 10px 14px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <span class="logo-dot"></span>
+      EIDA Framework
+    </div>
+    <nav>
+      <a href="#calculator">Calculator</a>
+      <a href="#fragility-chart">Fragility Curves</a>
+      <a href="#equations">Equations</a>
+      <a href="#about">About</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">PhD Research · UMPSA · BCP-2021 · MS EN 1998</p>
+    <h1>Is your code-compliant frame <em>actually safe</em>?</h1>
+    <p class="hero-sub">Spreadsheet-evaluable seismic fragility screening for prescriptive RC design practice in Pakistan and Malaysia. No nonlinear modelling required — three dimensionless parameters, instant DS1–DS5 median PGA capacity.</p>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-num">180</span>
+        <span class="stat-label">Archetypes analysed</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num">~11,000</span>
+        <span class="stat-label">Nonlinear analyses</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num">R²int=0.904</span>
+        <span class="stat-label">DS1 selected-model fit</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num">3</span>
+        <span class="stat-label">Params to screen any frame</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="scope-ribbon">
+  Scope: 1–10 storeys · 1–3 bays · Fixed-base &amp; SSI · C20–C35 concrete · Rectangular RC bare frames without shear walls
+</div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- WORKFLOW -->
+  <section>
+    <p class="section-label">Workflow</p>
+    <h2 class="section-title">Five-step screening protocol</h2>
+    <p class="section-desc">From design drawings to risk decision — without any nonlinear modelling. Fully compatible with prescriptive code compliance under BCP-2021 and MS EN 1998.</p>
+
+    <div class="workflow">
+      <div class="wf-step">
+        <div class="wf-num">01</div>
+        <div class="wf-title">Extract Parameters</div>
+        <div class="wf-desc">N (storeys), H (m), plan width/span, member sizes, roof/elevation regularity</div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">02</div>
+        <div class="wf-title">Compute T̄, SR, λeff</div>
+        <div class="wf-desc">Three dimensionless macro-parameters encoding period, stiffness regime, and slenderness</div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">03</div>
+        <div class="wf-title">Evaluate Equations</div>
+        <div class="wf-desc">Closed-form sparse regression equations yield μ̂ (median PGA capacity) for DS1–DS5</div>
+      </div>
+      <div class="wf-step">
+        <div class="wf-num">04</div>
+        <div class="wf-title">Compare to Site PGA</div>
+        <div class="wf-desc">Map the frame against national hazard; classify Low / Moderate / High risk</div>
+      </div>
+      <div class="wf-step" style="border-right:none">
+        <div class="wf-num">05</div>
+        <div class="wf-title">Decision</div>
+        <div class="wf-desc">Proceed, review detailing, or escalate to full IDA / Performance-Based Design</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR -->
+  <section id="calculator">
+    <p class="section-label">Interactive Calculator</p>
+    <h2 class="section-title">Enter your frame parameters</h2>
+    <p class="section-desc">Use <strong>Enter from drawings</strong> for practitioner-style inputs such as storeys, height, span, and member sizes, or switch to <strong>Macro-Parameters</strong> to enter T̄, SR, and λ<sub>eff</sub> directly. Editable fields intentionally allow out-of-domain values, but the calculator flags them before interpreting the result.</p>
+
+    <div class="calc-grid">
+      <!-- LEFT: INPUTS -->
+      <div class="card">
+        <div class="card-title">Input Mode</div>
+
+        <div class="mode-tabs" role="tablist" aria-label="Calculator input mode">
+          <button type="button" class="mode-tab active" id="tab_drawing" data-mode="drawing">Enter from drawings</button>
+          <button type="button" class="mode-tab" id="tab_macro" data-mode="macro">Macro-Parameters</button>
+        </div>
+
+        <!-- Drawing / practitioner mode -->
+        <div class="mode-panel active" id="panel_drawing">
+          <div class="formula-note">
+            Structural inputs are converted internally using the PDF workflow equations: <code>T = 0.075H^0.75</code>, <code>T̄ = T√(g/H)</code>, <code>B = min(Wplan, Splan)</code>, <code>SR = (bc·hc³ / bb·hb³)(B/H)³</code>, <code>Iv = 0</code> for a regular roof or <code>Iv = ρtop/(N+ρtop)</code> for an irregular roof, and <code>λeff = (H/B)(1−Iv)</code>. Use consistent metre units for all dimensions. Foundation idealisation is not selected separately here because the equations operate on the final macro-parameters; if SSI-modified values are available, enter them directly in <strong>Macro-Parameters</strong> mode.
+          </div>
+
+          <div class="subhead"><span class="subhead-title">Global geometry</span></div>
+          <div class="form-grid">
+            <label class="field">
+              <span>Storeys, N</span>
+              <input type="number" id="stories_input" value="3" step="1" min="1" max="20">
+              <small>Training/scope: 1–10. Changing N auto-sets H = N × 3 m.</small>
+            </label>
+            <label class="field">
+              <span>Total height, H (m)</span>
+              <input type="number" id="height_input" value="9.0" step="0.1" min="0.1">
+              <small>Measured from base to roof. Manual H edits do not change N.</small>
+            </label>
+            <label class="field">
+              <span>Plan width, W<sub>plan</sub> (m)</span>
+              <input type="number" id="plan_width_input" value="12.0" step="0.1" min="0.1">
+              <small>One plan dimension. The governing B used in SR and λeff is taken as the smaller of Wplan and Splan.</small>
+            </label>
+            <label class="field">
+              <span>Plan span, S<sub>plan</sub> (m)</span>
+              <input type="number" id="plan_span_input" value="12.0" step="0.1" min="0.1">
+              <small>Total plan dimension in the Y/span direction.</small>
+            </label>
+          </div>
+          <div class="derived-note" id="b-derived-note">Governing plan dimension: <code>B = min(Wplan, Splan) = 12.000 m</code>.</div>
+
+          <div class="subhead"><span class="subhead-title">Member dimensions</span></div>
+          <div class="form-grid">
+            <label class="field">
+              <span>Column width, bc (m)</span>
+              <input type="number" id="bc_input" value="0.40" step="0.01" min="0.01">
+            </label>
+            <label class="field">
+              <span>Column depth, hc (m)</span>
+              <input type="number" id="hc_input" value="0.40" step="0.01" min="0.01">
+            </label>
+            <label class="field">
+              <span>Beam width, bb (m)</span>
+              <input type="number" id="bb_input" value="0.25" step="0.01" min="0.01">
+            </label>
+            <label class="field">
+              <span>Beam depth, hb (m)</span>
+              <input type="number" id="hb_input" value="0.45" step="0.01" min="0.01">
+            </label>
+          </div>
+
+          <div class="subhead"><span class="subhead-title">Effective vertical irregularity from top-floor coverage</span></div>
+          <div class="formula-note">
+            <strong>What Iv means:</strong> <code>Iv</code> is the vertical irregularity modifier used in the PDF workflow. The top-floor bay coverage ratio is <code>ρtop = occupied top bays / full lower-storey bays</code>. For a regular full-height frame, <code>Iv = 0</code>. For an irregular roof/top floor, the tool applies <code>Iv = ρtop/(N+ρtop)</code>, then computes <code>λeff = (H/B)(1−Iv)</code>. For example, if the lower storeys have <code>3×3 = 9</code> bays but the top storey has <code>2×3 = 6</code> bays, then <code>ρtop = 6/9 = 0.667</code> and <code>Iv = 0.667/(N+0.667)</code>.
+          </div>
+
+          <div class="form-grid">
+            <label class="field">
+              <span>Full-grid bays in X</span>
+              <input type="number" id="bayx_input" value="3" step="1" min="1" max="20">
+              <small>Number of bays in the complete lower-storey plan grid.</small>
+            </label>
+            <label class="field">
+              <span>Full-grid bays in Y</span>
+              <input type="number" id="bayy_input" value="3" step="1" min="1" max="20">
+              <small>Use the complete lower-storey grid before setback/removal.</small>
+            </label>
+            <label class="field">
+              <span>Top occupied bays in X</span>
+              <input type="number" id="top_bayx_input" value="3" step="1" min="1" max="20">
+              <small>Reduced top/roof bay count in X. Regular frame: same as full-grid X.</small>
+            </label>
+            <label class="field">
+              <span>Top occupied bays in Y</span>
+              <input type="number" id="top_bayy_input" value="3" step="1" min="1" max="20">
+              <small>Reduced top/roof bay count in Y. Example: 2×3 over 3×3 gives 6/9.</small>
+            </label>
+          </div>
+          <div class="derived-note" id="iv-derived-note">Top coverage: ρtop = 1.000; Iv = 0.000.</div>
+        </div>
+
+        <!-- Advanced macro-parameter mode -->
+        <div class="mode-panel" id="panel_macro">
+          <div class="mini-warning">
+            Editable boxes may exceed the training domain. The slider remains bounded to the training range, while the number box is allowed to extrapolate with a warning.
+          </div>
+
+          <div class="input-group">
+            <div class="input-label">
+              <span>Normalised Period</span>
+              <span class="input-param">T̄ = T√(g/H)</span>
+            </div>
+            <div class="input-domain">Training Domain: [0.174 — 1.486]</div>
+            <div class="range-number-row">
+              <input type="range" id="T_bar_slider" min="0.174" max="1.486" step="0.001" value="0.600">
+              <input type="number" id="T_bar_number" value="0.600" step="0.001" min="0.001" max="5">
+            </div>
+            <div class="domain-warn" id="warn_T">⚠ Outside training domain; result is extrapolative.</div>
+          </div>
+
+          <div class="input-group">
+            <div class="input-label">
+              <span>Stiffness Ratio</span>
+              <span class="input-param">SR = (bc·hc³/bb·hb³)(B/H)³</span>
+            </div>
+            <div class="input-domain">Training Domain: [0.004 — 13.053]</div>
+            <div class="range-number-row">
+              <input type="range" id="SR_slider" min="0.004" max="13.053" step="0.001" value="2.000">
+              <input type="number" id="SR_number" value="2.000" step="0.001" min="0.001" max="50">
+            </div>
+            <div class="domain-warn" id="warn_SR">⚠ Outside training domain; result is extrapolative.</div>
+          </div>
+
+          <div class="input-group">
+            <div class="input-label">
+              <span>Effective Slenderness</span>
+              <span class="input-param">λeff = (H/B)(1−Iv)</span>
+            </div>
+            <div class="input-domain">Training Domain: [0.125 — 4.839]</div>
+            <div class="range-number-row">
+              <input type="range" id="lam_slider" min="0.125" max="4.839" step="0.001" value="1.200">
+              <input type="number" id="lam_number" value="1.200" step="0.001" min="0" max="10">
+            </div>
+            <div class="domain-warn" id="warn_lam">⚠ Outside training domain; result is extrapolative.</div>
+          </div>
+        </div>
+
+        <div class="divider-params">
+          <div class="param-badge">
+            <div class="label">T̄</div>
+            <div class="sym">Norm. Period</div>
+            <div class="val" id="p_T">—</div>
+          </div>
+          <div class="param-badge">
+            <div class="label">SR</div>
+            <div class="sym">Stiff. Ratio</div>
+            <div class="val" id="p_SR">—</div>
+          </div>
+          <div class="param-badge">
+            <div class="label">λeff</div>
+            <div class="sym">Eff. Slend.</div>
+            <div class="val" id="p_lam">—</div>
+          </div>
+        </div>
+
+        <div class="pga-row" style="margin-top:18px">
+          <label for="ag_input">Site PGA (a<sub>g</sub>)</label>
+          <input type="number" id="ag_input" value="0.25" step="0.01" min="0" max="5">
+          <span>g &nbsp;(from national hazard map)</span>
+        </div>
+
+        <div class="input-group">
+          <div class="input-label">
+            <span>Dispersion β (lognormal)</span>
+            <span class="input-param">β</span>
+          </div>
+          <div class="range-number-row">
+            <input type="range" id="beta_slider" min="0.1" max="0.8" step="0.01" value="0.40">
+            <input type="number" id="beta_number" value="0.40" step="0.01" min="0.01" max="2.0">
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: RESULTS -->
+      <div class="card">
+        <div class="card-title">μ̂ Median PGA Capacity (g) — All DS</div>
+
+        <ul class="results-list" id="results-list">
+          <li>
+            <span class="ds-label">DS1</span>
+            <span class="ds-method">Elastic Net · poly2-std</span>
+            <span class="ds-r2">R²ext=0.352</span>
+            <span class="ds-val" id="mu_DS1">—</span>
+          </li>
+          <li>
+            <span class="ds-label">DS2</span>
+            <span class="ds-method">LASSO · poly2-std</span>
+            <span class="ds-r2">R²ext=0.099</span>
+            <span class="ds-val" id="mu_DS2">—</span>
+          </li>
+          <li>
+            <span class="ds-label">DS3</span>
+            <span class="ds-method">Stepwise BIC · poly2-log</span>
+            <span class="ds-r2">R²ext=0.109</span>
+            <span class="ds-val" id="mu_DS3">—</span>
+          </li>
+          <li>
+            <span class="ds-label">DS4</span>
+            <span class="ds-method">OMP · poly3-log</span>
+            <span class="ds-r2">R²ext=0.095</span>
+            <span class="ds-val" id="mu_DS4">—</span>
+          </li>
+          <li>
+            <span class="ds-label">DS5</span>
+            <span class="ds-method">LASSO · Eng-std</span>
+            <span class="ds-r2">R²int=0.211</span>
+            <span class="ds-val" id="mu_DS5">—</span>
+          </li>
+        </ul>
+
+        <div id="domain-status" class="domain-summary ok"></div>
+
+        <div id="risk-indicator"></div>
+
+        <div class="download-action">
+          <div class="download-action-text"><strong>Need the spreadsheet version?</strong><br>Download the Excel calculator for direct offline use. Keep the workbook in the same directory as this webpage when publishing.</div>
+          <a class="download-button" href="./EIDA_screening_calculator.xlsx" download>Download Excel</a>
+        </div>
+
+        <div class="frame-preview" id="frame-preview">
+          <div class="preview-head">
+            <div class="preview-title">Schematic 3D Frame Preview</div>
+            <div class="preview-mode" id="preview_lod_mode">Full grid</div>
+          </div>
+          <div id="frame-preview-viewer"><div class="preview-fallback" id="preview_fallback">Loading WebGL schematic preview…</div></div>
+          <div class="preview-stats">
+            <div class="preview-stat"><span>N / H</span><strong id="preview_NH">—</strong></div>
+            <div class="preview-stat"><span>B / H</span><strong id="preview_BH">—</strong></div>
+            <div class="preview-stat"><span>ρtop / Iv</span><strong id="preview_Iv">—</strong></div>
+          </div>
+          <div class="preview-caption" id="preview_caption">Illustrative WebGL schematic only. Drag to rotate, scroll or pinch to zoom, and double-click to reset. It is not an ETABS model or nonlinear analysis output.</div>
+        </div>
+
+        <div class="report-action print-highlight">
+          <div class="report-action-text"><strong>Need a printable record?</strong><br>Generate a compact screening report with inputs, macro-parameters, median PGA capacities, decision class, graph snapshot, and schematic preview.</div>
+          <button type="button" id="make_report_button" class="report-button">Make Report</button>
+        </div>
+
+
+        <div class="valid-row">
+          <span class="valid-tag">FEMA 356</span>
+          <span class="valid-tag">ASCE 41</span>
+          <span class="valid-tag">PEER NGA-West2</span>
+          <span class="valid-tag">Independent Studies</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FRAGILITY CHART -->
+  <section class="chart-section" id="fragility-chart">
+    <p class="section-label">Fragility Curves</p>
+    <h2 class="section-title">P(DS ≥ ds | PGA) — screening view</h2>
+    <p class="section-desc">Lognormal fragility curves using P(DS≥ds|PGA) = Φ[ln(PGA/μ̂)/β]. By default, the graph shows the recommended screening view (DS1–DS3 only). Use the toggle below if you want to overlay DS4 and DS5 as dashed guide curves for research-style interpretation. The vertical dashed line marks your site PGA.</p>
+
+    <div class="chart-action-bar">
+      <button type="button" id="toggle_advanced_curves" class="advanced-curve-button" aria-pressed="false">
+        Show research-only DS4 / DS5 guide curves
+      </button>
+      <span class="chart-toggle-note">Default plot: DS1–DS3 screening curves only. When enabled, DS4/DS5 are shown as guide curves and the PGA axis expands if needed.</span>
+    </div>
+
+    <div class="chart-wrap">
+      <canvas id="fragility-canvas" height="380"></canvas>
+    </div>
+  </section>
+
+  <section class="damage-guide" id="damage-state-guide">
+    <p class="section-label">Damage-State Guide</p>
+    <h2 class="section-title">How to interpret the damage states</h2>
+    <p class="section-desc">The in-graph legend is intentionally compact. Use the guide below for the practical meaning and recommended interpretation of each damage-state equation. DS4 and DS5 are optional guide curves only and are hidden by default in the screening plot.</p>
+    <div class="damage-grid">
+      <div class="damage-card">
+        <div class="damage-title"><span class="damage-line" style="color:#1d4ed8"></span>DS1 · Slight damage</div>
+        <p class="damage-desc">Initial cracking or minor yielding. This is the main early-warning threshold and the preferred standalone screening result.</p>
+      </div>
+      <div class="damage-card">
+        <div class="damage-title"><span class="damage-line" style="color:#0e9f6e"></span>DS2 · Moderate damage</div>
+        <p class="damage-desc">Repairable structural damage. Use as a secondary indicator for detailing review and engineering judgement.</p>
+      </div>
+      <div class="damage-card">
+        <div class="damage-title"><span class="damage-line" style="color:#d97706"></span>DS3 · Extensive damage</div>
+        <p class="damage-desc">Major nonlinear response and substantial repair demand. Treat as a damage-progression trend, not a direct design approval threshold.</p>
+      </div>
+      <div class="damage-card caution">
+        <div class="damage-title"><span class="damage-line dotted" style="color:#c8442b"></span>DS4 · Complete damage</div>
+        <p class="damage-desc">Near-collapse or complete damage state. Hidden by default and available only as an optional dashed guide curve because its low validation strength makes it unsuitable for standalone screening decisions.</p>
+      </div>
+      <div class="damage-card muted">
+        <div class="damage-title"><span class="damage-line dotted" style="color:#7c3aed"></span>DS5 · Collapse</div>
+        <p class="damage-desc">Retained in the equation table for research transparency only. Hidden by default and available only as an optional dashed guide curve because only internal validation is currently available and collapse-state error is comparatively high.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- EQUATIONS PANEL -->
+  <section id="equations">
+    <p class="section-label">Published Equations</p>
+    <h2 class="section-title">Closed-form sparse regression equations</h2>
+    <p class="section-desc">All equations derived via penalised regression on 180 archetypes (90 fixed-base + 90 SSI). The table reports the selected equation for each damage state, with R²int taken from the internal model-comparison matrix for the corresponding family and method.</p>
+
+    <div class="eq-panel">
+      <div class="eq-header">
+        <span>DS</span>
+        <span>Equation</span>
+        <span>Method</span>
+        <span>R²int</span>
+        <span>R²ext</span>
+        <span>RMSE</span>
+      </div>
+
+      <div class="eq-row">
+        <div class="eq-ds">DS1</div>
+        <div class="eq-formula">
+          μ̂ = <span class="coeff">0.4522</span>
+          − <span class="coeff">0.7877</span>·<span class="var">T̄</span>
+          + <span class="coeff">0.1619</span>·<span class="var">SR</span>
+          − <span class="coeff">0.0579</span>·<span class="var">λeff</span><br>
+          + <span class="coeff">0.4086</span>·<span class="var">T̄</span>²
+          − <span class="coeff">0.0952</span>·<span class="var">T̄</span>·<span class="var">SR</span>
+          + <span class="coeff">0.0260</span>·<span class="var">T̄</span>·<span class="var">λeff</span><br>
+          − <span class="coeff">0.0030</span>·<span class="var">SR</span>²
+          − <span class="coeff">0.0246</span>·<span class="var">SR</span>·<span class="var">λeff</span>
+          + <span class="coeff">0.0047</span>·<span class="var">λeff</span>²
+        </div>
+        <div class="eq-method">Elastic Net<br>poly2-std<br>10 terms<br><span class="eq-use primary">Recommended</span></div>
+        <div class="eq-r2-val good">0.9040</div>
+        <div class="eq-r2-val fair">0.352</div>
+        <div class="eq-rmse">0.179 g</div>
+      </div>
+
+      <div class="eq-row">
+        <div class="eq-ds">DS2</div>
+        <div class="eq-formula">
+          μ̂ = <span class="coeff">1.2435</span>
+          − <span class="coeff">1.8232</span>·<span class="var">T̄</span>
+          + <span class="coeff">0.1366</span>·<span class="var">SR</span>
+          − <span class="coeff">0.0959</span>·<span class="var">λeff</span><br>
+          + <span class="coeff">0.7649</span>·<span class="var">T̄</span>²
+          − <span class="coeff">0.0655</span>·<span class="var">T̄</span>·<span class="var">SR</span>
+          + <span class="coeff">0.0856</span>·<span class="var">T̄</span>·<span class="var">λeff</span><br>
+          − <span class="coeff">0.0021</span>·<span class="var">SR</span>²
+          − <span class="coeff">0.0164</span>·<span class="var">SR</span>·<span class="var">λeff</span>
+        </div>
+        <div class="eq-method">LASSO<br>poly2-std<br>9 terms<br><span class="eq-use support">Decision support</span></div>
+        <div class="eq-r2-val good">0.8167</div>
+        <div class="eq-r2-val poor">0.099</div>
+        <div class="eq-rmse">0.597 g</div>
+      </div>
+
+      <div class="eq-row">
+        <div class="eq-ds">DS3</div>
+        <div class="eq-formula">
+          μ̂ = exp(<span class="coeff">0.3348</span>
+          − <span class="coeff">0.4548</span>·<span class="var">T̄</span>²
+          + <span class="coeff">0.1174</span>·<span class="var">T̄</span>·<span class="var">SR</span>
+          − <span class="coeff">0.2249</span>·<span class="var">T̄</span>·<span class="var">λeff</span>)
+        </div>
+        <div class="eq-method">Stepwise (BIC)<br>poly2-log<br>4 terms<br><span class="eq-use trend">Trend only</span></div>
+        <div class="eq-r2-val poor">0.3116</div>
+        <div class="eq-r2-val poor">0.109</div>
+        <div class="eq-rmse">0.652 g</div>
+      </div>
+
+      <div class="eq-row">
+        <div class="eq-ds">DS4</div>
+        <div class="eq-formula">
+          μ̂ = exp(<span class="coeff">0.1868</span>
+          − <span class="coeff">0.0138</span>·<span class="var">SR</span>²
+          + <span class="coeff">0.1863</span>·<span class="var">λeff</span>
+          − <span class="coeff">0.0660</span>·<span class="var">T̄</span>·<span class="var">λeff</span>²
+          − <span class="coeff">0.0361</span>·<span class="var">λeff</span>³)
+          <div class="eq-caution">DS4 is hidden by default in the graph and can be toggled on only as a dashed guide curve. Because its validation strength is low, this equation should be treated as a qualitative near-collapse trend rather than a recommended standalone screening threshold.</div>
+        </div>
+        <div class="eq-method">OMP<br>poly3-log<br>5 terms<br><span class="eq-use caution">Caution only</span></div>
+        <div class="eq-r2-val poor">0.1330</div>
+        <div class="eq-r2-val poor">0.095</div>
+        <div class="eq-rmse">0.970 g</div>
+      </div>
+
+      <div class="eq-row">
+        <div class="eq-ds">DS5</div>
+        <div class="eq-formula">
+          μ̂ = <span class="coeff">0.5462</span>
+          + <span class="coeff">1.9855</span>·√<span class="var">λeff</span>
+          + <span class="coeff">0.3111</span>·<span class="var">T̄</span>·<span class="var">SR</span>
+          − <span class="coeff">4.6956</span>·<span class="var">T̄</span>·ln<span class="var">T̄</span><br>
+          − <span class="coeff">0.0693</span>·√<span class="var">λeff</span>·ln<span class="var">T̄</span>
+          + <span class="coeff">0.7310</span>·ln<span class="var">T̄</span>²
+          + <span class="coeff">1.1060</span>·ln<span class="var">SR</span>·(<span class="var">λeff</span>/<span class="var">T̄</span>)
+          − <span class="coeff">0.0368</span>·(<span class="var">λeff</span>/<span class="var">T̄</span>²)
+          <div class="eq-caution">DS5 is retained for completeness, but is hidden by default in the fragility graph and can be toggled on only as a dashed guide curve because only internal validation is currently available and the collapse-state error is comparatively high. Treat this value as a research indicator, not a standalone screening decision.</div>
+        </div>
+        <div class="eq-method">LASSO<br>Eng-std<br>11 terms<br><span class="eq-use research">Research only</span></div>
+        <div class="eq-r2-val poor">0.2107*</div>
+        <div class="eq-r2-val muted">—</div>
+        <div class="eq-rmse">3.03 g</div>
+      </div>
+
+      <div class="eq-note">
+        R²int values are the selected-model internal values from the comparison matrix: DS1 Elastic Net/poly2-std = 0.9040, DS2 LASSO/poly2-std = 0.8167, DS3 Stepwise BIC/poly2-log = 0.3116, DS4 OMP/poly3-log = 0.1330, and DS5 LASSO/Eng-std = 0.2107. DS1 is the primary recommended standalone screening equation; DS2 is retained for decision-support thresholding. DS3 is trend-only. DS4 and DS5 are hidden by default in the graph and may be toggled on only as dashed guide curves for research-style interpretation. All equations are based on GLME meta-regression over 180 RC bare-frame archetypes, 9 PEER NGA-West2 ground motions per archetype, and the automated ETABS–C#–MATLAB Extended IDA pipeline.
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <p class="section-label">About This Research</p>
+    <h2 class="section-title">EIDA Framework — Extended IDA + ML</h2>
+    <p class="section-desc">Prescriptive code compliance does not quantify the probability that a structure will exceed specific damage states under realistic seismic demand. This framework addresses that gap for low-to-mid-rise RC grid-like bare frames common in Pakistan and Malaysia — a class poorly represented in existing fragility databases.</p>
+
+    <div class="about-grid">
+      <div>
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-title">Methodology Pipeline</div>
+          <ul class="pipeline-list">
+            <li><span class="arrow">→</span> ETABS COM API: automated archetype parametrisation</li>
+            <li><span class="arrow">→</span> C# IDA automation: 180 archetypes × 9 GMs × incremental steps</li>
+            <li><span class="arrow">→</span> MATLAB post-processing: IDA curve extraction, DS thresholds</li>
+            <li><span class="arrow">→</span> GLME meta-regression: pooled fragility parameter estimation with SSI</li>
+            <li><span class="arrow">→</span> ML closed-form equations: LASSO, Elastic Net, OMP, Stepwise BIC</li>
+            <li><span class="arrow">→</span> External validation: FEMA 356, ASCE 41, PEER NGA-West2, independent studies</li>
+          </ul>
+          <div class="tag-list">
+            <span class="tag">Seismic fragility</span>
+            <span class="tag">RC frames</span>
+            <span class="tag">SSI</span>
+            <span class="tag">IDA</span>
+            <span class="tag">Machine learning</span>
+            <span class="tag">Closed-form equations</span>
+            <span class="tag">Prescriptive design</span>
+            <span class="tag">Performance-based design</span>
+            <span class="tag">BCP-2021</span>
+            <span class="tag">MS EN 1998</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cite-box">
+        <div class="cite-label">Cite This Work</div>
+        <p>Shafiq, O. (2026). <em>Development of Closed-Form Seismic Fragility Equations Through Machine-Learning for Performance Verification of RC Grid-Like Frames in Prescriptive Design Practices.</em> Doctor of Philosophy, Faculty of Civil Engineering Technology, UMPSA. Supervisor: Ir. Ts. Dr. Saffuan bin Wan Ahmad. ID: PDZ24005.</p>
+        <p>Shafiq, O., Wan Ahmad, S., and co-authors. <em>Transparent ML Framework for Seismic Fragility Derivation: A Closed-Form Dimensionless Approach.</em> Structures, manuscript STRUCTURES-D-26-04141, under review.</p>
+        <div class="cite-author">
+          omair.shafiq1998@gmail.com<br>
+          github.com/OmairShafique<br>
+          UMPSA · 2026
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+
+<!-- REPORT MODAL -->
+<div class="report-modal-backdrop" id="report_modal" aria-hidden="true">
+  <div class="report-modal" role="dialog" aria-modal="true" aria-labelledby="report_modal_title">
+    <div class="report-modal-head">
+      <div>
+        <div class="report-modal-title" id="report_modal_title">Make screening report</div>
+        <div class="report-modal-sub">Add optional project details, choose compact report contents, then generate a two-page print-ready screening report.</div>
+      </div>
+      <button type="button" class="report-close" id="report_close_button" aria-label="Close report dialog">×</button>
+    </div>
+    <div class="report-modal-body">
+      <div class="report-form-grid">
+        <label class="report-field">
+          <span>Project name</span>
+          <input type="text" id="report_project" placeholder="Optional">
+        </label>
+        <label class="report-field">
+          <span>Location</span>
+          <input type="text" id="report_location" placeholder="Optional">
+        </label>
+        <label class="report-field">
+          <span>Engineer / user</span>
+          <input type="text" id="report_engineer" placeholder="Optional">
+        </label>
+        <label class="report-field">
+          <span>Report reference</span>
+          <input type="text" id="report_reference" placeholder="Optional">
+        </label>
+        <label class="report-field full">
+          <span>Notes</span>
+          <textarea id="report_notes" placeholder="Optional assumptions, drawing reference, site class, or reviewer notes"></textarea>
+        </label>
+      </div>
+
+      <div class="report-options">
+        <label class="report-option">
+          <input type="checkbox" id="report_include_3d" checked>
+          <span><strong>Include 3D schematic snapshot</strong><br>Captures the current WebGL preview as a visual geometry aid.</span>
+        </label>
+        <label class="report-option">
+          <input type="checkbox" id="report_include_advanced">
+          <span><strong>Include DS4 / DS5 guide curves in report graph</strong><br>Shows research-only curves as dashed/dotted overlays. The website graph setting will be restored after capture.</span>
+        </label>
+        <label class="report-option">
+          <input type="checkbox" id="report_include_appendix" checked>
+          <span><strong>Include compact reliability table</strong><br>Adds selected-model R² values and recommended-use labels on page 2.</span>
+        </label>
+      </div>
+
+      <div class="report-modal-actions">
+        <button type="button" id="report_cancel_button" class="report-secondary">Cancel</button>
+        <button type="button" id="report_generate_button" class="report-button">Generate & Print</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  EIDA Framework · Seismic Fragility Screening · RC Grid-Like Frames · BCP-2021 · MS EN 1998 ·
+  <a href="mailto:omair.shafiq1998@gmail.com">omair.shafiq1998@gmail.com</a>
+</footer>
+
+<script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+<script>
+// ── EQUATION ENGINE ────────────────────────────────────────────
+
+function computeDS1(T, SR, lam) {
+  return 0.4522
+    - 0.7877*T
+    + 0.1619*SR
+    - 0.0579*lam
+    + 0.4086*T*T
+    - 0.0952*T*SR
+    + 0.0260*T*lam
+    - 0.0030*SR*SR
+    - 0.0246*SR*lam
+    + 0.0047*lam*lam;
+}
+
+function computeDS2(T, SR, lam) {
+  return 1.2435
+    - 1.8232*T
+    + 0.1366*SR
+    - 0.0959*lam
+    + 0.7649*T*T
+    - 0.0655*T*SR
+    + 0.0856*T*lam
+    - 0.0021*SR*SR
+    - 0.0164*SR*lam;
+}
+
+function computeDS3(T, SR, lam) {
+  const inner = 0.3348
+    - 0.4548*T*T
+    + 0.1174*T*SR
+    - 0.2249*T*lam;
+  return Math.exp(inner);
+}
+
+function computeDS4(T, SR, lam) {
+  const inner = 0.1868
+    - 0.0138*SR*SR
+    + 0.1863*lam
+    - 0.0660*T*lam*lam
+    - 0.0361*lam*lam*lam;
+  return Math.exp(inner);
+}
+
+function computeDS5(T, SR, lam) {
+  if (T <= 0) return NaN;
+  const lnT = Math.log(T);
+  const sqrtLam = Math.sqrt(Math.max(lam, 0));
+  const lnSR = Math.log(Math.max(SR, 0.001));
+  return 0.5462
+    + 1.9855*sqrtLam
+    + 0.3111*T*SR
+    - 4.6956*T*lnT
+    - 0.0693*sqrtLam*lnT
+    + 0.7310*lnT*lnT
+    + 1.1060*lnSR*(lam/T)
+    - 0.0368*(lam/(T*T));
+}
+
+// Normal CDF approximation (Abramowitz & Stegun)
+function normCDF(x) {
+  const a1=0.254829592, a2=-0.284496736, a3=1.421413741, a4=-1.453152027, a5=1.061405429, p=0.3275911;
+  const sign = x < 0 ? -1 : 1;
+  x = Math.abs(x);
+  const t = 1.0/(1.0 + p*x);
+  const y = 1.0 - (((((a5*t + a4)*t) + a3)*t + a2)*t + a1)*t*Math.exp(-x*x);
+  return 0.5*(1.0 + sign*y);
+}
+
+function fragilityP(pga, mu, beta) {
+  if (mu <= 0 || isNaN(mu) || pga <= 0) return 0;
+  return normCDF(Math.log(pga / mu) / beta);
+}
+
+// ── STATE ──────────────────────────────────────────────────────
+
+const DOMAIN = {
+  T: { min: 0.174, max: 1.486, label: 'T̄' },
+  SR: { min: 0.004, max: 13.053, label: 'SR' },
+  lam: { min: 0.125, max: 4.839, label: 'λeff' }
+};
+
+let state = {
+  mode: 'drawing',
+  T: 0.600,
+  SR: 2.000,
+  lam: 1.200,
+  ag: 0.25,
+  beta: 0.40,
+  structural: {
+    stories: 3,
+    H: 9.0,
+    planWidth: 12.0,
+    planSpan: 12.0,
+    B: 12.0,
+    bc: 0.40,
+    hc: 0.40,
+    bb: 0.25,
+    hb: 0.45,
+    bayX: 3,
+    bayY: 3,
+    topBayX: 3,
+    topBayY: 3,
+    rhoTop: 1.00,
+    Iv: 0.00
+  },
+  macro: { T: 0.600, SR: 2.000, lam: 1.200 },
+  showAdvancedCurves: false
+};
+
+let mu = { DS1: 0, DS2: 0, DS3: 0, DS4: 0, DS5: 0 };
+let derived = { Tsec: NaN, Iv: 0, rhoTop: 1, B: 12.0, warnings: [] };
+
+const DS_COLORS = {
+  DS1: '#1d4ed8',
+  DS2: '#0e9f6e',
+  DS3: '#d97706',
+  DS4: '#c8442b',
+  DS5: '#7c3aed'
+};
+
+const DS_LABELS = {
+  DS1: 'DS1 — Slight damage',
+  DS2: 'DS2 — Moderate damage',
+  DS3: 'DS3 — Extensive damage',
+  DS4: 'DS4 — Complete damage',
+  DS5: 'DS5 — Collapse'
+};
+
+// ── HELPERS ────────────────────────────────────────────────────
+
+function clamp(v, min, max) { return Math.min(max, Math.max(min, v)); }
+function isFiniteNumber(v) { return typeof v === 'number' && Number.isFinite(v); }
+function domainText(key, value) {
+  const d = DOMAIN[key];
+  if (!isFiniteNumber(value)) return `${d.label} is not a valid number`;
+  if (value < d.min) return `${d.label} = ${value.toFixed(3)} is below training domain [${d.min}–${d.max}]`;
+  if (value > d.max) return `${d.label} = ${value.toFixed(3)} is above training domain [${d.min}–${d.max}]`;
+  return null;
+}
+
+function readNumber(id, fallback) {
+  const el = document.getElementById(id);
+  const v = parseFloat(el.value);
+  return Number.isFinite(v) ? v : fallback;
+}
+
+function syncIntegerInput(id, value) {
+  const el = document.getElementById(id);
+  if (el && Number.isFinite(value)) el.value = Math.max(1, Math.round(value)).toFixed(0);
+}
+
+function setNumber(id, value, digits = 3) {
+  const el = document.getElementById(id);
+  if (el) el.value = Number.isFinite(value) ? value.toFixed(digits) : '';
+}
+
+function setSlider(id, value, key) {
+  const el = document.getElementById(id);
+  const d = DOMAIN[key];
+  if (el && Number.isFinite(value)) el.value = clamp(value, d.min, d.max).toFixed(3);
+}
+
+function setActiveMode(mode) {
+  state.mode = mode;
+  document.querySelectorAll('.mode-tab').forEach(tab => tab.classList.toggle('active', tab.dataset.mode === mode));
+  document.getElementById('panel_drawing').classList.toggle('active', mode === 'drawing');
+  document.getElementById('panel_macro').classList.toggle('active', mode === 'macro');
+
+  // When moving from drawing to macro mode, seed the macro fields with the current derived values.
+  if (mode === 'macro') {
+    applyModeToState();
+    state.macro = { T: state.T, SR: state.SR, lam: state.lam };
+    writeMacroControls();
+  }
+  updateUI();
+}
+
+// ── STRUCTURAL PARAMETER DERIVATION ────────────────────────────
+
+function readStructuralInputs() {
+  state.structural.stories = readNumber('stories_input', state.structural.stories);
+  state.structural.H = readNumber('height_input', state.structural.H);
+  state.structural.planWidth = readNumber('plan_width_input', state.structural.planWidth);
+  state.structural.planSpan = readNumber('plan_span_input', state.structural.planSpan);
+  state.structural.B = (state.structural.planWidth > 0 && state.structural.planSpan > 0)
+    ? Math.min(state.structural.planWidth, state.structural.planSpan)
+    : NaN;
+  state.structural.bc = readNumber('bc_input', state.structural.bc);
+  state.structural.hc = readNumber('hc_input', state.structural.hc);
+  state.structural.bb = readNumber('bb_input', state.structural.bb);
+  state.structural.hb = readNumber('hb_input', state.structural.hb);
+  state.structural.bayX = Math.max(1, Math.round(readNumber('bayx_input', state.structural.bayX)));
+  state.structural.bayY = Math.max(1, Math.round(readNumber('bayy_input', state.structural.bayY)));
+  state.structural.topBayX = Math.max(1, Math.round(readNumber('top_bayx_input', state.structural.topBayX)));
+  state.structural.topBayY = Math.max(1, Math.round(readNumber('top_bayy_input', state.structural.topBayY)));
+
+  const fullBays = state.structural.bayX * state.structural.bayY;
+  const topBays = state.structural.topBayX * state.structural.topBayY;
+  const rawRho = fullBays > 0 ? topBays / fullBays : NaN;
+  state.structural.rhoTop = Number.isFinite(rawRho) ? clamp(rawRho, 0, 1) : NaN;
+  state.structural.Iv = Number.isFinite(state.structural.rhoTop)
+    ? (state.structural.rhoTop >= 0.999 ? 0 : state.structural.rhoTop / (Math.max(1, state.structural.stories || 1) + state.structural.rhoTop))
+    : NaN;
+}
+
+function deriveFromStructural() {
+  readStructuralInputs();
+  const s = state.structural;
+  const warnings = [];
+
+  if (!Number.isFinite(s.stories) || s.stories < 1) warnings.push('Storey count N must be at least 1.');
+  else if (s.stories > 10) warnings.push(`N = ${s.stories.toFixed(0)} is outside the stated 1–10 storey scope.`);
+
+  ['H','planWidth','planSpan','bc','hc','bb','hb'].forEach(k => {
+    if (!Number.isFinite(s[k]) || s[k] <= 0) warnings.push(`${k} must be positive.`);
+  });
+
+  if (!Number.isFinite(s.bayX) || !Number.isFinite(s.bayY) || s.bayX < 1 || s.bayY < 1) warnings.push('Full-grid bay counts must be at least 1 in both directions.');
+  if (!Number.isFinite(s.topBayX) || !Number.isFinite(s.topBayY) || s.topBayX < 1 || s.topBayY < 1) warnings.push('Top occupied bay counts must be at least 1 in both directions.');
+  if (s.topBayX > s.bayX || s.topBayY > s.bayY) warnings.push('Top occupied bays should not exceed the full lower-storey grid; coverage has been capped at ρtop = 1.00.');
+  if (Number.isFinite(s.rhoTop) && s.rhoTop < 1) warnings.push(`Vertical irregularity applied using PDF equation: ρtop = ${s.rhoTop.toFixed(3)}, therefore Iv = ρtop/(N+ρtop) = ${s.Iv.toFixed(3)}.`);
+
+  let Tbar = NaN, SR = NaN, lam = NaN, Tsec = NaN;
+  if (s.H > 0 && s.B > 0 && s.bc > 0 && s.hc > 0 && s.bb > 0 && s.hb > 0) {
+    Tsec = 0.075 * Math.pow(s.H, 0.75);
+    Tbar = Tsec * Math.sqrt(9.81 / s.H);
+    SR = (s.bc * Math.pow(s.hc, 3)) / (s.bb * Math.pow(s.hb, 3)) * Math.pow(s.B / s.H, 3);
+    lam = (s.H / s.B) * (1 - s.Iv);
+  }
+
+  derived = { Tsec, Iv: s.Iv, rhoTop: s.rhoTop, B: s.B, warnings };
+  return { T: Tbar, SR, lam };
+}
+
+function applyModeToState() {
+  if (state.mode === 'drawing') {
+    const vals = deriveFromStructural();
+    state.T = vals.T;
+    state.SR = vals.SR;
+    state.lam = vals.lam;
+  } else {
+    state.T = state.macro.T;
+    state.SR = state.macro.SR;
+    state.lam = state.macro.lam;
+    derived = { Tsec: NaN, Iv: NaN, rhoTop: NaN, B: NaN, warnings: [] };
+  }
+}
+
+// ── COMPUTE ────────────────────────────────────────────────────
+
+function compute() {
+  applyModeToState();
+  const {T, SR, lam} = state;
+  mu.DS1 = computeDS1(T, SR, lam);
+  mu.DS2 = computeDS2(T, SR, lam);
+  mu.DS3 = computeDS3(T, SR, lam);
+  mu.DS4 = computeDS4(T, SR, lam);
+  mu.DS5 = computeDS5(T, SR, lam);
+}
+
+// ── UPDATE UI ─────────────────────────────────────────────────
+
+function fmt(v) {
+  if (!Number.isFinite(v) || v === null) return 'N/A';
+  if (v < 0) return '<0 g';
+  return v.toFixed(3) + ' g';
+}
+
+function fmtParam(v) {
+  return Number.isFinite(v) ? v.toFixed(3) : 'N/A';
+}
+
+function updateWarnings() {
+  const warnings = [];
+  ['T','SR','lam'].forEach(key => {
+    const w = domainText(key, state[key]);
+    const warnEl = document.getElementById(key === 'lam' ? 'warn_lam' : `warn_${key}`);
+    if (warnEl) warnEl.style.display = w ? 'block' : 'none';
+    if (w) warnings.push(w);
+  });
+  derived.warnings.forEach(w => warnings.push(w));
+
+  const status = document.getElementById('domain-status');
+  if (!warnings.length) {
+    status.className = 'domain-summary ok';
+    status.innerHTML = `<strong>Within intended input domain</strong>Computed macro-parameters fall inside the training domain. Interpret DS1 as the main screening result; DS2–DS3 remain trend indicators. DS4 and DS5 are hidden by default in the graph and can be toggled on only as dashed guide curves.`;
+  } else {
+    status.className = 'domain-summary warn';
+    status.innerHTML = `<strong>Use with caution</strong>At least one input is outside the intended domain or requires interpretation:<ul>${warnings.map(w => `<li>${w}</li>`).join('')}</ul>`;
+  }
+}
+
+function updateBasisText() {
+  const ivNote = document.getElementById('iv-derived-note');
+  if (state.mode === 'drawing') {
+    const rhoTxt = Number.isFinite(derived.rhoTop) ? derived.rhoTop.toFixed(3) : 'N/A';
+    const ivTxt = Number.isFinite(derived.Iv) ? derived.Iv.toFixed(3) : 'N/A';
+    if (ivNote) {
+      const s = state.structural;
+      const fullBays = (s.bayX || 0) * (s.bayY || 0);
+      const topBays = (s.topBayX || 0) * (s.topBayY || 0);
+      ivNote.innerHTML = `Top coverage: <code>ρtop = ${topBays}/${fullBays} = ${rhoTxt}</code>; therefore <code>Iv = ${state.structural.rhoTop >= 0.999 ? '0 (regular roof)' : 'ρtop/(N+ρtop)'} = ${ivTxt}</code>. This gives <code>λeff = (H/B)(1−Iv)</code>.`;
+    }
+    const bNote = document.getElementById('b-derived-note');
+    if (bNote) {
+      const s = state.structural;
+      const bTxt = Number.isFinite(s.B) ? s.B.toFixed(3) : 'N/A';
+      const wTxt = Number.isFinite(s.planWidth) ? s.planWidth.toFixed(2) : 'N/A';
+      const spTxt = Number.isFinite(s.planSpan) ? s.planSpan.toFixed(2) : 'N/A';
+      bNote.innerHTML = `Governing plan dimension used in equations: <code>B = min(Wplan, Splan) = ${bTxt} m</code>. Here <code>Wplan = ${wTxt} m</code> and <code>Splan = ${spTxt} m</code>.`;
+    }
+  } else {
+    if (ivNote) ivNote.innerHTML = `Macro mode bypasses structural bay-count derivation. Enter λeff directly if the irregularity-adjusted value is already known.`;
+    const bNote = document.getElementById('b-derived-note');
+    if (bNote) bNote.innerHTML = `Macro mode bypasses plan-width/span derivation. Enter SR and λeff directly if B has already been accounted for.`;
+  }
+}
+
+function updateUI() {
+  compute();
+
+  // param badges
+  document.getElementById('p_T').textContent = fmtParam(state.T);
+  document.getElementById('p_SR').textContent = fmtParam(state.SR);
+  document.getElementById('p_lam').textContent = fmtParam(state.lam);
+  updateBasisText();
+  updateWarnings();
+
+  // result values
+  ['DS1','DS2','DS3','DS4','DS5'].forEach(ds => {
+    const el = document.getElementById('mu_' + ds);
+    const v = mu[ds];
+    el.textContent = fmt(v);
+    el.style.color = (v > 0 && Number.isFinite(v)) ? DS_COLORS[ds] : '#999';
+  });
+
+  // risk decision (based on DS1 and DS2 thresholds)
+  const ag = state.ag;
+  const m1 = mu.DS1, m2 = mu.DS2;
+  const box = document.getElementById('risk-indicator');
+
+  if (!Number.isFinite(m1) || !Number.isFinite(m2) || m1 <= 0 || m2 <= 0) {
+    box.innerHTML = `<div class="risk-box moderate">
+      <div class="risk-icon">⚠</div>
+      <div>
+        <div class="risk-level">Cannot Classify Reliably</div>
+        <div class="risk-text">One or more median PGA capacities are non-physical for the current inputs. Return to the training domain or review the macro-parameter derivation before using the screening decision.</div>
+      </div>
+    </div>`;
+  } else if (ag < m1) {
+    box.innerHTML = `<div class="risk-box low">
+      <div class="risk-icon">✓</div>
+      <div>
+        <div class="risk-level">Low Risk</div>
+        <div class="risk-text">ag (${ag.toFixed(2)}g) &lt; μ̂DS1 (${fmt(m1)}). Frame likely adequate at the DS1 screening level. Proceed, while retaining normal engineering checks.</div>
+      </div>
+    </div>`;
+  } else if (ag < m2) {
+    box.innerHTML = `<div class="risk-box moderate">
+      <div class="risk-icon">⚠</div>
+      <div>
+        <div class="risk-level">Moderate Risk</div>
+        <div class="risk-text">μ̂DS1 (${fmt(m1)}) ≤ ag (${ag.toFixed(2)}g) &lt; μ̂DS2 (${fmt(m2)}). Review ductility detailing and consider a more detailed assessment.</div>
+      </div>
+    </div>`;
+  } else {
+    box.innerHTML = `<div class="risk-box high">
+      <div class="risk-icon">✕</div>
+      <div>
+        <div class="risk-level">High Risk</div>
+        <div class="risk-text">ag (${ag.toFixed(2)}g) ≥ μ̂DS2 (${fmt(m2)}). Full IDA or a site-specific fragility study is recommended before sign-off.</div>
+      </div>
+    </div>`;
+  }
+
+  drawFramePreview();
+  drawChart();
+}
+
+
+// ── THREE.JS SCHEMATIC FRAME PREVIEW ───────────────────────────
+
+const preview3D = {
+  initialized: false,
+  scene: null,
+  camera: null,
+  renderer: null,
+  group: null,
+  container: null,
+  theta: Math.PI / 4,
+  phi: Math.PI / 5.5,
+  radius: 40,
+  zoomFactor: 1,
+  minZoomFactor: 0.45,
+  maxZoomFactor: 2.25,
+  targetY: 4,
+  isDragging: false,
+  activePointers: new Map(),
+  lastPinchDistance: null,
+  lastX: 0,
+  lastY: 0,
+  detailMode: null,
+  currentParams: null
+};
+
+function initFramePreview3D() {
+  const container = document.getElementById('frame-preview-viewer');
+  const fallback = document.getElementById('preview_fallback');
+  if (!container) return false;
+
+  if (typeof THREE === 'undefined') {
+    if (fallback) fallback.textContent = 'WebGL preview could not load because Three.js is unavailable. The calculator and fragility curves still work normally.';
+    return false;
+  }
+
+  if (preview3D.initialized) return true;
+
+  preview3D.container = container;
+  preview3D.scene = new THREE.Scene();
+  preview3D.camera = new THREE.PerspectiveCamera(34, 1, 0.1, 5000);
+  preview3D.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+  preview3D.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  preview3D.renderer.outputColorSpace = THREE.SRGBColorSpace;
+  preview3D.renderer.shadowMap.enabled = false;
+
+  container.innerHTML = '';
+  container.appendChild(preview3D.renderer.domElement);
+
+  const ambient = new THREE.HemisphereLight(0xffffff, 0xd8dee9, 1.55);
+  preview3D.scene.add(ambient);
+
+  const key = new THREE.DirectionalLight(0xffffff, 2.4);
+  key.position.set(18, 32, 22);
+  key.castShadow = false;
+  preview3D.scene.add(key);
+
+  const rim = new THREE.DirectionalLight(0xfef3c7, 0.65);
+  rim.position.set(-18, 18, -14);
+  preview3D.scene.add(rim);
+
+  preview3D.group = new THREE.Group();
+  preview3D.scene.add(preview3D.group);
+
+  container.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const zoomStep = Math.exp(e.deltaY * 0.0014);
+    preview3D.zoomFactor = clamp(preview3D.zoomFactor * zoomStep, preview3D.minZoomFactor, preview3D.maxZoomFactor);
+    updatePreviewDetailAfterZoom();
+  }, { passive: false });
+
+  function updatePointer(e) {
+    preview3D.activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  }
+
+  function pointerDistance() {
+    const pts = Array.from(preview3D.activePointers.values());
+    if (pts.length < 2) return null;
+    const dx = pts[0].x - pts[1].x;
+    const dy = pts[0].y - pts[1].y;
+    return Math.hypot(dx, dy);
+  }
+
+  container.addEventListener('pointerdown', (e) => {
+    updatePointer(e);
+    preview3D.isDragging = preview3D.activePointers.size === 1;
+    preview3D.lastX = e.clientX;
+    preview3D.lastY = e.clientY;
+    preview3D.lastPinchDistance = pointerDistance();
+    try { container.setPointerCapture(e.pointerId); } catch (_) {}
+  });
+
+  container.addEventListener('pointermove', (e) => {
+    if (!preview3D.activePointers.has(e.pointerId)) return;
+    updatePointer(e);
+
+    const pinch = pointerDistance();
+    if (pinch && preview3D.lastPinchDistance) {
+      preview3D.zoomFactor = clamp(
+        preview3D.zoomFactor * (preview3D.lastPinchDistance / pinch),
+        preview3D.minZoomFactor,
+        preview3D.maxZoomFactor
+      );
+      preview3D.lastPinchDistance = pinch;
+      updatePreviewDetailAfterZoom();
+      return;
+    }
+
+    if (!preview3D.isDragging || preview3D.activePointers.size !== 1) return;
+    const dx = e.clientX - preview3D.lastX;
+    const dy = e.clientY - preview3D.lastY;
+    preview3D.lastX = e.clientX;
+    preview3D.lastY = e.clientY;
+    preview3D.theta -= dx * 0.008;
+    preview3D.phi = clamp(preview3D.phi + dy * 0.004, 0.18, 1.05);
+    renderFramePreview3D();
+  });
+
+  function releasePointer(e) {
+    preview3D.activePointers.delete(e.pointerId);
+    preview3D.isDragging = preview3D.activePointers.size === 1;
+    preview3D.lastPinchDistance = pointerDistance();
+    try { container.releasePointerCapture(e.pointerId); } catch (_) {}
+  }
+
+  container.addEventListener('pointerup', releasePointer);
+  container.addEventListener('pointercancel', releasePointer);
+  container.addEventListener('pointerleave', (e) => {
+    if (preview3D.activePointers.has(e.pointerId)) releasePointer(e);
+  });
+
+  container.addEventListener('dblclick', () => {
+    preview3D.theta = Math.PI / 4;
+    preview3D.phi = Math.PI / 5.5;
+    preview3D.zoomFactor = 1;
+    updatePreviewDetailAfterZoom();
+  });
+
+  preview3D.initialized = true;
+  return true;
+}
+
+function clearPreviewGroup() {
+  if (!preview3D.group) return;
+  while (preview3D.group.children.length) {
+    const obj = preview3D.group.children.pop();
+    obj.traverse(child => {
+      if (child.geometry) child.geometry.dispose();
+      if (child.material) {
+        if (Array.isArray(child.material)) child.material.forEach(m => m.dispose());
+        else child.material.dispose();
+      }
+    });
+  }
+}
+
+function mat(color, options = {}) {
+  return new THREE.MeshStandardMaterial({
+    color,
+    roughness: options.roughness ?? 0.62,
+    metalness: options.metalness ?? 0.04,
+    transparent: options.opacity !== undefined && options.opacity < 1,
+    opacity: options.opacity ?? 1,
+    depthWrite: options.depthWrite ?? true
+  });
+}
+
+function addBox(group, center, size, material, options = {}) {
+  const geometry = new THREE.BoxGeometry(size.x, size.y, size.z);
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.position.set(center.x, center.y, center.z);
+  mesh.castShadow = false;
+  mesh.receiveShadow = false;
+  group.add(mesh);
+  return mesh;
+}
+
+function addBarX(group, x0, x1, y, z, thickness, material, options = {}) {
+  const len = Math.abs(x1 - x0);
+  if (len <= 0) return;
+  addBox(group, { x: (x0 + x1) / 2, y, z }, { x: len, y: thickness, z: thickness }, material, options);
+}
+
+function addBarZ(group, z0, z1, x, y, thickness, material, options = {}) {
+  const len = Math.abs(z1 - z0);
+  if (len <= 0) return;
+  addBox(group, { x, y, z: (z0 + z1) / 2 }, { x: thickness, y: thickness, z: len }, material, options);
+}
+
+function addColumn(group, x, z, y0, y1, thickness, material, options = {}) {
+  const len = Math.abs(y1 - y0);
+  if (len <= 0) return;
+  addBox(group, { x, y: (y0 + y1) / 2, z }, { x: thickness, y: len, z: thickness }, material, options);
+}
+
+function addLine(group, points, color, opacity = 1, dashed = false) {
+  const geometry = new THREE.BufferGeometry().setFromPoints(points.map(p => new THREE.Vector3(p.x, p.y, p.z)));
+  const material = dashed
+    ? new THREE.LineDashedMaterial({ color, dashSize: 0.55, gapSize: 0.32, transparent: opacity < 1, opacity })
+    : new THREE.LineBasicMaterial({ color, transparent: opacity < 1, opacity });
+  const line = new THREE.Line(geometry, material);
+  if (dashed) line.computeLineDistances();
+  group.add(line);
+  return line;
+}
+
+function levelFootprint3D(level, params) {
+  const { N, planWidth, planSpan, bayX, bayY, topBayX, topBayY, rhoTop } = params;
+  const x0 = -planWidth / 2;
+  const z0 = -planSpan / 2;
+  if (level === N && rhoTop < 1) {
+    const w = planWidth * (topBayX / bayX);
+    const d = planSpan * (topBayY / bayY);
+    return { x0, x1: x0 + w, z0, z1: z0 + d, bayX: topBayX, bayY: topBayY, partial: true };
+  }
+  return { x0, x1: planWidth / 2, z0, z1: planSpan / 2, bayX, bayY, partial: false };
+}
+
+function normaliseLODArg(lodOrStride) {
+  if (lodOrStride && typeof lodOrStride === 'object') return lodOrStride;
+  if (lodOrStride === true) return { bayStride: 2, levelStride: 2, mode: 'adaptive' };
+  return { bayStride: Math.max(1, Math.round(lodOrStride || 1)), levelStride: Math.max(1, Math.round(lodOrStride || 1)), mode: 'full' };
+}
+
+function coordMarks(min, max, divisions, lodOrStride = 1) {
+  if (!Number.isFinite(divisions) || divisions < 1) return [min, max];
+  const lod = normaliseLODArg(lodOrStride);
+  const stride = Math.max(1, Math.round(lod.bayStride || 1));
+  const marks = [];
+  for (let i = 0; i <= divisions; i++) {
+    if (i === 0 || i === divisions || i % stride === 0) {
+      marks.push(min + (max - min) * i / divisions);
+    }
+  }
+  return [...new Set(marks.map(v => Number(v.toFixed(6))))];
+}
+
+function visibleLevels(N, lodOrStride = 1) {
+  const lod = normaliseLODArg(lodOrStride);
+  const stride = Math.max(1, Math.round(lod.levelStride || 1));
+  if (stride <= 1 || N <= 5) return Array.from({ length: N + 1 }, (_, i) => i);
+
+  // Always include base, roof, and approximate quarter-height markers so the
+  // user still understands structural scale even when the frame is simplified.
+  const raw = [0, N, Math.round(N * 0.25), Math.round(N * 0.50), Math.round(N * 0.75)];
+  for (let i = 0; i <= N; i += stride) raw.push(i);
+  return [...new Set(raw.map(v => Math.max(0, Math.min(N, v))))].sort((a, b) => a - b);
+}
+
+function previewComplexity(params) {
+  const bayNodes = (Math.max(1, params.bayX) + 1) * (Math.max(1, params.bayY) + 1);
+  const floorLines = (Math.max(1, params.bayX) + 1) + (Math.max(1, params.bayY) + 1);
+  return params.N * bayNodes + (params.N + 1) * floorLines;
+}
+
+function getFramePreviewLOD(params) {
+  const complexity = previewComplexity(params);
+  const zoom = Math.max(0.01, preview3D.zoomFactor || 1);
+
+  // Smaller zoomFactor means the camera is closer. The render budget increases
+  // continuously as the user zooms in and decreases as they zoom out.
+  const budget = clamp(720 * Math.pow(1.05 / zoom, 1.35), 260, 2600);
+
+  if (complexity <= budget) {
+    return {
+      mode: 'full',
+      key: 'full',
+      bayStride: 1,
+      levelStride: 1,
+      complexity,
+      budget,
+      label: 'Full-grid view',
+      caption: 'Full bay/storey grid is loaded. Columns are black, beams are dark maroon, and slabs are darker translucent plates.'
+    };
+  }
+
+  const reduction = Math.sqrt(complexity / budget);
+  const bayStride = clamp(Math.ceil(reduction), 2, 8);
+  const levelStride = clamp(Math.ceil(reduction * 0.9), 2, 8);
+  const shownPct = Math.min(99, Math.max(18, Math.round((budget / complexity) * 100)));
+
+  return {
+    mode: 'adaptive',
+    key: `adaptive-b${bayStride}-s${levelStride}`,
+    bayStride,
+    levelStride,
+    complexity,
+    budget,
+    shownPct,
+    label: `Adaptive view · ${shownPct}% detail`,
+    caption: `Adaptive view: showing every ${bayStride}${ordinalSuffix(bayStride)} bay line and every ${levelStride}${ordinalSuffix(levelStride)} storey level, while retaining base/roof/quarter-height markers for scale.`
+  };
+}
+
+function ordinalSuffix(n) {
+  const v = Math.abs(Math.round(n)) % 100;
+  if (v >= 11 && v <= 13) return 'th';
+  switch (v % 10) {
+    case 1: return 'st';
+    case 2: return 'nd';
+    case 3: return 'rd';
+    default: return 'th';
+  }
+}
+
+function updatePreviewLODCopy(lod) {
+  const lodLabel = document.getElementById('preview_lod_mode');
+  if (lodLabel) lodLabel.textContent = lod.label;
+
+  const caption = document.getElementById('preview_caption');
+  if (caption) {
+    caption.textContent = `Illustrative WebGL schematic only. ${lod.caption} Drag to rotate, scroll or pinch to zoom, and double-click to reset.`;
+  }
+}
+
+function updatePreviewDetailAfterZoom() {
+  if (!preview3D.currentParams) {
+    renderFramePreview3D();
+    return;
+  }
+  const lod = getFramePreviewLOD(preview3D.currentParams);
+  if (preview3D.detailMode !== lod.key) drawFramePreview();
+  else {
+    updatePreviewLODCopy(lod);
+    renderFramePreview3D();
+  }
+}
+
+function resizeFramePreviewRenderer() {
+  if (!preview3D.renderer || !preview3D.camera || !preview3D.container) return;
+  const rect = preview3D.container.getBoundingClientRect();
+  const w = preview3D.reportCapture ? 920 : Math.max(280, rect.width || 360);
+  const h = preview3D.reportCapture ? 860 : Math.max(260, rect.height || 320);
+  preview3D.renderer.setSize(w, h, false);
+  preview3D.camera.aspect = w / h;
+  preview3D.camera.updateProjectionMatrix();
+}
+
+function renderFramePreview3D() {
+  if (!preview3D.renderer || !preview3D.scene || !preview3D.camera) return;
+  resizeFramePreviewRenderer();
+  const r = preview3D.radius * preview3D.zoomFactor;
+  const theta = preview3D.theta;
+  const phi = preview3D.phi;
+  const target = new THREE.Vector3(0, preview3D.targetY, 0);
+  preview3D.camera.position.set(
+    r * Math.cos(phi) * Math.sin(theta),
+    preview3D.targetY + r * Math.sin(phi),
+    r * Math.cos(phi) * Math.cos(theta)
+  );
+  preview3D.camera.lookAt(target);
+  preview3D.renderer.render(preview3D.scene, preview3D.camera);
+}
+
+function drawFramePreview() {
+  if (!initFramePreview3D()) return;
+  clearPreviewGroup();
+
+  let N, totalH, planWidth, planSpan, B, bayX, bayY, topBayX, topBayY, rhoTop, Iv, bc, hc, bb, hb;
+  if (state.mode === 'drawing') {
+    const s = state.structural;
+    N = Math.max(1, Math.round(s.stories || 1));
+    totalH = Math.max(3, s.H || N * 3);
+    planWidth = Math.max(2, s.planWidth || s.B || 12);
+    planSpan = Math.max(2, s.planSpan || s.B || 12);
+    B = Math.max(1, s.B || planWidth);
+    bayX = Math.max(1, Math.round(s.bayX || 1));
+    bayY = Math.max(1, Math.round(s.bayY || 1));
+    topBayX = Math.max(1, Math.min(bayX, Math.round(s.topBayX || bayX)));
+    topBayY = Math.max(1, Math.min(bayY, Math.round(s.topBayY || bayY)));
+    rhoTop = Math.max(0, Math.min(1, (topBayX * topBayY) / (bayX * bayY)));
+    Iv = (rhoTop >= 0.999) ? 0 : rhoTop / (Math.max(1, N) + rhoTop);
+    bc = Math.max(0.15, s.bc || 0.40);
+    hc = Math.max(0.15, s.hc || 0.40);
+    bb = Math.max(0.12, s.bb || 0.25);
+    hb = Math.max(0.12, s.hb || 0.45);
+  } else {
+    N = 4;
+    planWidth = 12;
+    planSpan = 12;
+    B = 12;
+    bayX = 3;
+    bayY = 3;
+    topBayX = 3;
+    topBayY = 3;
+    rhoTop = 1;
+    Iv = 0;
+    totalH = Math.max(3, B * Math.max(0.25, Math.min(3.2, state.lam || 1.0)));
+    const srVisual = Math.max(0.05, Math.min(8, state.SR || 1));
+    bc = 0.25 + Math.min(0.38, Math.log1p(srVisual) * 0.12);
+    hc = bc;
+    bb = 0.24;
+    hb = 0.42;
+  }
+
+  const params = { N, totalH, planWidth, planSpan, B, bayX, bayY, topBayX, topBayY, rhoTop, Iv };
+  preview3D.currentParams = params;
+  const group = preview3D.group;
+  const lod = getFramePreviewLOD(params);
+  const simplified = lod.mode !== 'full';
+  preview3D.detailMode = lod.key;
+
+  const maxDim = Math.max(totalH, planWidth, planSpan, 1);
+  const scale = 10 / maxDim;
+  group.scale.set(scale, scale, scale);
+  group.position.set(0, -totalH * scale * 0.10, 0);
+
+  const colT = Math.max(maxDim * 0.008, Math.min(maxDim * 0.028, ((bc + hc) / 2) * 0.95));
+  const beamT = Math.max(maxDim * 0.0065, Math.min(maxDim * 0.022, ((bb + hb) / 2) * 0.74));
+  const slabT = Math.max(maxDim * 0.0025, 0.035 / scale);
+
+  const materials = {
+    colFront: mat(0x111111, { roughness: 0.50 }),
+    colBack: mat(0x2b2b2b, { roughness: 0.58, opacity: 0.82 }),
+    beam: mat(0x5b0f1f, { roughness: 0.56 }),
+    beamBack: mat(0x7f1d2d, { roughness: 0.62, opacity: 0.78 }),
+    slab: mat(0x64748b, { opacity: 0.42, roughness: 0.72, depthWrite: false }),
+    slabBase: mat(0x475569, { opacity: 0.46, roughness: 0.80, depthWrite: false }),
+    slabTop: mat(0xb35c00, { opacity: rhoTop < 1 ? 0.50 : 0.34, roughness: 0.72, depthWrite: false }),
+    pad: mat(0xf1f5f9, { roughness: 0.92 })
+  };
+
+  const padMargin = Math.max(planWidth, planSpan) * 0.10;
+  addBox(group, { x: 0, y: -slabT, z: 0 }, { x: planWidth + padMargin, y: slabT, z: planSpan + padMargin }, materials.pad, { castShadow: false, receiveShadow: true });
+
+  let levels = visibleLevels(N, lod);
+  if (simplified && rhoTop < 1 && N > 1) {
+    levels = [...new Set([...levels, N - 1])].sort((a, b) => a - b);
+  }
+  const storeyH = totalH / N;
+
+  // Floor plates and horizontal beams.
+  levels.forEach(level => {
+    const y = storeyH * level;
+    const fp = levelFootprint3D(level, params);
+    const width = fp.x1 - fp.x0;
+    const depth = fp.z1 - fp.z0;
+    const plateMat = level === 0 ? materials.slabBase : (fp.partial ? materials.slabTop : materials.slab);
+    if (level === 0 || level === N || fp.partial || (!simplified && level % 1 === 0)) {
+      addBox(group, { x: (fp.x0 + fp.x1) / 2, y: y - slabT * 0.18, z: (fp.z0 + fp.z1) / 2 }, { x: width, y: slabT, z: depth }, plateMat, { castShadow: false, receiveShadow: true });
+    }
+
+    const xMarks = coordMarks(fp.x0, fp.x1, fp.bayX, lod);
+    const zMarks = coordMarks(fp.z0, fp.z1, fp.bayY, lod);
+
+    // Adaptive LOD samples bay lines while zoomed out; zooming in progressively loads more grid members.
+    zMarks.forEach(z => {
+      const perimeter = z === fp.z0 || z === fp.z1;
+      addBarX(group, fp.x0, fp.x1, y, z, perimeter ? beamT : beamT * 0.56, perimeter ? materials.beam : materials.beamBack, { castShadow: perimeter });
+    });
+    xMarks.forEach(x => {
+      const perimeter = x === fp.x0 || x === fp.x1;
+      addBarZ(group, fp.z0, fp.z1, x, y, perimeter ? beamT : beamT * 0.56, perimeter ? materials.beam : materials.beamBack, { castShadow: perimeter });
+    });
+  });
+
+  // Columns. Dense frames use a zoom-aware lightweight view until the user zooms in.
+  if (simplified) {
+    const lowerTop = (rhoTop < 1 && N > 1) ? totalH - storeyH : totalH;
+    const lowerFp = levelFootprint3D(0, params);
+    const lowerX = coordMarks(lowerFp.x0, lowerFp.x1, lowerFp.bayX, lod);
+    const lowerZ = coordMarks(lowerFp.z0, lowerFp.z1, lowerFp.bayY, lod);
+    lowerX.forEach(x => {
+      lowerZ.forEach(z => {
+        const perimeter = x === lowerFp.x0 || x === lowerFp.x1 || z === lowerFp.z0 || z === lowerFp.z1;
+        const front = z === lowerFp.z0;
+        addColumn(group, x, z, 0, lowerTop, perimeter ? colT : colT * 0.54, front ? materials.colFront : materials.colBack, { castShadow: false });
+      });
+    });
+
+    if (rhoTop < 1 && N > 1) {
+      const topFp = levelFootprint3D(N, params);
+      const topX = coordMarks(topFp.x0, topFp.x1, topFp.bayX, lod);
+      const topZ = coordMarks(topFp.z0, topFp.z1, topFp.bayY, lod);
+      topX.forEach(x => {
+        topZ.forEach(z => {
+          const perimeter = x === topFp.x0 || x === topFp.x1 || z === topFp.z0 || z === topFp.z1;
+          const front = z === topFp.z0;
+          addColumn(group, x, z, lowerTop, totalH, perimeter ? colT : colT * 0.54, front ? materials.colFront : materials.colBack, { castShadow: false });
+        });
+      });
+    }
+  } else {
+    for (let i = 0; i < N; i++) {
+      const y0 = storeyH * i;
+      const y1 = storeyH * (i + 1);
+      const fp = levelFootprint3D(i + 1, params);
+      const xMarks = coordMarks(fp.x0, fp.x1, fp.bayX, 1);
+      const zMarks = coordMarks(fp.z0, fp.z1, fp.bayY, 1);
+      xMarks.forEach(x => {
+        zMarks.forEach(z => {
+          const perimeter = x === fp.x0 || x === fp.x1 || z === fp.z0 || z === fp.z1;
+          const front = z === fp.z0;
+          addColumn(group, x, z, y0, y1, perimeter ? colT : colT * 0.58, front ? materials.colFront : materials.colBack, { castShadow: false });
+        });
+      });
+    }
+  }
+
+  // Ghost full roof outline for missing top coverage.
+  if (state.mode === 'drawing' && rhoTop < 1) {
+    const y = totalH + beamT * 0.7;
+    const full = { x0: -planWidth / 2, x1: planWidth / 2, z0: -planSpan / 2, z1: planSpan / 2 };
+    addLine(group, [
+      { x: full.x0, y, z: full.z0 }, { x: full.x1, y, z: full.z0 },
+      { x: full.x1, y, z: full.z1 }, { x: full.x0, y, z: full.z1 },
+      { x: full.x0, y, z: full.z0 }
+    ], 0xb35c00, 0.88, true);
+  }
+
+  // Subtle height marker and base direction markers.
+  addLine(group, [
+    { x: -planWidth / 2 - padMargin * 0.35, y: 0, z: -planSpan / 2 },
+    { x: -planWidth / 2 - padMargin * 0.35, y: totalH, z: -planSpan / 2 }
+  ], 0x94a3b8, 0.82, true);
+
+  preview3D.targetY = (totalH * scale) * 0.42;
+  const scaledMax = Math.max(totalH, planWidth, planSpan) * scale;
+  preview3D.radius = Math.max(18, scaledMax * 2.35);
+  renderFramePreview3D();
+
+  document.getElementById('preview_NH').textContent = `${N} / ${totalH.toFixed(1)} m`;
+  document.getElementById('preview_BH').textContent = `${(B/totalH).toFixed(2)} / ${(totalH/B).toFixed(2)}`;
+  document.getElementById('preview_Iv').textContent = `${rhoTop.toFixed(2)} / ${Iv.toFixed(2)}`;
+
+  updatePreviewLODCopy(lod);
+}
+
+// ── CANVAS CHART ───────────────────────────────────────────────
+
+function drawChart() {
+  const canvas = document.getElementById('fragility-canvas');
+  const isReportCapture = !!state.reportCapture;
+  const dpr = isReportCapture ? 3 : (window.devicePixelRatio || 1);
+  const W = isReportCapture ? 1200 : (canvas.parentElement.clientWidth - 56);
+  const H = isReportCapture ? 830 : 380;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const PAD = isReportCapture
+    ? { top: 58, right: 68, bottom: 100, left: 112 }
+    : { top: 24, right: 28, bottom: 52, left: 60 };
+  const pw = W - PAD.left - PAD.right;
+  const ph = H - PAD.top - PAD.bottom;
+  const tickFont = isReportCapture ? 24 : 11;
+  const axisFont = isReportCapture ? 24 : 11;
+  const agFont = isReportCapture ? 20 : 10;
+  const legendFont = isReportCapture ? 20 : 10;
+
+  // Background
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, W, H);
+
+  // Grid
+  ctx.strokeStyle = '#e2e0d8';
+  ctx.lineWidth = isReportCapture ? 1.25 : 1;
+
+  // Y gridlines
+  for (let i = 0; i <= 10; i++) {
+    const y = PAD.top + ph * (1 - i/10);
+    ctx.beginPath();
+    ctx.moveTo(PAD.left, y);
+    ctx.lineTo(PAD.left + pw, y);
+    ctx.stroke();
+    ctx.fillStyle = '#000000';
+    ctx.font = `${tickFont}px 'IBM Plex Mono', monospace`;
+    ctx.textAlign = 'right';
+    ctx.fillText((i/10).toFixed(1), PAD.left - 8, y + 4);
+  }
+
+  // Fragility curves shown in the plot.
+  // Default screening view is DS1–DS3 only. Advanced mode overlays DS4/DS5 as guide curves.
+  const dsKeys = state.showAdvancedCurves
+    ? ['DS1','DS2','DS3','DS4','DS5']
+    : ['DS1','DS2','DS3'];
+
+  // X axis. Default remains 0–3g for screening clarity. When research-only curves
+  // are toggled on, expand the axis so high-capacity DS5 curves are actually visible.
+  const visibleMuVals = dsKeys
+    .map(ds => mu[ds])
+    .filter(v => Number.isFinite(v) && v > 0);
+  const rawPgaMax = state.showAdvancedCurves
+    ? Math.max(3.0, state.ag * 1.15, ...visibleMuVals.map(v => v * 1.15))
+    : 3.0;
+  const axisCandidates = [3, 4, 5, 6, 8, 10, 12, 15, 20];
+  const PGA_MAX = axisCandidates.find(v => v >= rawPgaMax) || Math.ceil(rawPgaMax / 5) * 5;
+  const xTickStep = PGA_MAX <= 3 ? 0.5 : PGA_MAX <= 6 ? 1.0 : PGA_MAX <= 12 ? 2.0 : 5.0;
+  const N_POINTS = 360;
+
+  // X gridlines
+  for (let pga = 0; pga <= PGA_MAX + 1e-9; pga += xTickStep) {
+    const x = PAD.left + (pga / PGA_MAX) * pw;
+    ctx.beginPath();
+    ctx.moveTo(x, PAD.top);
+    ctx.lineTo(x, PAD.top + ph);
+    ctx.stroke();
+    ctx.fillStyle = '#000000';
+    ctx.textAlign = 'center';
+    ctx.fillText(pga.toFixed(PGA_MAX <= 6 ? 1 : 0) + 'g', x, PAD.top + ph + (isReportCapture ? 24 : 18));
+  }
+
+  // Axes labels
+  ctx.fillStyle = '#000000';
+  ctx.font = `700 ${axisFont}px 'Inter', sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.fillText('PGA (g)', PAD.left + pw/2, H - (isReportCapture ? 10 : 6));
+
+  ctx.save();
+  ctx.translate(isReportCapture ? 18 : 14, PAD.top + ph/2);
+  ctx.rotate(-Math.PI/2);
+  ctx.fillText('P(DS ≥ ds | PGA)', 0, 0);
+  ctx.restore();
+
+  // Site PGA line
+  const ag = state.ag;
+  const ag_x = PAD.left + (ag / PGA_MAX) * pw;
+  if (ag >= 0 && ag <= PGA_MAX) {
+    ctx.save();
+    ctx.setLineDash([6, 4]);
+    ctx.strokeStyle = '#475569';
+    ctx.lineWidth = isReportCapture ? 2.4 : 1.5;
+    ctx.beginPath();
+    ctx.moveTo(ag_x, PAD.top);
+    ctx.lineTo(ag_x, PAD.top + ph);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+    ctx.fillStyle = '#000000';
+    ctx.font = `700 ${agFont}px 'IBM Plex Mono', monospace`;
+    ctx.textAlign = 'center';
+    ctx.fillText('ag=' + ag.toFixed(2) + 'g', ag_x, PAD.top - (isReportCapture ? 10 : 6));
+  }
+
+  // Fragility curves
+  const beta = state.beta;
+
+  dsKeys.forEach(ds => {
+    const muVal = mu[ds];
+    if (!Number.isFinite(muVal) || muVal <= 0 || !Number.isFinite(beta) || beta <= 0) return;
+
+    ctx.save();
+    ctx.beginPath();
+    const isGuide = (ds === 'DS4' || ds === 'DS5');
+    ctx.strokeStyle = DS_COLORS[ds];
+    ctx.lineWidth = isReportCapture ? (isGuide ? 3.2 : 3.6) : (isGuide ? 2.0 : 2.2);
+    if (isGuide) ctx.setLineDash(ds === 'DS4' ? [2, 5] : [8, 5]);
+
+    let firstValid = true;
+    for (let i = 0; i <= N_POINTS; i++) {
+      const pga = (i / N_POINTS) * PGA_MAX;
+      if (pga === 0) { firstValid = true; continue; }
+      const p = fragilityP(pga, muVal, beta);
+      const x = PAD.left + (pga / PGA_MAX) * pw;
+      const y = PAD.top + ph * (1 - p);
+      if (firstValid) { ctx.moveTo(x, y); firstValid = false; }
+      else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.restore();
+
+    // Dot at μ̂ (50th percentile)
+    if (muVal <= PGA_MAX) {
+      const mx = PAD.left + (muVal / PGA_MAX) * pw;
+      const my = PAD.top + ph * 0.5;
+      ctx.beginPath();
+      const isGuide = (ds === 'DS4' || ds === 'DS5');
+      ctx.arc(mx, my, isReportCapture ? (isGuide ? 8 : 7) : (isGuide ? 4.5 : 4), 0, 2*Math.PI);
+      if (isGuide) {
+        ctx.strokeStyle = DS_COLORS[ds];
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      } else {
+        ctx.fillStyle = DS_COLORS[ds];
+        ctx.fill();
+      }
+    }
+  });
+
+  // Compact in-graph legend
+  const legendItems = state.showAdvancedCurves
+    ? [
+        { ds: 'DS1', text: 'DS1 Slight' },
+        { ds: 'DS2', text: 'DS2 Moderate' },
+        { ds: 'DS3', text: 'DS3 Extensive' },
+        { ds: 'DS4', text: 'DS4 Complete*', caution: true },
+        { ds: 'DS5', text: 'DS5 Collapse*', caution: true, dash: 'long' }
+      ]
+    : [
+        { ds: 'DS1', text: 'DS1 Slight' },
+        { ds: 'DS2', text: 'DS2 Moderate' },
+        { ds: 'DS3', text: 'DS3 Extensive' }
+      ];
+  const legendW = state.showAdvancedCurves ? (isReportCapture ? 360 : 182) : (isReportCapture ? 330 : 170);
+  const legendH = (isReportCapture ? 40 : 18) + legendItems.length * (isReportCapture ? 34 : 16);
+  const legendX = Math.max(PAD.left + 10, PAD.left + pw - legendW - 10);
+  const legendY = PAD.top + 10;
+  ctx.save();
+  ctx.fillStyle = 'rgba(255,255,255,0.92)';
+  ctx.strokeStyle = 'rgba(226,224,216,0.95)';
+  ctx.lineWidth = 1;
+  if (ctx.roundRect) {
+    ctx.beginPath();
+    ctx.roundRect(legendX, legendY, legendW, legendH, 6);
+    ctx.fill();
+    ctx.stroke();
+  } else {
+    ctx.fillRect(legendX, legendY, legendW, legendH);
+    ctx.strokeRect(legendX, legendY, legendW, legendH);
+  }
+  ctx.font = `600 ${legendFont}px 'IBM Plex Mono', monospace`;
+  ctx.textAlign = 'left';
+  legendItems.forEach((item, i) => {
+    const ly = legendY + (isReportCapture ? 42 : 18) + i * (isReportCapture ? 34 : 16);
+    ctx.save();
+    ctx.strokeStyle = DS_COLORS[item.ds];
+    ctx.lineWidth = isReportCapture ? 4.0 : 2.4;
+    if (item.caution) ctx.setLineDash(item.dash === 'long' ? [8, 4] : [2, 4]);
+    ctx.beginPath();
+    ctx.moveTo(legendX + 10, ly);
+    ctx.lineTo(legendX + (isReportCapture ? 70 : 34), ly);
+    ctx.stroke();
+    ctx.restore();
+    ctx.fillStyle = item.caution ? '#b35c00' : '#3a3f52';
+    ctx.fillText(item.text, legendX + (isReportCapture ? 86 : 42), ly + (isReportCapture ? 8 : 4));
+  });
+  ctx.restore();
+
+  // Axes border
+  ctx.strokeStyle = '#000000';
+  ctx.lineWidth = isReportCapture ? 2.4 : 1.5;
+  ctx.beginPath();
+  ctx.moveTo(PAD.left, PAD.top);
+  ctx.lineTo(PAD.left, PAD.top + ph);
+  ctx.lineTo(PAD.left + pw, PAD.top + ph);
+  ctx.stroke();
+}
+
+// ── PRINTABLE SCREENING REPORT ─────────────────────────────────
+
+const REPORT_DS_META = {
+  DS1: { meaning: 'Slight Damage', r2int: '0.9040', r2ext: '0.352', rmse: '0.179 g', use: 'Recommended' },
+  DS2: { meaning: 'Moderate Damage', r2int: '0.8167', r2ext: '0.099', rmse: '0.597 g', use: 'Decision Support' },
+  DS3: { meaning: 'Extensive Damage', r2int: '0.3116', r2ext: '0.109', rmse: '0.652 g', use: 'Trend Only' },
+  DS4: { meaning: 'Complete Damage', r2int: '0.1330', r2ext: '0.095', rmse: '0.970 g', use: 'Research-Only / Non-Monotonic Caution' },
+  DS5: { meaning: 'Collapse', r2int: '0.2107', r2ext: '—', rmse: '3.03 g', use: 'Research Only' }
+};
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function cleanText(value, fallback = '—') {
+  const txt = String(value ?? '').trim();
+  return txt ? escapeHtml(txt) : fallback;
+}
+
+function fmtFixed(value, digits = 3, suffix = '') {
+  return Number.isFinite(value) ? `${value.toFixed(digits)}${suffix}` : 'N/A';
+}
+
+function getRiskSummary() {
+  compute();
+  const ag = state.ag;
+  const m1 = mu.DS1;
+  const m2 = mu.DS2;
+  if (!Number.isFinite(m1) || !Number.isFinite(m2) || m1 <= 0 || m2 <= 0) {
+    return {
+      level: 'Cannot classify reliably',
+      cls: 'moderate',
+      text: 'One or more median PGA capacities are non-physical for the current inputs. Review the macro-parameter derivation and training-domain status before using the result.',
+      rule: 'Invalid DS1/DS2 median capacity estimate'
+    };
+  }
+  if (ag < m1) {
+    return {
+      level: 'Low Risk',
+      cls: 'low',
+      text: `Site PGA ag = ${ag.toFixed(2)}g is below μ̂DS1 = ${m1.toFixed(3)}g. The frame satisfies the preliminary DS1 screening boundary and may proceed subject to normal engineering checks.`,
+      rule: 'ag < μ̂DS1'
+    };
+  }
+  if (ag < m2) {
+    return {
+      level: 'Moderate Risk',
+      cls: 'moderate',
+      text: `Site PGA ag = ${ag.toFixed(2)}g falls between μ̂DS1 = ${m1.toFixed(3)}g and μ̂DS2 = ${m2.toFixed(3)}g. The frame requires detailing, regularity, and modelling review before sign-off.`,
+      rule: 'μ̂DS1 ≤ ag < μ̂DS2'
+    };
+  }
+  return {
+    level: 'High Risk',
+    cls: 'high',
+    text: `Site PGA ag = ${ag.toFixed(2)}g exceeds or equals μ̂DS2 = ${m2.toFixed(3)}g. Full IDA or a site-specific fragility study is recommended before sign-off.`,
+    rule: 'ag ≥ μ̂DS2'
+  };
+}
+
+function getDomainRows() {
+  return [
+    { key: 'T', label: 'Normalised Period, T̄', value: state.T, domain: '0.174–1.486' },
+    { key: 'SR', label: 'Stiffness Ratio, SR', value: state.SR, domain: '0.004–13.053' },
+    { key: 'lam', label: 'Effective Slenderness, λeff', value: state.lam, domain: '0.125–4.839' }
+  ].map(row => {
+    const d = DOMAIN[row.key];
+    const inDomain = Number.isFinite(row.value) && row.value >= d.min && row.value <= d.max;
+    return { ...row, status: inDomain ? 'In Domain' : 'Out of Domain' };
+  });
+}
+
+function getCurrentWarnings() {
+  const warnings = [];
+  ['T','SR','lam'].forEach(key => {
+    const w = domainText(key, state[key]);
+    if (w) warnings.push(w);
+  });
+  derived.warnings.forEach(w => warnings.push(w));
+  return warnings;
+}
+
+function captureChartForReport(includeAdvanced) {
+  const oldAdvanced = state.showAdvancedCurves;
+  const oldReportCapture = !!state.reportCapture;
+  state.showAdvancedCurves = !!includeAdvanced;
+  state.reportCapture = true;
+  updateAdvancedCurveButton();
+  drawChart();
+  const canvas = document.getElementById('fragility-canvas');
+  let img = '';
+  try { img = canvas.toDataURL('image/png'); } catch (err) { img = ''; }
+  state.showAdvancedCurves = oldAdvanced;
+  state.reportCapture = oldReportCapture;
+  updateAdvancedCurveButton();
+  drawChart();
+  return img;
+}
+
+function capturePreviewForReport() {
+  if (!preview3D || !preview3D.renderer) return '';
+  const oldZoom = preview3D.zoomFactor;
+  const oldDetail = preview3D.detailMode;
+  const oldReportPreviewCapture = !!preview3D.reportCapture;
+  try {
+    preview3D.reportCapture = true;
+    preview3D.zoomFactor = clamp(1.12, preview3D.minZoomFactor, preview3D.maxZoomFactor);
+    if (preview3D.currentParams) {
+      const lod = getFramePreviewLOD(preview3D.currentParams);
+      if (preview3D.detailMode !== lod.key) drawFramePreview();
+      else renderFramePreview3D();
+    } else {
+      renderFramePreview3D();
+    }
+    return preview3D.renderer.domElement.toDataURL('image/png');
+  } catch (err) {
+    return '';
+  } finally {
+    preview3D.reportCapture = oldReportPreviewCapture;
+    preview3D.zoomFactor = oldZoom;
+    if (preview3D.currentParams) {
+      const lod = getFramePreviewLOD(preview3D.currentParams);
+      if (preview3D.detailMode !== lod.key || preview3D.detailMode !== oldDetail) drawFramePreview();
+      else renderFramePreview3D();
+    }
+  }
+}
+
+function reportTable(rows) {
+  return `<table>${rows.map(([a,b,c,d]) => `<tr><th>${a}</th><td>${b ?? ''}</td>${c !== undefined ? `<th>${c}</th><td>${d ?? ''}</td>` : ''}</tr>`).join('')}</table>`;
+}
+
+function buildReportHtml(options) {
+  compute();
+  updateBasisText();
+  updateWarnings();
+  const risk = getRiskSummary();
+  const domainRows = getDomainRows();
+  const warnings = getCurrentWarnings();
+  const s = state.structural;
+  const generatedAt = new Date().toLocaleString();
+  const chartImg = captureChartForReport(options.includeAdvancedCurves);
+  const previewImg = options.include3D ? capturePreviewForReport() : '';
+  const modeLabel = state.mode === 'drawing' ? 'Drawing Parameters' : 'Direct Macro-Parameters';
+  const topBays = (s.topBayX || 0) * (s.topBayY || 0);
+  const fullBays = (s.bayX || 0) * (s.bayY || 0);
+  const totalPages = 2;
+  const contactQrDataUri = 'data:image/png;base64,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';
+
+  const structuralRows = state.mode === 'drawing'
+    ? [
+        ['Storeys, N', fmtFixed(s.stories, 0), 'Total Height, H', fmtFixed(s.H, 2, ' m')],
+        ['Plan Width, Wplan', fmtFixed(s.planWidth, 2, ' m'), 'Plan Span, Splan', fmtFixed(s.planSpan, 2, ' m')],
+        ['Governing Dimension, B = min(W,S)', fmtFixed(s.B, 2, ' m'), 'EC8 Period, T', fmtFixed(derived.Tsec, 3, ' s')],
+        ['Column Size, bc × hc', `${fmtFixed(s.bc, 2, ' m')} × ${fmtFixed(s.hc, 2, ' m')}`, 'Beam Size, bb × hb', `${fmtFixed(s.bb, 2, ' m')} × ${fmtFixed(s.hb, 2, ' m')}`],
+        ['Full-Grid Bays', `${fmtFixed(s.bayX, 0)} × ${fmtFixed(s.bayY, 0)} = ${fullBays}`, 'Top Occupied Bays', `${fmtFixed(s.topBayX, 0)} × ${fmtFixed(s.topBayY, 0)} = ${topBays}`],
+        ['Top Coverage, ρtop', fmtFixed(derived.rhoTop, 3), 'Irregularity Factor, Iv', fmtFixed(derived.Iv, 3)],
+        ['Site PGA, ag', fmtFixed(state.ag, 2, ' g'), 'Dispersion, β', fmtFixed(state.beta, 2)]
+      ]
+    : [
+        ['Input Mode', 'Direct macro-parameters', 'Site PGA, ag', fmtFixed(state.ag, 2, ' g')],
+        ['Normalised Period, T̄', fmtFixed(state.T, 3), 'Stiffness Ratio, SR', fmtFixed(state.SR, 3)],
+        ['Effective Slenderness, λeff', fmtFixed(state.lam, 3), 'Dispersion, β', fmtFixed(state.beta, 2)]
+      ];
+
+  const projectRows = [
+    ['Project', cleanText(options.project), 'Location', cleanText(options.location)],
+    ['Engineer / User', cleanText(options.engineer), 'Reference', cleanText(options.reference)],
+    ['Generated', escapeHtml(generatedAt), 'Input Mode', escapeHtml(modeLabel)]
+  ];
+
+  const macroRows = domainRows.map(row => `
+    <tr>
+      <td><strong>${escapeHtml(row.label)}</strong></td>
+      <td class="num">${fmtFixed(row.value, 3)}</td>
+      <td>${escapeHtml(row.domain)}</td>
+      <td class="status ${row.status === 'In Domain' ? 'ok' : 'warn'}">${row.status}</td>
+    </tr>`).join('');
+
+  const dsRows = ['DS1','DS2','DS3','DS4','DS5'].map(ds => {
+    const meta = REPORT_DS_META[ds];
+    return `<tr>
+      <td><strong>${ds}</strong></td>
+      <td>${escapeHtml(meta.meaning)}</td>
+      <td class="num">${fmt(mu[ds])}</td>
+      <td>${escapeHtml(meta.use)}</td>
+    </tr>`;
+  }).join('');
+
+  const reliabilityRows = ['DS1','DS2','DS3','DS4','DS5'].map(ds => {
+    const meta = REPORT_DS_META[ds];
+    return `<tr>
+      <td><strong>${ds}</strong></td>
+      <td>${escapeHtml(meta.meaning)}</td>
+      <td class="num">${escapeHtml(meta.r2int)}</td>
+      <td class="num">${escapeHtml(meta.r2ext)}</td>
+      <td class="num">${escapeHtml(meta.rmse)}</td>
+      <td>${escapeHtml(meta.use)}</td>
+    </tr>`;
+  }).join('');
+
+  const notes = cleanText(options.notes);
+  const conclusionText = (() => {
+    const ag = Number.isFinite(state.ag) ? state.ag.toFixed(2) : 'N/A';
+    const ds1 = Number.isFinite(mu.DS1) ? mu.DS1.toFixed(3) : 'N/A';
+    const ds2 = Number.isFinite(mu.DS2) ? mu.DS2.toFixed(3) : 'N/A';
+    if (risk.cls === 'low') {
+      return `Based on the EIDA screening comparison, the site demand (${ag}g) is lower than the selected DS1 median PGA capacity (${ds1}g). This places the frame below the preliminary slight-damage threshold used by the screening rule. The recommended action is to proceed with normal engineering checks, while maintaining ordinary code compliance, detailing review, and project-specific design verification.`;
+    }
+    if (risk.cls === 'moderate') {
+      return `Based on the EIDA screening comparison, the site demand (${ag}g) falls between the selected DS1 and DS2 median PGA capacities (${ds1}g and ${ds2}g). This indicates that the frame is beyond the preliminary slight-damage boundary but has not reached the moderate-damage escalation threshold. The recommended action is to review ductility detailing, regularity, member configuration, and modelling assumptions before sign-off.`;
+    }
+    if (risk.cls === 'high') {
+      return `Based on the EIDA screening comparison, the site demand (${ag}g) is greater than or equal to the selected DS2 median PGA capacity (${ds2}g). This means the preliminary demand level reaches or exceeds the moderate-damage screening threshold. The recommended action is to escalate to full nonlinear analysis, site-specific fragility assessment, or equivalent performance-based verification before sign-off.`;
+    }
+    return `The current input set does not permit a reliable screening conclusion because one or more DS1/DS2 median PGA estimates are non-physical or outside the recommended interpretation range. Review the drawing inputs, macro-parameter derivation, and domain warnings before using this report as a screening record.`;
+  })();
+  const header = (pageNo) => `
+    <header class="page-header">
+      <div>
+        <div class="report-kicker">EIDA Framework · Seismic Fragility Screening</div>
+        <div class="report-title">RC Grid-Like Bare Frame Screening Report</div>
+      </div>
+      <div class="report-meta">
+        ${cleanText(options.reference, 'No Reference')}<br>
+        Generated ${escapeHtml(generatedAt)}
+      </div>
+    </header>`;
+
+  const footer = (pageNo) => `
+    <footer class="page-footer">
+      <span>Omair Shafiq · UMPSA · EIDA Framework</span>
+      <span>Page ${pageNo} of ${totalPages}</span>
+    </footer>`;
+
+  const warningBlock = warnings.length
+    ? `<ul class="warning-list">${warnings.map(w => `<li>${escapeHtml(w)}</li>`).join('')}</ul>`
+    : `<p class="micro-note ok-note">All macro-parameters fall within the stated training domain.</p>`;
+
+  const previewBlock = previewImg
+    ? `<figure class="report-figure preview-figure"><img src="${previewImg}" alt="Schematic 3D frame preview"><figcaption>Schematic geometry aid only; not an ETABS model or nonlinear output.</figcaption></figure>`
+    : `<p class="micro-note">3D schematic not included. The tabulated macro-parameters remain the authoritative screening inputs.</p>`;
+
+  const appendixBlock = options.includeAppendix ? `
+    <div class="box full reliability-equation-box">
+      <div class="step-title"><span>Reliability Context</span><strong>Selected Equations and Closed-Form Models</strong></div>
+      <table class="tight-table reliability-equation-table">
+        <tr>
+          <th>DS</th>
+          <th>Meaning</th>
+          <th>Closed-Form Equation</th>
+          <th>R²int</th>
+          <th>R²ext</th>
+          <th>RMSE</th>
+        </tr>
+        <tr>
+          <td><b>DS1</b></td>
+          <td>Slight Damage</td>
+          <td class="eq-cell"><b>μ̂DS1</b> = 0.4522 − 0.7877T̄ + 0.1619SR − 0.0579λeff + 0.4086T̄² − 0.0952T̄·SR + 0.0260T̄·λeff − 0.0030SR² − 0.0246SR·λeff + 0.0047λeff²</td>
+          <td>0.9040</td><td>0.352</td><td>0.179 g</td>
+        </tr>
+        <tr>
+          <td><b>DS2</b></td>
+          <td>Moderate Damage</td>
+          <td class="eq-cell"><b>μ̂DS2</b> = 1.2435 − 1.8232T̄ + 0.1366SR − 0.0959λeff + 0.7649T̄² − 0.0655T̄·SR + 0.0856T̄·λeff − 0.0021SR² − 0.0164SR·λeff</td>
+          <td>0.8167</td><td>0.099</td><td>0.597 g</td>
+        </tr>
+        <tr>
+          <td><b>DS3</b></td>
+          <td>Extensive Damage</td>
+          <td class="eq-cell"><b>μ̂DS3</b> = exp(0.3348 − 0.4548T̄² + 0.1174T̄·SR − 0.2249T̄·λeff)</td>
+          <td>0.3116</td><td>0.109</td><td>0.652 g</td>
+        </tr>
+        <tr>
+          <td><b>DS4</b></td>
+          <td>Complete Damage</td>
+          <td class="eq-cell"><b>μ̂DS4</b> = exp(0.1868 − 0.0138SR² + 0.1863λeff − 0.0660T̄·λeff² − 0.0361λeff³)</td>
+          <td>0.1330</td><td>0.095</td><td>0.970 g</td>
+        </tr>
+        <tr>
+          <td><b>DS5</b></td>
+          <td>Collapse</td>
+          <td class="eq-cell"><b>μ̂DS5</b> = 0.5462 + 1.9855√λeff + 0.3111T̄·SR − 4.6956T̄·ln(T̄) − 0.0693√λeff·ln(T̄) + 0.7310[ln(T̄)]² + 1.1060ln(SR)(λeff/T̄) − 0.0368(λeff/T̄²)</td>
+          <td>0.2107</td><td>—</td><td>3.03 g</td>
+        </tr>
+      </table>
+      <p class="micro-note">All selected equations are provided with their reliability indicators so the report remains traceable and self-contained. DS1–DS2 control the practical screening decision; DS3–DS5 document response progression and reliability context but are not standalone approval criteria. R²int and R²ext values are model-context indicators, not regulatory acceptance limits.</p>
+    </div>` : '';
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EIDA Screening Report</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700;800;900&family=STIX+Two+Text:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap');
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { width: 210mm; min-height: 297mm; margin: 0; }
+  body { background: #fff; color: #111827; font-family: 'Source Sans 3', 'Aptos', 'Segoe UI', Arial, Helvetica, sans-serif; font-size: 7.15pt; line-height: 1.18; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .report-page { width: 210mm; height: 297mm; margin: 0 auto; padding: 6.3mm 10.5mm 13mm; position: relative; background: #fff; break-after: page; page-break-after: always; overflow: hidden; }
+  .report-page:last-child { break-after: auto; page-break-after: auto; }
+  .page-header { height: 13.2mm; border-bottom: 1.2pt solid #111827; display: flex; justify-content: space-between; gap: 14mm; align-items: flex-start; margin-bottom: 1.8mm; }
+  .report-kicker { font-size: 6.9pt; letter-spacing: 0.14em; text-transform: uppercase; color: #c8442b; font-weight: 800; margin-bottom: 0.9mm; }
+  .report-title { font-size: 12.2pt; font-weight: 800; color: #111827; }
+  .report-meta { font-size: 6.7pt; color: #4b5563; text-align: right; line-height: 1.18; min-width: 42mm; }
+  .page-footer { position: absolute; left: 11mm; right: 11mm; bottom: 4.8mm; padding-top: 1.2mm; border-top: 0.5pt solid #d1d5db; display: flex; justify-content: space-between; gap: 10mm; font-size: 6.2pt; color: #6b7280; background:#fff; }
+  .report-intro { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 2mm; margin-bottom: 1.5mm; }
+  .headline { margin: 0 0 0.7mm; font-size: 12.5pt; line-height: 1.0; font-weight: 800; }
+  .intro-text { margin: 0; font-size: 6.9pt; color: #4b5563; }
+  .page-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4mm; align-items: start; }
+  .box { border: 0.65pt solid #d1d5db; background: #fff; padding: 1.35mm; margin-bottom: 1.35mm; break-inside: avoid; page-break-inside: avoid; }
+  .box.shaded { background: #f8fafc; }
+  .box.full { grid-column: 1 / -1; }
+  .half-width { min-width: 0; }
+  .step-title { display: flex; align-items: baseline; justify-content: space-between; gap: 3mm; border-bottom: 0.55pt solid #e5e7eb; padding-bottom: 0.75mm; margin-bottom: 0.9mm; }
+  .step-title span { font-size: 6.7pt; color: #c8442b; font-weight: 800; text-transform: uppercase; letter-spacing: 0.11em; }
+  .step-title strong { font-size: 7.4pt; color: #111827; text-align: right; }
+  .formula-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.0mm; margin-top: 1.0mm; }
+  .formula-card { border: 0.45pt solid #e5e7eb; background: #fff; padding: 1.0mm; }
+  .formula-card b { display: block; font-size: 6.8pt; margin-bottom: 0.5mm; }
+  .formula-card code { font-family: 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif; font-size: 7.0pt; font-weight: 500; color: #111827; white-space: normal; letter-spacing: 0.01em; }
+  table { width: 100%; border-collapse: collapse; font-size: 6.8pt; text-align: center; }
+  th, td { padding: 0.58mm 0.85mm; border-bottom: 0.4pt solid #e5e7eb; vertical-align: middle; text-align: center; }
+  th { text-align: center; font-weight: 800; color: #374151; }
+  .label-table th { width: 26%; }
+  .input-box table, .input-box th, .input-box td { text-align: left; }
+  .details-box table, .details-box th, .details-box td { text-align: left; }
+  .input-box th:nth-child(2n+1), .details-box th:nth-child(2n+1) { color: #374151; }
+  .tight-table { font-size: 6.15pt; }
+  .tight-table th, .tight-table td { padding: 0.50mm 0.65mm; }
+  .num { font-family: 'Courier New', monospace; text-align: center; white-space: nowrap; }
+  .decision { border: 0.7pt solid #d1d5db; border-left: 3.2pt solid #6b7280; padding: 1.5mm 1.8mm; background: #f9fafb; }
+  .decision.low { border-left-color: #1e6b47; background: #eef6f1; }
+  .decision.moderate { border-left-color: #b35c00; background: #fff7ed; }
+  .decision.high { border-left-color: #b91c1c; background: #fef2f2; }
+  .decision-label { margin: 0 0 0.5mm; font-size: 10.8pt; font-weight: 900; text-transform: uppercase; letter-spacing: 0.06em; }
+  .decision.low .decision-label { color: #1e6b47; }
+  .decision.moderate .decision-label { color: #b35c00; }
+  .decision.high .decision-label { color: #b91c1c; }
+  .decision p { margin: 0 0 0.7mm; font-size: 7.0pt; }
+  .decision-rule { font-family: 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif; font-size: 7.0pt; font-weight: 500; color: #111827; }
+  .rule-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4mm; }
+  .rule { border: 0.5pt solid #d1d5db; padding: 1.0mm; background: #fff; min-height: 8.4mm; }
+  .rule b { display: block; font-size: 6.4pt; text-transform: uppercase; margin-bottom: 0.4mm; }
+  .rule code { font-family: 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif; font-size: 6.9pt; font-weight: 500; color: #111827; }
+  .status { font-weight: 800; white-space: nowrap; }
+  .status.ok { color: #1e6b47; }
+  .status.warn { color: #b35c00; }
+  .warning-list { margin: 1.5mm 0 0 4mm; padding: 0; font-size: 7.2pt; color: #92400e; }
+  .micro-note { font-size: 6.5pt; color: #4b5563; margin: 0.75mm 0 0; }
+  .ok-note { color: #1e6b47; font-weight: 700; }
+  .visual-grid { display: grid; grid-template-columns: 1.28fr 0.72fr; gap: 1.5mm; align-items: start; }
+  .report-figure { margin: 0; }
+  .report-figure img { display: block; width: 100%; border: 0.55pt solid #d1d5db; background: #fff; }
+  .report-figure figcaption { margin-top: 0.6mm; font-size: 6.2pt; color: #4b5563; }
+  .chart-figure img { height: 80mm; object-fit: contain; object-position: center center; }
+  .preview-figure img { height: 80mm; object-fit: contain; object-position: center center; background: #f9fafb; }
+  .visual-grid { grid-template-columns: 1.22fr 0.78fr; }
+  .discussion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5mm; }
+  .method-list { margin: 0 0 0 3.0mm; padding: 0; font-size: 6.8pt; color: #374151; }
+  .method-list li { margin-bottom: 0.55mm; }
+  .citation { font-size: 6.9pt; color: #111827; margin: 0; }
+  .citation + .citation {
+    margin-top: 1.6mm;
+    padding-top: 1.3mm;
+    border-top: 0.45pt solid #e5e7eb;
+  }
+  .conclusion-box { border-left: 2.4pt solid #6b7280; background: #f8fafc; }
+  .conclusion-box.low { border-left-color: #1e6b47; background: #eef6f1; }
+  .conclusion-box.moderate { border-left-color: #b35c00; background: #fdf4e7; }
+  .conclusion-box.high { border-left-color: #b91c1c; background: #fef2f2; }
+  .conclusion-box p, .explanation-block p { margin: 0 0 0.75mm; font-size: 6.75pt; color: #374151; line-height: 1.20; }
+  .explanation-block { margin-top: 1.2mm; padding: 1.35mm; border: 0.65pt solid #d1d5db; min-height: 34mm; font-size: 6.75pt; color: #374151; background: #fafafa; }
+  .explanation-block strong { color: #111827; }
+  .reliability-equation-box { margin-top: 1.0mm; padding: 1.05mm 1.15mm; background: #fff; }
+  .reliability-equation-table { font-size: 6.05pt; line-height: 1.10; table-layout: fixed; width: 100%; }
+  .reliability-equation-table th, .reliability-equation-table td { padding: 0.32mm 0.42mm; vertical-align: middle; text-align: center; }
+  .reliability-equation-table th:nth-child(1), .reliability-equation-table td:nth-child(1) { width: 5.0%; }
+  .reliability-equation-table th:nth-child(2), .reliability-equation-table td:nth-child(2) { width: 14.0%; }
+  .reliability-equation-table th:nth-child(3), .reliability-equation-table td:nth-child(3) { width: 56.0%; }
+  .reliability-equation-table th:nth-child(4), .reliability-equation-table td:nth-child(4),
+  .reliability-equation-table th:nth-child(5), .reliability-equation-table td:nth-child(5) { width: 6.5%; }
+  .reliability-equation-table th:nth-child(6), .reliability-equation-table td:nth-child(6) { width: 12.0%; }
+  .reliability-equation-table .eq-cell { font-family: 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif; font-size: 5.45pt; text-align: left; color: #111827; background: #fafafa; line-height: 1.12; white-space: normal; }
+  .reliability-equation-table .eq-cell b { color: #c8442b; }
+  .contact-box { margin-top: 1.0mm; padding: 1.45mm; border: 0.9pt solid #c8442b; background: #fffdfb; display: grid; grid-template-columns: 1fr 22mm; gap: 2.2mm; align-items: center; }
+  .contact-box .contact-title { font-size: 7.6pt; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; color: #c8442b; margin-bottom: 0.8mm; }
+  .contact-box p { margin: 0 0 0.55mm; font-size: 7.1pt; color: #111827; line-height: 1.2; }
+  .contact-box .contact-muted { color: #4b5563; }
+  .contact-box .contact-qr { text-align: center; }
+  .contact-box .contact-qr img { width: 21mm; height: 21mm; object-fit: contain; border: none; padding: 0; background: transparent; }
+  .contact-box .contact-qr span { display: block; margin-top: 0.4mm; font-size: 5.8pt; letter-spacing: 0.08em; text-transform: uppercase; color: #6b7280; }
+  @media screen { body { background: #e5e7eb; } .report-page { box-shadow: 0 8px 30px rgba(15,17,23,0.18); margin: 10mm auto; } }
+  @media print { html, body { width: 210mm; margin: 0; background: #fff; } .report-page { margin: 0; box-shadow: none; } }
+</style>
+</head>
+<body>
+
+<article class="report-page">
+  ${header(1)}
+
+  <div class="report-intro">
+    <div>
+      <h1 class="headline">Seismic Performance Screening Summary</h1>
+      <p class="intro-text">This standalone screening record summarises the EIDA closed-form fragility assessment for an RC grid-like bare frame. It documents the drawing-level inputs, derived dimensionless macro-parameters, median PGA capacity estimates, fragility response, and recommended engineering action. The framework supplements prescriptive design checks by indicating whether the selected frame can proceed under normal review or should be escalated for more detailed performance-based assessment.</p>
+    </div>
+    <div class="decision ${risk.cls}">
+      <div class="decision-label">${escapeHtml(risk.level)}</div>
+      <p>${escapeHtml(risk.text)}</p>
+      <div class="decision-rule">${escapeHtml(risk.rule)}</div>
+    </div>
+  </div>
+
+  <div class="page-grid">
+    <div class="box shaded details-box">
+      <div class="step-title"><span>Report Details</span><strong>Project Details</strong></div>
+      ${reportTable(projectRows)}
+      ${notes !== '—' ? `<p class="micro-note"><strong>Notes:</strong> ${notes}</p>` : ''}
+    </div>
+
+    <div class="box shaded">
+      <div class="step-title"><span>Step 04</span><strong>Screening Rule</strong></div>
+      <div class="rule-grid">
+        <div class="rule"><b>Low</b><code>ag &lt; μ̂DS1</code></div>
+        <div class="rule"><b>Moderate</b><code>μ̂DS1 ≤ ag &lt; μ̂DS2</code></div>
+        <div class="rule"><b>High</b><code>ag ≥ μ̂DS2</code></div>
+      </div>
+      <p class="micro-note">The practical decision rule compares site PGA against DS1 and DS2 median PGA capacities. DS1 defines the preliminary low-risk boundary; DS2 defines the escalation boundary.</p>
+    </div>
+
+    <div class="box full input-box">
+      <div class="step-title"><span>Step 01</span><strong>Input Parameters from Drawings</strong></div>
+      ${reportTable(structuralRows)}
+    </div>
+
+    <div class="box full">
+      <div class="step-title"><span>Step 02</span><strong>Computed Macro-Parameters and Domain Check</strong></div>
+      <table>
+        <tr><th>Macro-Parameter</th><th>Value</th><th>Training Domain</th><th>Status</th></tr>
+        ${macroRows}
+      </table>
+      <div class="formula-strip">
+        <div class="formula-card"><b>Normalised Period</b><code>T = 0.075H^0.75; T̄ = T√(g/H)</code></div>
+        <div class="formula-card"><b>Stiffness Ratio</b><code>SR = (bc hc³ / bb hb³)(B/H)³</code></div>
+        <div class="formula-card"><b>Effective Slenderness</b><code>λeff = (H/B)(1−Iv); Iv = 0 or ρtop/(N+ρtop)</code></div>
+      </div>
+      ${warningBlock}
+    </div>
+
+    <div class="box full">
+      <div class="step-title"><span>Step 03</span><strong>Median PGA Capacity Output</strong></div>
+      <table>
+        <tr><th>Damage State</th><th>Meaning</th><th>μ̂ PGA Capacity</th><th>Use Status</th></tr>
+        ${dsRows}
+      </table>
+      <p class="micro-note">The reported μ̂ values are median PGA capacity estimates from the selected closed-form equations. DS1 and DS2 are used for the screening decision; higher damage states are retained to show response progression and model context.</p>
+    </div>
+
+    <div class="box full">
+      <div class="step-title"><span>Visual Output</span><strong>Fragility Curve and Geometry Snapshot</strong></div>
+      <div class="visual-grid">
+        <div>
+          ${chartImg ? `<figure class="report-figure chart-figure"><img src="${chartImg}" alt="Fragility curve snapshot"><figcaption>P(DS≥ds|PGA) = Φ[ln(PGA/μ̂)/β]. ${options.includeAdvancedCurves ? 'DS4/DS5 are dashed/dotted research-only guide curves.' : 'Default plotted view uses DS1–DS3 only.'}</figcaption></figure>` : `<p class="micro-note">Graph snapshot could not be captured by the browser.</p>`}
+        </div>
+        <div>
+          ${previewBlock}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  ${footer(1)}
+</article>
+
+<article class="report-page">
+  ${header(2)}
+
+  <div class="box shaded full">
+    <div class="step-title"><span>Technical Record</span><strong>Interpretation, Project Context, and Recommended Action</strong></div>
+    <p class="micro-note">This page provides the engineering interpretation behind the screening result, the scope and limitations of the EIDA framework, the reliability context of the selected equations, and the citation/profile information required for standalone reporting.</p>
+  </div>
+
+  <div class="discussion-grid">
+    <div class="box shaded">
+      <div class="step-title"><span>Step 05</span><strong>Interpretation</strong></div>
+      <ul class="method-list">
+        <li><strong>DS1:</strong> slight-damage capacity and the primary threshold for preliminary low-risk screening.</li>
+        <li><strong>DS2:</strong> moderate-damage capacity and the main trigger for detailing review or escalation.</li>
+        <li><strong>DS3:</strong> extensive-damage trend retained for response progression; not used as a sign-off criterion.</li>
+        <li><strong>DS4–DS5:</strong> retained for transparency and research context only. DS4 may become non-monotonic relative to DS3 for some inputs, while DS5 is excluded from the default graph.</li>
+      </ul>
+    </div>
+
+    <div class="box shaded">
+      <div class="step-title"><span>Limitations</span><strong>Engineering Use</strong></div>
+      <ul class="method-list">
+        <li>Use the result as a preliminary screening aid for low-to-mid-rise RC grid-like bare frames within the stated parameter domain.</li>
+        <li>Out-of-domain macro-parameters indicate extrapolation and require engineering review before interpretation.</li>
+        <li>Systems with shear walls, major torsional irregularity, non-rectangular layouts, atypical detailing, or unusual site/foundation conditions may require project-specific nonlinear assessment.</li>
+        <li>The report does not replace code compliance, design-office verification, professional judgement, or regulatory approval.</li>
+      </ul>
+    </div>
+
+    <div class="box full">
+      <div class="step-title"><span>Cite This Work</span><strong>Thesis / Structures Paper</strong></div>
+      <p class="citation"><strong>Shafiq, O.</strong> (2026). <em>Development of Closed-Form Seismic Fragility Equations Through Machine-Learning for Performance Verification of RC Grid-Like Frames in Prescriptive Design Practices.</em> Doctor of Philosophy, Faculty of Civil Engineering Technology, Universiti Malaysia Pahang Al-Sultan Abdullah (UMPSA). Supervisor: Ir. Ts. Dr. Saffuan bin Wan Ahmad. ID: PDZ24005.</p>
+      <p class="citation"><strong>Shafiq, O., Wan Ahmad, S., and co-authors.</strong> <em>Transparent ML Framework for Seismic Fragility Derivation: A Closed-Form Dimensionless Approach.</em> Structures, manuscript STRUCTURES-D-26-04141, under review.</p>
+      <p class="micro-note">EIDA Framework · ETABS–C#–MATLAB · GLME/meta-regression · Closed-form ML fragility equations.</p>
+    </div>
+
+    <div class="box full conclusion-box ${risk.cls === 'low' ? 'low' : risk.cls === 'moderate' ? 'moderate' : risk.cls === 'high' ? 'high' : 'moderate'}">
+      <div class="step-title"><span>Conclusion</span><strong>Recommended Action</strong></div>
+      <p>${escapeHtml(conclusionText)}</p>
+    </div>
+  </div>
+
+  <div class="explanation-block">
+    <div class="step-title"><span>Explanation</span><strong>Method and Parameter Derivation</strong></div>
+    <p><strong>Project basis:</strong> This report is generated from the EIDA seismic fragility screening framework for RC grid-like bare frames. The framework was developed to translate ordinary design-drawing information into rapid performance indicators, allowing a code-compliant frame to be screened before deciding whether a full nonlinear analysis or site-specific fragility study is warranted.</p>
+    <p><strong>Input transformation:</strong> The user-entered drawing parameters are not treated as isolated acceptance checks. They are converted into three dimensionless descriptors: normalised period T̄ for global dynamic demand, stiffness ratio SR for relative beam-column stiffness regime, and effective slenderness λeff for height-to-plan vulnerability including top-floor irregularity. The governing plan dimension is B = min(Wplan, Splan), and ρtop is obtained from the occupied top bays relative to the full lower-storey grid.</p>
+    <p><strong>Computation sequence:</strong> The EC8 estimate T = 0.075H^0.75 is used to compute T̄ = T√(g/H). The stiffness ratio is SR = (bc hc³ / bb hb³)(B/H)³. Effective slenderness is λeff = (H/B)(1−Iv), where Iv = 0 for regular full-height coverage and Iv = ρtop/(N+ρtop) for irregular top-floor coverage.</p>
+    <p><strong>Result interpretation:</strong> The selected closed-form equations convert T̄, SR, and λeff into median PGA capacities μ̂ for DS1–DS5. The practical screening conclusion is intentionally based on DS1 and DS2: low risk when ag &lt; μ̂DS1, moderate risk when μ̂DS1 ≤ ag &lt; μ̂DS2, and high risk when ag ≥ μ̂DS2. DS3–DS5 are retained to document response progression and reliability context, not as standalone approval criteria.</p>
+  </div>
+
+  ${appendixBlock}
+
+  <div class="contact-box">
+    <div>
+      <div class="contact-title">Contact and Portfolio</div>
+      <p><strong>Omair Shafiq</strong> · Structural, Transportation &amp; Computational Engineering</p>
+      <p class="contact-muted">Pakistan &amp; Malaysia · PEC CIVIL/54467 · BEM G2263729A</p>
+      <p>Phone / WhatsApp: <strong>+60 11 2758 8189</strong> · Email: <strong>omair.shafiq1998@gmail.com</strong></p>
+      <p>LinkedIn: linkedin.com/in/omair-shafiq · ResearchGate: researchgate.net/profile/Omair-Shafiq</p>
+    </div>
+    <div class="contact-qr">
+      <img src="${contactQrDataUri}" alt="Portfolio QR code">
+      <span>Portfolio QR</span>
+    </div>
+  </div>
+
+  ${footer(2)}
+</article>
+
+<script>
+  window.addEventListener('load', () => {
+    const printNow = () => { window.focus(); window.print(); };
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => setTimeout(printNow, 350));
+    } else {
+      setTimeout(printNow, 500);
+    }
+  });
+<\/script>
+</body>
+</html>`;
+}
+
+function openReportModal() {
+  const modal = document.getElementById('report_modal');
+  if (!modal) return;
+  modal.classList.add('active');
+  modal.setAttribute('aria-hidden', 'false');
+  const first = document.getElementById('report_project');
+  if (first) setTimeout(() => first.focus(), 50);
+}
+
+function closeReportModal() {
+  const modal = document.getElementById('report_modal');
+  if (!modal) return;
+  modal.classList.remove('active');
+  modal.setAttribute('aria-hidden', 'true');
+}
+
+function generateAndPrintReport() {
+  compute();
+  drawFramePreview();
+  drawChart();
+  const options = {
+    project: document.getElementById('report_project')?.value || '',
+    location: document.getElementById('report_location')?.value || '',
+    engineer: document.getElementById('report_engineer')?.value || '',
+    reference: document.getElementById('report_reference')?.value || '',
+    notes: document.getElementById('report_notes')?.value || '',
+    include3D: !!document.getElementById('report_include_3d')?.checked,
+    includeAdvancedCurves: !!document.getElementById('report_include_advanced')?.checked,
+    includeAppendix: !!document.getElementById('report_include_appendix')?.checked
+  };
+  const html = buildReportHtml(options);
+  const reportWindow = window.open('', '_blank');
+  if (!reportWindow) {
+    alert('The report window was blocked by the browser. Please allow pop-ups for this page and try again.');
+    return;
+  }
+  reportWindow.document.open();
+  reportWindow.document.write(html);
+  reportWindow.document.close();
+  closeReportModal();
+}
+
+
+// ── WIRE UP CONTROLS ───────────────────────────────────────────
+
+function writeMacroControls() {
+  setNumber('T_bar_number', state.macro.T, 3);
+  setNumber('SR_number', state.macro.SR, 3);
+  setNumber('lam_number', state.macro.lam, 3);
+  setSlider('T_bar_slider', state.macro.T, 'T');
+  setSlider('SR_slider', state.macro.SR, 'SR');
+  setSlider('lam_slider', state.macro.lam, 'lam');
+}
+
+function bindMacroPair(sliderId, numberId, key, digits = 3) {
+  const slider = document.getElementById(sliderId);
+  const number = document.getElementById(numberId);
+
+  slider.addEventListener('input', () => {
+    const v = parseFloat(slider.value);
+    state.macro[key] = v;
+    number.value = v.toFixed(digits);
+    updateUI();
+  });
+
+  number.addEventListener('input', () => {
+    const v = parseFloat(number.value);
+    if (!Number.isFinite(v)) return;
+    state.macro[key] = v;
+    setSlider(sliderId, v, key);
+    updateUI();
+  });
+}
+
+bindMacroPair('T_bar_slider', 'T_bar_number', 'T', 3);
+bindMacroPair('SR_slider', 'SR_number', 'SR', 3);
+bindMacroPair('lam_slider', 'lam_number', 'lam', 3);
+
+const betaSlider = document.getElementById('beta_slider');
+const betaNumber = document.getElementById('beta_number');
+betaSlider.addEventListener('input', () => {
+  state.beta = parseFloat(betaSlider.value);
+  betaNumber.value = state.beta.toFixed(2);
+  updateUI();
+});
+betaNumber.addEventListener('input', () => {
+  const v = parseFloat(betaNumber.value);
+  if (Number.isFinite(v) && v > 0) {
+    state.beta = v;
+    betaSlider.value = clamp(v, parseFloat(betaSlider.min), parseFloat(betaSlider.max)).toFixed(2);
+    updateUI();
+  }
+});
+
+function handleStoriesChanged() {
+  const storiesEl = document.getElementById('stories_input');
+  const heightEl = document.getElementById('height_input');
+  const v = parseFloat(storiesEl.value);
+  if (Number.isFinite(v) && v > 0) {
+    const n = Math.round(v);
+    state.structural.stories = n;
+    state.structural.H = n * 3.0;
+    heightEl.value = state.structural.H.toFixed(1);
+  }
+  updateUI();
+}
+
+document.getElementById('stories_input').addEventListener('input', handleStoriesChanged);
+document.getElementById('stories_input').addEventListener('change', () => {
+  const storiesEl = document.getElementById('stories_input');
+  const v = parseFloat(storiesEl.value);
+  if (Number.isFinite(v) && v > 0) storiesEl.value = Math.round(v).toFixed(0);
+  handleStoriesChanged();
+});
+
+['height_input','plan_width_input','plan_span_input','bc_input','hc_input','bb_input','hb_input','bayx_input','bayy_input','top_bayx_input','top_bayy_input'].forEach(id => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('input', updateUI);
+  el.addEventListener('change', updateUI);
+});
+
+
+
+['bayx_input','bayy_input','top_bayx_input','top_bayy_input'].forEach(id => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('change', () => {
+    const v = parseFloat(el.value);
+    if (Number.isFinite(v) && v > 0) el.value = Math.round(v).toFixed(0);
+    updateUI();
+  });
+});
+
+document.querySelectorAll('.mode-tab').forEach(tab => {
+  tab.addEventListener('click', () => setActiveMode(tab.dataset.mode));
+});
+
+document.getElementById('ag_input').addEventListener('input', (e) => {
+  const v = parseFloat(e.target.value);
+  if (!isNaN(v) && v >= 0) { state.ag = v; updateUI(); }
+});
+
+const advancedCurveToggle = document.getElementById('toggle_advanced_curves');
+function updateAdvancedCurveButton() {
+  if (!advancedCurveToggle) return;
+  advancedCurveToggle.classList.toggle('active', !!state.showAdvancedCurves);
+  advancedCurveToggle.setAttribute('aria-pressed', state.showAdvancedCurves ? 'true' : 'false');
+  advancedCurveToggle.textContent = state.showAdvancedCurves
+    ? 'Hide research-only DS4 / DS5 guide curves'
+    : 'Show research-only DS4 / DS5 guide curves';
+}
+if (advancedCurveToggle) {
+  updateAdvancedCurveButton();
+  advancedCurveToggle.addEventListener('click', () => {
+    state.showAdvancedCurves = !state.showAdvancedCurves;
+    updateAdvancedCurveButton();
+    drawChart();
+  });
+}
+
+
+const makeReportButton = document.getElementById('make_report_button');
+if (makeReportButton) makeReportButton.addEventListener('click', openReportModal);
+const reportCloseButton = document.getElementById('report_close_button');
+if (reportCloseButton) reportCloseButton.addEventListener('click', closeReportModal);
+const reportCancelButton = document.getElementById('report_cancel_button');
+if (reportCancelButton) reportCancelButton.addEventListener('click', closeReportModal);
+const reportGenerateButton = document.getElementById('report_generate_button');
+if (reportGenerateButton) reportGenerateButton.addEventListener('click', generateAndPrintReport);
+const reportModal = document.getElementById('report_modal');
+if (reportModal) {
+  reportModal.addEventListener('click', (e) => {
+    if (e.target === reportModal) closeReportModal();
+  });
+}
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeReportModal();
+});
+
+// Resize
+window.addEventListener('resize', () => { drawFramePreview(); drawChart(); });
+
+// Init
+updateUI();
+</script>
+</body>
+</html>
