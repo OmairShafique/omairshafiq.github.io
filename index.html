@@ -439,6 +439,88 @@
   .fragility-legend span { display: inline-flex; align-items: center; gap: 6px; }
   .fragility-legend i { width: 14px; height: 2px; display: inline-block; }
 
+
+  /* ENGINEERING SOFTWARE */
+  .software-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .software-card {
+    background: var(--surface);
+    border: 0.5px solid var(--divider);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .software-card:hover {
+    border-color: var(--gold-border);
+    background: var(--surface2);
+  }
+  .software-kicker {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.10em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .software-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    color: var(--ink);
+    line-height: 1.15;
+    margin-bottom: 0.75rem;
+  }
+  .software-desc {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.75;
+    margin-bottom: 1.25rem;
+  }
+  .software-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .software-chip {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--gold);
+    background: var(--gold-dim);
+    border: 0.5px solid var(--gold-border);
+    border-radius: var(--radius);
+    padding: 4px 9px;
+  }
+  .software-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .software-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #FFFFFF;
+    background: var(--gold);
+    border-radius: var(--radius);
+    padding: 9px 15px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .software-link:hover { background: var(--gold-light); }
+  .software-link:active { transform: scale(0.98); }
+  .software-link.secondary {
+    color: var(--gold);
+    background: var(--gold-dim);
+    border: 0.5px solid var(--gold-border);
+  }
+  .software-link.secondary:hover { background: rgba(201,168,76,0.25); }
+
   /* PUBLICATIONS */
   .pub-list { display: flex; flex-direction: column; gap: 1px; background: var(--divider); border: 0.5px solid var(--divider); border-radius: var(--radius-lg); overflow: hidden; }
   .pub-item {
@@ -574,6 +656,7 @@
     .result-params { grid-template-columns: 1fr 1fr 1fr; }
     .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
     .contact-grid { grid-template-columns: 1fr; }
+    .software-grid { grid-template-columns: 1fr; }
     footer { flex-direction: column; gap: 0.5rem; text-align: center; }
     .screener-header { flex-direction: column; }
   }
@@ -595,6 +678,7 @@
   <div class="nav-links">
     <a href="#about">About</a>
     <a href="#research">Research</a>
+    <a href="#software">Software</a>
     <a href="#publications">Publications</a>
     <a href="#experience">Experience</a>
     <a href="#contact">Contact</a>
@@ -613,6 +697,7 @@
     <span class="tag">ML · XGBoost · ANN</span>
     <span class="tag">ETABS API</span>
     <span class="tag">C# · MATLAB</span>
+    <span class="tag">Conc · FlexPave</span>
     <span class="tag">Software Development</span>
   </div>
   <div class="hero-creds">
@@ -632,7 +717,7 @@
     <div class="about-text">
       <p>PhD researcher at UMPSA Malaysia specialising in <strong>AI-integrated seismic fragility assessment</strong>. Creator of the EIDA Framework — an automated C# + MATLAB pipeline that has generated over <strong>50,000 fragility curves</strong> across 180 structural archetypes via the ETABS API.</p>
       <p>Alongside doctoral research, I hold <strong>6+ years of industry experience</strong> as a Senior Design Engineer with CEC Minconsult, delivering transportation and structural projects across Pakistan. My work spans national highway RAMS reporting, road safety audits, and multi-million-dollar urban mobility schemes.</p>
-      <p>I build production-grade desktop engineering software in <strong>C# .NET</strong> — including <em>Conc</em> (RC beam/slab capacity checks) and <em>Flexpave</em> (flexible pavement design to AASHTO 2007) — tools deployed to practising engineers.</p>
+      <p>I build production-grade desktop engineering software in <strong>C# .NET</strong> — including <a href="https://sourceforge.net/projects/conc/" target="_blank" rel="noopener" style="color:var(--gold); text-decoration:none;"><em>Conc</em></a> (RC beam/slab capacity checks and section analysis) and <a href="https://www.softpedia.com/get/Others/Home-Education/FlexPave.shtml" target="_blank" rel="noopener" style="color:var(--gold); text-decoration:none;"><em>FlexPave</em></a> (flexible pavement design and planning to AASHTO procedures) — tools publicly listed and deployed to practising engineers.</p>
 
       <div class="cv-bar">
         <span class="cv-bar-text">Download <strong>full CVs</strong></span>
@@ -774,6 +859,47 @@
   </div>
 </section>
 
+
+<!-- SOFTWARE -->
+<section id="software">
+  <div class="section-eyebrow">Engineering Software</div>
+  <h2 class="section-title">Civil engineering tools<br>built for practising engineers.</h2>
+
+  <div class="software-grid">
+    <div class="software-card">
+      <div class="software-kicker">Structural engineering · C# .NET</div>
+      <div class="software-title">Conc</div>
+      <p class="software-desc">
+        A reinforced-concrete section analysis application for beam, slab, and column capacity checks, including beam and column section assessment workflows used in practical design review.
+      </p>
+      <div class="software-meta">
+        <span class="software-chip">RC sections</span>
+        <span class="software-chip">Beam & column checks</span>
+        <span class="software-chip">Desktop software</span>
+      </div>
+      <div class="software-actions">
+        <a class="software-link" href="https://sourceforge.net/projects/conc/" target="_blank" rel="noopener">View on SourceForge</a>
+      </div>
+    </div>
+
+    <div class="software-card">
+      <div class="software-kicker">Transportation engineering · Pavement design</div>
+      <div class="software-title">FlexPave</div>
+      <p class="software-desc">
+        A flexible pavement design and planning application for highway pavement structures, supporting layer-based pavement configuration and AASHTO-guided design inputs.
+      </p>
+      <div class="software-meta">
+        <span class="software-chip">Flexible pavement</span>
+        <span class="software-chip">AASHTO procedures</span>
+        <span class="software-chip">Windows app</span>
+      </div>
+      <div class="software-actions">
+        <a class="software-link" href="https://www.softpedia.com/get/Others/Home-Education/FlexPave.shtml" target="_blank" rel="noopener">View Softpedia Review</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- PUBLICATIONS -->
 <section id="publications">
   <div class="section-eyebrow">Publications</div>
@@ -906,7 +1032,7 @@
       <div>
         <div class="exp-role">Structural Engineer & Software Developer</div>
         <div class="exp-org">Independent Practice</div>
-        <div class="exp-desc">Developed <em>Conc</em> (RC beam/slab capacity checks and column interaction diagrams) and <em>Flexpave</em> (flexible pavement design to AASHTO 2007) — both production-grade C# WPF .NET desktop applications deployed to practising engineers. Built FEM-based analysis tools for masonry structures in MATLAB.</div>
+        <div class="exp-desc">Developed <a href="https://sourceforge.net/projects/conc/" target="_blank" rel="noopener" style="color:var(--gold); text-decoration:none;"><em>Conc</em></a> (RC beam/slab capacity checks and column interaction diagrams) and <a href="https://www.softpedia.com/get/Others/Home-Education/FlexPave.shtml" target="_blank" rel="noopener" style="color:var(--gold); text-decoration:none;"><em>FlexPave</em></a> (flexible pavement design and planning to AASHTO procedures) — both production-grade C# WPF .NET desktop applications deployed to practising engineers. Built FEM-based analysis tools for masonry structures in MATLAB.</div>
       </div>
     </div>
     <div class="exp-item">
@@ -959,7 +1085,7 @@
       <span class="contact-icon">📞</span>
       <div>
         <div class="contact-label">WhatsApp / Phone</div>
-        <div class="contact-value">+60 11 2758 8189 · +92 340 465 5150</div>
+        <div class="contact-value">+60 11 2758 8189 · +92 340 465 5150 · +92 348 9793859</div>
       </div>
     </div>
   </div>
