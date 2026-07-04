@@ -929,6 +929,7 @@
     font-size: 0.72rem;
     color: var(--accent-warm);
   }
+  .cite-box .cite-author a { color: var(--accent-warm); text-decoration: none; }
 
   .pipeline-list { list-style: none; }
   .pipeline-list li {
@@ -1708,7 +1709,7 @@
         <p>Shafiq, O., Wan Ahmad, S., and co-authors. <em>Transparent ML Framework for Seismic Fragility Derivation: A Closed-Form Dimensionless Approach.</em> Structures, manuscript STRUCTURES-D-26-04141, under review.</p>
         <div class="cite-author">
           omair.shafiq1998@gmail.com<br>
-          github.com/OmairShafique<br>
+          <a href="https://omairshafique.github.io/omairshafiq.github.io/" target="_blank" rel="noopener">omairshafique.github.io/omairshafiq.github.io</a><br>
           UMPSA · 2026
         </div>
       </div>
@@ -1776,8 +1777,9 @@
 </div>
 
 <footer>
-  EIDA Framework · Seismic Fragility Screening · RC Grid-Like Frames · BCP-2021 · MS EN 1998 ·
-  <a href="mailto:omair.shafiq1998@gmail.com">omair.shafiq1998@gmail.com</a>
+  <a href="https://omairshafique.github.io/omairshafiq.github.io/" target="_blank" rel="noopener" aria-label="Open Omair Shafiq portfolio website">
+    EIDA Framework · Seismic Fragility Screening · RC Grid-Like Frames · BCP-2021 · MS EN 1998 · Portfolio: omairshafique.github.io/omairshafiq.github.io
+  </a>
 </footer>
 
 <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
@@ -3295,7 +3297,7 @@ function buildReportHtml(options) {
   .reliability-equation-table th:nth-child(6), .reliability-equation-table td:nth-child(6) { width: 12.0%; }
   .reliability-equation-table .eq-cell { font-family: 'STIX Two Text', 'Cambria Math', 'Times New Roman', serif; font-size: 5.45pt; text-align: left; color: #111827; background: #fafafa; line-height: 1.12; white-space: normal; }
   .reliability-equation-table .eq-cell b { color: #c8442b; }
-  .contact-box { margin-top: 1.0mm; padding: 1.45mm; border: 0.9pt solid #c8442b; background: #fffdfb; display: grid; grid-template-columns: 1fr 22mm; gap: 2.2mm; align-items: center; }
+  .contact-box { margin-top: 1.0mm; padding: 1.45mm; border: 0.9pt solid #c8442b; background: #fffdfb; display: grid; grid-template-columns: 1fr 22mm; gap: 2.2mm; align-items: center; text-decoration: none; color: inherit; cursor: pointer; }
   .contact-box .contact-title { font-size: 7.6pt; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; color: #c8442b; margin-bottom: 0.8mm; }
   .contact-box p { margin: 0 0 0.55mm; font-size: 7.1pt; color: #111827; line-height: 1.2; }
   .contact-box .contact-muted { color: #4b5563; }
@@ -3436,19 +3438,20 @@ function buildReportHtml(options) {
 
   ${appendixBlock}
 
-  <div class="contact-box">
+  <a class="contact-box" href="https://omairshafique.github.io/omairshafiq.github.io/" target="_blank" rel="noopener" aria-label="Open Omair Shafiq portfolio website">
     <div>
       <div class="contact-title">Contact and Portfolio</div>
       <p><strong>Omair Shafiq</strong> · Structural, Transportation &amp; Computational Engineering</p>
       <p class="contact-muted">Pakistan &amp; Malaysia · PEC CIVIL/54467 · BEM G2263729A</p>
       <p>Phone / WhatsApp: <strong>+60 11 2758 8189</strong> · Email: <strong>omair.shafiq1998@gmail.com</strong></p>
       <p>LinkedIn: linkedin.com/in/omair-shafiq · ResearchGate: researchgate.net/profile/Omair-Shafiq</p>
+      <p>Portfolio: <strong>omairshafique.github.io/omairshafiq.github.io</strong></p>
     </div>
     <div class="contact-qr">
       <img src="${contactQrDataUri}" alt="Portfolio QR code">
       <span>Portfolio QR</span>
     </div>
-  </div>
+  </a>
 
   ${footer(2)}
 </article>
