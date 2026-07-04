@@ -588,6 +588,8 @@
   .exp-desc ul { padding-left: 1.2rem; }
   .exp-desc li { margin-bottom: 4px; }
 
+
+
   /* CONTACT */
   .contact-grid {
     display: grid;
@@ -605,8 +607,27 @@
   }
   .contact-item:hover { border-color: var(--gold-border); background: var(--surface2); }
   .contact-icon {
-    font-size: 20px; color: var(--gold);
-    flex-shrink: 0; margin-top: 2px;
+    width: 24px;
+    height: 24px;
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .contact-icon svg {
+    width: 22px;
+    height: 22px;
+    display: block;
+    fill: currentColor;
+  }
+  .contact-icon-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.08em;
+    color: var(--gold);
   }
   .contact-label { font-size: 12px; color: var(--text-muted); margin-bottom: 2px; letter-spacing: 0.04em; }
   .contact-value { font-size: 14px; color: var(--ink); font-weight: 500; }
@@ -900,6 +921,8 @@
   </div>
 </section>
 
+
+
 <!-- PUBLICATIONS -->
 <section id="publications">
   <div class="section-eyebrow">Publications</div>
@@ -1061,35 +1084,62 @@
 
   <div class="contact-grid">
     <a href="mailto:omair.shafiq1998@gmail.com" class="contact-item">
-      <span class="contact-icon">✉</span>
+      <span class="contact-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm-.4 4.25-7.08 5.31a.86.86 0 0 1-1.04 0L4.4 8.25V6.8l7.6 5.7 7.6-5.7v1.45Z"/>
+        </svg>
+      </span>
       <div>
         <div class="contact-label">Email</div>
         <div class="contact-value">omair.shafiq1998@gmail.com</div>
       </div>
     </a>
-    <a href="https://linkedin.com/in/omair-shafiq" target="_blank" class="contact-item">
-      <span class="contact-icon">in</span>
+    <a href="https://linkedin.com/in/omair-shafiq" target="_blank" rel="noopener" class="contact-item">
+      <span class="contact-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.34V8.98h3.42v1.57h.05c.48-.91 1.64-1.86 3.37-1.86 3.61 0 4.28 2.37 4.28 5.46v6.3ZM5.32 7.41a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12Zm1.78 13.04H3.54V8.98H7.1v11.47Z"/>
+        </svg>
+      </span>
       <div>
         <div class="contact-label">LinkedIn</div>
         <div class="contact-value">linkedin.com/in/omair-shafiq</div>
       </div>
     </a>
-    <a href="https://researchgate.net/profile/Omair-Shafiq" target="_blank" class="contact-item">
-      <span class="contact-icon">RG</span>
+    <a href="https://researchgate.net/profile/Omair-Shafiq" target="_blank" rel="noopener" class="contact-item">
+      <span class="contact-icon contact-icon-text" aria-hidden="true">RG</span>
       <div>
         <div class="contact-label">ResearchGate</div>
         <div class="contact-value">researchgate.net/profile/Omair-Shafiq</div>
       </div>
     </a>
-    <a href="https://wa.me/601127588189" target="_blank" rel="noopener" class="contact-item">
-      <span class="contact-icon">WA</span>
+    <a href="https://www.youtube.com/@omairshafiq1998" target="_blank" rel="noopener" class="contact-item" aria-label="YouTube channel Omair Shafiq">
+      <span class="contact-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <path d="M21.58 7.19a2.52 2.52 0 0 0-1.78-1.78C18.23 5 12 5 12 5s-6.23 0-7.8.41a2.52 2.52 0 0 0-1.78 1.78C2 8.76 2 12 2 12s0 3.24.42 4.81c.23.86.91 1.55 1.78 1.78C5.77 19 12 19 12 19s6.23 0 7.8-.41a2.52 2.52 0 0 0 1.78-1.78C22 15.24 22 12 22 12s0-3.24-.42-4.81ZM10 15V9l5.2 3L10 15Z"/>
+        </svg>
+      </span>
+      <div>
+        <div class="contact-label">YouTube</div>
+        <div class="contact-value">youtube.com/@omairshafiq1998</div>
+      </div>
+    </a>
+    <a href="https://wa.me/601127588189" target="_blank" rel="noopener" class="contact-item" aria-label="WhatsApp Omair Shafiq">
+      <span class="contact-icon" aria-hidden="true">
+        <svg viewBox="0 0 32 32" focusable="false">
+          <path d="M16.02 3.5C9.17 3.5 3.6 9.04 3.6 15.84c0 2.18.58 4.31 1.68 6.18L3.5 28.5l6.64-1.72a12.5 12.5 0 0 0 5.88 1.48c6.85 0 12.43-5.53 12.43-12.34C28.45 9.04 22.87 3.5 16.02 3.5Zm0 22.65c-1.9 0-3.76-.5-5.38-1.45l-.38-.22-3.94 1.02 1.05-3.82-.25-.4a10.17 10.17 0 0 1-1.56-5.44c0-5.63 4.69-10.22 10.46-10.22 5.76 0 10.46 4.59 10.46 10.22 0 5.72-4.7 10.31-10.46 10.31Zm5.73-7.73c-.31-.16-1.85-.91-2.14-1.01-.29-.11-.5-.16-.71.16-.21.31-.82 1.01-1 1.22-.18.21-.37.24-.69.08-.31-.16-1.33-.49-2.54-1.56-.94-.84-1.57-1.87-1.75-2.18-.18-.31-.02-.48.14-.64.14-.14.31-.37.47-.55.16-.18.21-.31.31-.52.1-.21.05-.39-.03-.55-.08-.16-.71-1.71-.98-2.34-.26-.62-.52-.53-.71-.54h-.61c-.21 0-.55.08-.84.39-.29.31-1.1 1.07-1.1 2.62s1.13 3.05 1.29 3.26c.16.21 2.23 3.39 5.4 4.76.75.32 1.34.52 1.8.66.76.24 1.45.21 1.99.13.61-.09 1.85-.76 2.11-1.49.26-.73.26-1.35.18-1.49-.08-.13-.29-.21-.61-.37Z"/>
+        </svg>
+      </span>
       <div>
         <div class="contact-label">WhatsApp</div>
         <div class="contact-value">+60 11 2758 8189</div>
       </div>
     </a>
     <div class="contact-item" style="cursor:default;">
-      <span class="contact-icon">☎</span>
+      <span class="contact-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <path d="M6.62 10.79a15.1 15.1 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.56 3.58.56a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.19 2.46.56 3.58a1 1 0 0 1-.24 1.01l-2.2 2.2Z"/>
+        </svg>
+      </span>
       <div>
         <div class="contact-label">Phone</div>
         <div class="contact-value">+92 340 465 5150 · +92 348 9793859</div>
@@ -1100,7 +1150,7 @@
 
 <footer style="padding: 2.5rem 4rem; border-top: 0.5px solid var(--divider); display:flex; justify-content:space-between; max-width:1100px; margin:0 auto; font-size:12px; color:var(--text-muted); font-family:'DM Mono',monospace; flex-wrap:wrap; gap:0.5rem; background:var(--ink);">
   <span style="color:rgba(245,240,232,0.5);">Dr. Eng. Omair Shafiq · P.E. · PhD</span>
-  <span style="color:rgba(245,240,232,0.5);">PEC PE CIVIL/54467 · BEM G2263729A · UMPSA PDZ24005</span>
+  <span style="color:rgba(245,240,232,0.5);">PEC PE CIVIL/54467 · BEM G2263729A · UMPSA PDZ24005 · YouTube @omairshafiq1998</span>
 </footer>
 
 <script>
