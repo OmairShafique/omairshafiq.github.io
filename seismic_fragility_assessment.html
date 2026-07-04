@@ -968,6 +968,8 @@
     letter-spacing: 0.06em;
   }
   footer a { color: var(--accent-warm); text-decoration: none; }
+  .footer-line { display: block; margin: 3px 0; }
+  .footer-email { color: rgba(255,255,255,0.68); }
 
   /* ── VALIDATION TAGS ──────────────────────────────────────── */
   .valid-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
@@ -1778,7 +1780,9 @@
 
 <footer>
   <a href="https://omairshafique.github.io/omairshafiq.github.io/" target="_blank" rel="noopener" aria-label="Open Omair Shafiq portfolio website">
-    EIDA Framework · Seismic Fragility Screening · RC Grid-Like Frames · BCP-2021 · MS EN 1998 · Portfolio: omairshafique.github.io/omairshafiq.github.io
+    <span class="footer-line">EIDA Framework · Seismic Fragility Screening · RC Grid-Like Frames · BCP-2021 · MS EN 1998</span>
+    <span class="footer-line">Portfolio: omairshafique.github.io/omairshafiq.github.io</span>
+    <span class="footer-line footer-email">Email: omair.shafiq1998@gmail.com</span>
   </a>
 </footer>
 
@@ -3142,7 +3146,7 @@ function buildReportHtml(options) {
 
   const footer = (pageNo) => `
     <footer class="page-footer">
-      <span>Omair Shafiq · UMPSA · EIDA Framework</span>
+      <span>Omair Shafiq · UMPSA · EIDA Framework · omair.shafiq1998@gmail.com</span>
       <span>Page ${pageNo} of ${totalPages}</span>
     </footer>`;
 
