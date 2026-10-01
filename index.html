@@ -30,6 +30,7 @@
     --red-risk: #B83A2A;
     --amber-risk: #B8640A;
     --green-risk: #2E7A48;
+    --blue-review: #3E5F99;
     --radius: 6px;
     --radius-lg: 12px;
   }
@@ -251,10 +252,12 @@
     line-height: 1.75;
     margin-bottom: 1.5rem;
   }
+  .eida-body:last-child { margin-bottom: 0; }
   .eida-body strong { color: var(--ink); font-weight: 500; }
   .pipeline {
     display: flex; align-items: center; gap: 0;
     flex-wrap: wrap;
+    row-gap: 8px;
     margin-top: 1.5rem;
   }
   .pipe-step {
@@ -521,14 +524,15 @@
   }
   .software-link:hover { background: var(--gold-light); }
   .software-link:active { transform: scale(0.98); }
-  .software-link.secondary {
-    color: var(--gold);
-    background: var(--gold-dim);
-    border: 0.5px solid var(--gold-border);
-  }
-  .software-link.secondary:hover { background: rgba(201,168,76,0.25); }
 
   /* PUBLICATIONS */
+  .pub-legend {
+    display: flex; flex-wrap: wrap; gap: 1.5rem;
+    font-family: 'DM Mono', monospace; font-size: 12px;
+    color: var(--text-muted);
+    margin: -1.25rem 0 1.5rem;
+  }
+  .pub-legend strong { color: var(--ink); font-weight: 500; }
   .pub-list { display: flex; flex-direction: column; gap: 1px; background: var(--divider); border: 0.5px solid var(--divider); border-radius: var(--radius-lg); overflow: hidden; }
   .pub-item {
     background: var(--surface);
@@ -556,8 +560,10 @@
   .pub-meta {
     font-size: 12px;
     color: var(--text-muted);
-    line-height: 1.4;
+    line-height: 1.5;
   }
+  .pub-meta a { color: var(--gold); text-decoration: none; }
+  .pub-meta a:hover { text-decoration: underline; }
   .pub-q {
     font-family: 'DM Mono', monospace;
     font-size: 11px;
@@ -566,12 +572,20 @@
     align-self: start;
     white-space: nowrap;
   }
-  .q1 { background: rgba(90,158,110,0.15); color: #7DC494; border: 0.5px solid rgba(90,158,110,0.3); }
+  .q1 { background: rgba(46,122,72,0.10); color: var(--green-risk); border: 0.5px solid rgba(46,122,72,0.30); }
+  .accepted { background: rgba(46,122,72,0.18); color: var(--green-risk); border: 0.5px solid rgba(46,122,72,0.45); font-weight: 500; }
   .q2 { background: rgba(201,168,76,0.12); color: var(--gold); border: 0.5px solid var(--gold-border); }
-  .q3 { background: rgba(240,235,224,0.06); color: var(--text-muted); border: 0.5px solid var(--divider); }
-  .under-review { background: rgba(90,120,180,0.12); color: #8AABDE; border: 0.5px solid rgba(90,120,180,0.3); }
+  .q3 { background: rgba(26,26,23,0.04); color: var(--text-muted); border: 0.5px solid var(--divider); }
+  .under-review { background: rgba(62,95,153,0.10); color: var(--blue-review); border: 0.5px solid rgba(62,95,153,0.30); }
 
-  /* EXPERIENCE */
+  .pub-group {
+    font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold);
+    margin: 2.25rem 0 0.75rem;
+  }
+  .pub-legend + .pub-group { margin-top: 0; }
+  .preprint { background: rgba(91,74,138,0.10); color: #5B4A8A; border: 0.5px solid rgba(91,74,138,0.30); }
+  /* EXPERIENCE & EDUCATION */
   .exp-list { display: flex; flex-direction: column; gap: 0; }
   .exp-item {
     display: grid;
@@ -594,8 +608,7 @@
   .exp-desc { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
   .exp-desc ul { padding-left: 1.2rem; }
   .exp-desc li { margin-bottom: 4px; }
-
-
+  .exp-desc a { color: var(--gold); text-decoration: none; }
 
   /* CONTACT */
   .contact-grid {
@@ -637,17 +650,7 @@
     color: var(--gold);
   }
   .contact-label { font-size: 12px; color: var(--text-muted); margin-bottom: 2px; letter-spacing: 0.04em; }
-  .contact-value { font-size: 14px; color: var(--ink); font-weight: 500; }
-
-  /* FOOTER */
-  footer {
-    border-top: 0.5px solid var(--divider);
-    padding: 2.5rem 4rem;
-    display: flex; justify-content: space-between; align-items: center;
-    max-width: 1100px; margin: 0 auto;
-    font-size: 12px; color: var(--text-muted);
-    font-family: 'DM Mono', monospace;
-  }
+  .contact-value { font-size: 14px; color: var(--ink); font-weight: 500; word-break: break-word; }
 
   /* CV DOWNLOAD BAR */
   .cv-bar {
@@ -676,7 +679,7 @@
 
   @media (max-width: 768px) {
     nav { padding: 0 1.5rem; }
-    .nav-links { gap: 1.2rem; }
+    .nav-links { gap: 1.2rem; overflow-x: auto; }
     .hero, section, #research { padding-left: 1.5rem; padding-right: 1.5rem; }
     .hero { padding-top: 80px; }
     .about-grid { grid-template-columns: 1fr; }
@@ -687,12 +690,14 @@
     .software-grid { grid-template-columns: 1fr; }
     footer { flex-direction: column; gap: 0.5rem; text-align: center; }
     .screener-header { flex-direction: column; }
+    .eida-card, .screener-card { padding: 1.75rem; }
   }
   @media (max-width: 480px) {
+    .nav-name { display: none; }
     .input-grid { grid-template-columns: 1fr; }
     .result-params { grid-template-columns: 1fr 1fr; }
     .pub-item { grid-template-columns: auto 1fr; }
-    .pub-q { display: none; }
+    .pub-q { grid-column: 2; justify-self: start; }
   }
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; }
@@ -715,24 +720,26 @@
 
 <!-- HERO -->
 <div class="hero" id="top">
-  <div class="hero-eyebrow">Structural · Transportation · Computational Engineering</div>
+  <div class="hero-eyebrow">Structural · Earthquake · Transportation · Computational Engineering</div>
   <h1 class="hero-name">Dr. <em>Eng.</em><br>Omair Shafiq</h1>
-  <p class="hero-title">P.E. · PhD Researcher · Senior Design Engineer<br>Pakistan & Malaysia</p>
+  <p class="hero-title">P.E. · PhD in Computational Structural &amp; Earthquake Engineering · Design Engineer<br>Pakistan &amp; Malaysia</p>
   <div class="hero-tags">
     <span class="tag">Seismic Fragility</span>
     <span class="tag">EIDA Framework</span>
-    <span class="tag">Road Asset Management</span>
-    <span class="tag">ML · XGBoost · ANN</span>
+    <span class="tag">IDA · PSDM</span>
+    <span class="tag">GLME Meta-Regression</span>
+    <span class="tag">ML · XGBoost · ANN · LASSO</span>
     <span class="tag">ETABS API</span>
     <span class="tag">C# · MATLAB</span>
+    <span class="tag">Road Asset Management</span>
     <span class="tag">Conc · FlexPave</span>
-    <span class="tag">Software Development</span>
   </div>
   <div class="hero-creds">
     <span class="cred"><strong>PEC PE</strong> CIVIL/54467</span>
     <span class="cred"><strong>BEM</strong> G2263729A</span>
-    <span class="cred"><strong>10</strong> journal publications</span>
-    <span class="cred"><strong>6+</strong> years industry experience</span>
+    <span class="cred"><strong>14</strong> journal contributions</span>
+    <span class="cred"><strong>8</strong> in Q1 venues</span>
+    <span class="cred"><strong>6+</strong> years research &amp; industry</span>
   </div>
   <div class="hero-scroll">scroll to explore</div>
 </div>
@@ -743,9 +750,10 @@
   <h2 class="section-title">Engineer, researcher,<br>software builder.</h2>
   <div class="about-grid">
     <div class="about-text">
-      <p>PhD researcher at UMPSA Malaysia specialising in <strong>AI-integrated seismic fragility assessment</strong>. Creator of the EIDA Framework — an automated C# + MATLAB pipeline that has generated over <strong>50,000 fragility curves</strong> across 180 structural archetypes via the ETABS API.</p>
-      <p>Alongside doctoral research, I hold <strong>6+ years of industry experience</strong> as a Senior Design Engineer with CEC Minconsult, delivering transportation and structural projects across Pakistan. My work spans national highway RAMS reporting, road safety audits, and multi-million-dollar urban mobility schemes.</p>
-      <p>I build production-grade desktop engineering software in <strong>C# .NET</strong> — including <a href="https://sourceforge.net/projects/conc/" target="_blank" rel="noopener" style="color:var(--gold); text-decoration:none;"><em>Conc</em></a> (RC beam/slab capacity checks and section analysis) and <a href="https://www.softpedia.com/get/Others/Home-Education/FlexPave.shtml" target="_blank" rel="noopener" style="color:var(--gold); text-decoration:none;"><em>FlexPave</em></a> (flexible pavement design and planning to AASHTO procedures) — tools publicly listed and deployed to practising engineers.</p>
+      <p>PhD researcher at UMPSA Malaysia and registered <strong>Professional Engineer</strong> with 6+ years of combined research and industry experience in structural and earthquake engineering. Author of <strong>14 journal contributions</strong> spanning Q1–Q3 venues, primarily in <em>Structures</em> and <em>Bulletin of Earthquake Engineering</em>.</p>
+      <p>Originator of the <strong>EIDA Framework</strong> — an end-to-end automated C# + MATLAB pipeline that runs parametric nonlinear time-history analyses through the ETABS API, generating over <strong>50,000 fragility curves</strong> across 180 structural archetypes.</p>
+      <p>Alongside doctoral research I work as a <strong>Design Engineer with CEC Minconsult</strong>, supervising transportation projects individually valued above $1M USD — national highway RAMS reporting, road safety audits and urban mobility schemes — and teach undergraduate civil engineering at UET Peshawar.</p>
+      <p>I also build desktop engineering software in <strong>C# WPF .NET</strong>, including <a href="https://sourceforge.net/projects/conc/" target="_blank" rel="noopener" style="color:var(--gold); text-decoration:none;"><em>Conc</em></a> (RC beam/slab capacity and column interaction diagrams) and <a href="https://www.softpedia.com/get/Others/Home-Education/FlexPave.shtml" target="_blank" rel="noopener" style="color:var(--gold); text-decoration:none;"><em>FlexPave</em></a> (flexible pavement design to AASHTO procedures).</p>
 
       <div class="cv-bar">
         <span class="cv-bar-text">Download <strong>full CVs</strong></span>
@@ -758,8 +766,12 @@
     </div>
     <div class="stat-grid">
       <div class="stat-cell">
-        <div class="stat-number">10</div>
-        <div class="stat-label">Journal publications<br>Q1–Q3 venues</div>
+        <div class="stat-number">14</div>
+        <div class="stat-label">Journal contributions<br>7 published · 2 accepted</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-number">8</div>
+        <div class="stat-label">Contributions in<br>Q1 venues</div>
       </div>
       <div class="stat-cell">
         <div class="stat-number">50k+</div>
@@ -770,16 +782,12 @@
         <div class="stat-label">RC archetypes analysed</div>
       </div>
       <div class="stat-cell">
-        <div class="stat-number">6+</div>
-        <div class="stat-label">Years industry experience</div>
-      </div>
-      <div class="stat-cell">
         <div class="stat-number">~11k</div>
         <div class="stat-label">Nonlinear analyses run</div>
       </div>
       <div class="stat-cell">
-        <div class="stat-number">4</div>
-        <div class="stat-label">Papers under review in Q1 venues</div>
+        <div class="stat-number">6+</div>
+        <div class="stat-label">Years research &amp;<br>industry experience</div>
       </div>
     </div>
   </div>
@@ -788,16 +796,16 @@
 <!-- RESEARCH -->
 <section id="research" style="padding-top: 0;">
   <div class="section-eyebrow">PhD Research</div>
-  <h2 class="section-title">EIDA Framework &<br>seismic fragility at scale.</h2>
+  <h2 class="section-title">EIDA Framework &amp;<br>seismic fragility at scale.</h2>
 
   <div class="eida-card">
     <div class="eida-title">EIDA Framework — Automated Extended IDA Pipeline</div>
-    <div class="eida-sub">Core PhD output · Under review in MethodsX (Q1)</div>
+    <div class="eida-sub">Core PhD output · Submitted to MethodsX (Q1)</div>
     <p class="eida-body">
-      Designed and deployed an end-to-end high-throughput automation pipeline that runs <strong>parametric nonlinear time-history analyses</strong> across thousands of RC frame configurations without manual intervention. The system handles automated topology extraction, stochastic material assignment, Hunt-and-Fill ground motion scaling to global collapse (DS1–DS5), Soil–Structure Interaction via Gazetas spring formulations, and real-time fragility curve generation.
+      A high-throughput <strong>C# + MATLAB pipeline</strong> that runs thousands of parametric nonlinear time-history analyses via the ETABS API without manual intervention: automated topology extraction, stochastic material assignment, <strong>Hunt-and-Fill ground-motion scaling</strong> to global collapse (DS1–DS5), and real-time fragility curve generation.
     </p>
     <p class="eida-body">
-      A <strong>Direct Text Injection Protocol</strong> modifies nonlinear hinge properties and boundary conditions in real time via COM marshalling — enabling bulk parameter sweeps that would otherwise require weeks of manual ETABS setup.
+      A C# API controller handles 3D FE mesh generation, material constitutive modelling and result extraction, while a <strong>Direct Text Injection Protocol</strong> modifies nonlinear hinge properties and boundary conditions in real time. <strong>Soil–Structure Interaction</strong> is integrated via Gazetas spring formulations with lumped-plasticity modelling across thousands of RC frame configurations.
     </p>
     <div class="pipeline">
       <span class="pipe-step">ETABS 3D FE Model</span>
@@ -812,6 +820,17 @@
       <span class="pipe-arrow">→</span>
       <span class="pipe-step">ML Closed-Form Equations</span>
     </div>
+  </div>
+
+  <div class="eida-card">
+    <div class="eida-title">Meta-Regression &amp; Transparent Machine Learning</div>
+    <div class="eida-sub">Published &amp; accepted in Structures (Q1)</div>
+    <p class="eida-body">
+      Fitted <strong>GLME models (REML)</strong> per damage state to quantify marginal parameter influences on fragility (DS1–DS5), revealing <strong>SSI-induced reversals</strong> in member-proportioning effects.
+    </p>
+    <p class="eida-body">
+      Developed a <strong>two-stage transparent ML framework</strong>: black-box benchmarking (XGBoost, ANN) to establish predictive ceilings, followed by sparse regression (LASSO / Elastic Net) on three dimensionless macro-parameters to yield <strong>closed-form median-capacity equations</strong> — the equations powering the screener below.
+    </p>
   </div>
 
   <!-- LIVE SCREENER -->
@@ -895,14 +914,14 @@
 
   <div class="software-grid">
     <div class="software-card">
-      <div class="software-kicker">Structural engineering · C# .NET</div>
+      <div class="software-kicker">Structural engineering · C# WPF .NET</div>
       <div class="software-title">Conc</div>
       <p class="software-desc">
-        A reinforced-concrete section analysis application for beam, slab, and column capacity checks, including beam and column section assessment workflows used in practical design review.
+        A reinforced-concrete section analysis application for beam and slab capacity checks and column interaction diagram calculation, used in practical design review.
       </p>
       <div class="software-meta">
         <span class="software-chip">RC sections</span>
-        <span class="software-chip">Beam & column checks</span>
+        <span class="software-chip">Column interaction diagrams</span>
         <span class="software-chip">Desktop software</span>
       </div>
       <div class="software-actions">
@@ -911,10 +930,10 @@
     </div>
 
     <div class="software-card">
-      <div class="software-kicker">Transportation engineering · Pavement design</div>
+      <div class="software-kicker">Transportation engineering · C# WPF .NET</div>
       <div class="software-title">FlexPave</div>
       <p class="software-desc">
-        A flexible pavement design and planning application for highway pavement structures, supporting layer-based pavement configuration and AASHTO-guided design inputs.
+        A flexible pavement design and planning application for highway pavement structures, supporting layer-based configuration and design inputs to AASHTO procedures.
       </p>
       <div class="software-meta">
         <span class="software-chip">Flexible pavement</span>
@@ -929,92 +948,198 @@
 </section>
 
 
-
 <!-- PUBLICATIONS -->
 <section id="publications">
   <div class="section-eyebrow">Publications</div>
-  <h2 class="section-title">10 journal papers,<br>4 under review at Q1 venues.</h2>
+  <h2 class="section-title">9 papers published or accepted,<br>4 Q1 in <em>Structures</em>.</h2>
+  <div class="pub-legend">
+    <span><strong>8</strong> published</span>
+    <span><strong>1</strong> accepted</span>
+    <span><strong>5</strong> under review</span>
+    <span><strong>1</strong> preprint</span>
+  </div>
 
+  <h3 class="pub-group">Published &amp; accepted</h3>
   <div class="pub-list">
     <div class="pub-item">
-      <span class="pub-num">11</span>
-      <div>
-        <div class="pub-title">An Automated Extended IDA Pipeline for High-Throughput Fragility Data Generation of RC Moment-Frame Buildings with SSI in ETABS</div>
-        <div class="pub-meta">Shafiq, O. et al. · MethodsX · Submitted 2025</div>
-      </div>
-      <span class="pub-q under-review">Under Review · Q1</span>
-    </div>
-    <div class="pub-item">
-      <span class="pub-num">10</span>
-      <div>
-        <div class="pub-title">Transparent ML Framework for Seismic Fragility Derivation: A Closed-Form Dimensionless Approach</div>
-        <div class="pub-meta">Shafiq, O. et al. · Structures · Submitted 2025</div>
-      </div>
-      <span class="pub-q under-review">Under Review · Q1</span>
-    </div>
-    <div class="pub-item">
-      <span class="pub-num">09</span>
-      <div>
-        <div class="pub-title">Parametric Sensitivity of the Seismic Demand Scaling Exponent to Design Variability and SSI in Structurally Similar RC Bare Frame Systems</div>
-        <div class="pub-meta">Shafiq, O. et al. · Structures · With Editor 2025</div>
-      </div>
-      <span class="pub-q under-review">With Editor · Q1</span>
-    </div>
-    <div class="pub-item">
-      <span class="pub-num">07</span>
+      <span class="pub-num">01</span>
       <div>
         <div class="pub-title">Factors Affecting Seismic Fragility of RC Grid-Like Frame Structures: A Parametric Meta-Regression Approach</div>
-        <div class="pub-meta">Shafiq, O. et al. · Structures · Revision Submitted R1 · MS No. STRUCTURES-D-25-09760</div>
+        <div class="pub-meta">Shafiq, O., Wan Ahmad, S., Mohamad Arif, A. I., Khan, G., Ishaq, F., Khattak, Z., Waqas, M., &amp; Kamarudin, M. A. A. · <em>Structures</em>, 92, 112880 · 2026 · <a href="https://doi.org/10.1016/j.istruc.2026.112880" target="_blank" rel="noopener">doi:10.1016/j.istruc.2026.112880</a></div>
       </div>
-      <span class="pub-q under-review">R1 Review · Q1</span>
+      <span class="pub-q q1">Published · Q1</span>
     </div>
     <div class="pub-item">
-      <span class="pub-num">08</span>
+      <span class="pub-num">02</span>
       <div>
-        <div class="pub-title">Probabilistic Seismic Demand Modeling of RC Grid-Like Frames: Assessing Response Sensitivity Across Parametric Structural Configurations</div>
-        <div class="pub-meta">Shafiq, O. et al. · Construction · Under Review 2026</div>
+        <div class="pub-title">Parametric Sensitivity of the Seismic Demand Scaling Exponent to Design Variability and Soil–Structure Interaction in Structurally Similar RC Bare Frame Systems</div>
+        <div class="pub-meta">Shafiq, O., Wan Ahmad, S., &amp; Iqbal, M. · <em>Structures</em>, 91, 112695 · 2026 · <a href="https://doi.org/10.1016/j.istruc.2026.112695" target="_blank" rel="noopener">doi:10.1016/j.istruc.2026.112695</a></div>
       </div>
-      <span class="pub-q q3">Under Review · Q3</span>
+      <span class="pub-q q1">Published · Q1</span>
+    </div>
+    <div class="pub-item">
+      <span class="pub-num">03</span>
+      <div>
+        <div class="pub-title">Closed-Form Dimensionless Median-Capacity Models for RC Bare Frame Seismic Fragility Derivation</div>
+        <div class="pub-meta">Shafiq, O., Wan Ahmad, S., Khan, G., Khattak, M. M. H., &amp; Ishaq, F. · <em>Structures</em> · 2026</div>
+      </div>
+      <span class="pub-q accepted">Accepted · Q1</span>
     </div>
     <div class="pub-item">
       <span class="pub-num">04</span>
       <div>
-        <div class="pub-title">Seismic Fragility Characterization of Grid-Like Frame Structures</div>
-        <div class="pub-meta">Waqas, M., Wan Ahmad, S., Shafiq, O. et al. · Construction, 5(2) · 2025 · DOI: 10.15282/construction.v5i2.13231</div>
+        <div class="pub-title">Performance Limit Analysis and Design-Atlas Mapping for Fully Decoupled Double-Sliding Isolation Bearings</div>
+        <div class="pub-meta">He, J., Wan Ahmad, S., Shafiq, O., &amp; Lai, Z. · <em>Structures</em>, 93, 112995 · 2026 · <a href="https://doi.org/10.1016/j.istruc.2026.112995" target="_blank" rel="noopener">doi:10.1016/j.istruc.2026.112995</a></div>
+      </div>
+      <span class="pub-q q1">Published · Q1</span>
+    </div>
+    <div class="pub-item">
+      <span class="pub-num">05</span>
+      <div>
+        <div class="pub-title">Advances in Earthquake Mitigation in Malaysia: A Review of Global Context and Local Progress</div>
+        <div class="pub-meta">Waqas, M., Wan Ahmad, S., Shafiq, O., &amp; Talha, M. · <em>Jurnal Teknologi (Sciences &amp; Engineering)</em>, 88(5), 1049–1061 · 2026 · <a href="https://doi.org/10.11113/jurnalteknologi.v88.25341" target="_blank" rel="noopener">doi:10.11113/jurnalteknologi.v88.25341</a></div>
       </div>
       <span class="pub-q q3">Published · Q3</span>
     </div>
     <div class="pub-item">
       <span class="pub-num">06</span>
       <div>
-        <div class="pub-title">Advances in Earthquake Mitigation in Malaysia: A Review of Global Context and Local Progress</div>
-        <div class="pub-meta">Waqas, M., Wan Ahmad, S., Shafiq, O. et al. · Jurnal Teknologi · In Press 2025</div>
+        <div class="pub-title">Seismic Fragility Characterization of Grid-Like Frame Structures</div>
+        <div class="pub-meta">Waqas, M., Wan Ahmad, S., Shafiq, O., Ishaq, F., Laissy, M. Y., Adnan, A., &amp; Al Sadoon, Z. A. · <em>Construction</em>, 5(2) · 2025 · <a href="https://doi.org/10.15282/construction.v5i2.13231" target="_blank" rel="noopener">doi:10.15282/construction.v5i2.13231</a></div>
       </div>
-      <span class="pub-q q3">In Press · Q3</span>
+      <span class="pub-q q3">Published · Q3</span>
     </div>
     <div class="pub-item">
-      <span class="pub-num">01</span>
+      <span class="pub-num">07</span>
       <div>
         <div class="pub-title">Fragility Curves Development for Single Span Slab Bridges: A Case Study for Peshawar, Pakistan</div>
-        <div class="pub-meta">Shafiq, O. et al. · J. Advanced Research in Applied Mechanics, 133(1), 177–190 · 2025 · DOI: 10.37934/aram.133.1.177190</div>
+        <div class="pub-meta">Shafiq, O., Wan Ahmad, S., Ali, S. M., Waqas, M., Khan, G., &amp; Kamarudin, M. A. A. · <em>J. Advanced Research in Applied Mechanics</em>, 133(1), 177–190 · 2025 · <a href="https://doi.org/10.37934/aram.133.1.177190" target="_blank" rel="noopener">doi:10.37934/aram.133.1.177190</a></div>
       </div>
       <span class="pub-q q3">Published · Scopus</span>
     </div>
     <div class="pub-item">
-      <span class="pub-num">02</span>
+      <span class="pub-num">08</span>
       <div>
         <div class="pub-title">Advancements in Earthquake Research and Seismic Risk Analysis: An In-Depth Review Centered on Malaysia</div>
-        <div class="pub-meta">Syed Mustorpha, S.I., … Shafiq, O. · J. Advanced Research in Applied Sciences & Eng. Tech., 63(2) · 2025</div>
+        <div class="pub-meta">Syed Mustorpha, S. I., Wan Ahmad, S., Kamarudin, M. A. A., Alsakkaf, H. A., &amp; Shafiq, O. · <em>J. Advanced Research in Applied Sciences &amp; Eng. Tech.</em>, 63(2), 196–206 · 2025 · <a href="https://doi.org/10.37934/araset.63.2.196206" target="_blank" rel="noopener">doi:10.37934/araset.63.2.196206</a></div>
       </div>
       <span class="pub-q q2">Published · Q2</span>
     </div>
     <div class="pub-item">
-      <span class="pub-num">03</span>
+      <span class="pub-num">09</span>
       <div>
         <div class="pub-title">The Assessment of Tall Building Structure Performance Due to Seismic Effect in Malaysia</div>
-        <div class="pub-meta">Kamarudin, M.A.A., … Shafiq, O. · J. Advanced Research Design, 129(1) · 2025</div>
+        <div class="pub-meta">Kamarudin, M. A. A., Wan Ahmad, S., Alsakkaf, H. A., Syed Mustopha, S. I., &amp; Shafiq, O. · <em>J. Advanced Research Design</em>, 129(1), 112–129 · 2025 · <a href="https://doi.org/10.37934/ard.129.1.112129" target="_blank" rel="noopener">doi:10.37934/ard.129.1.112129</a></div>
       </div>
       <span class="pub-q q3">Published · Q4</span>
+    </div>
+  </div>
+
+  <h3 class="pub-group">Under review &amp; preprint</h3>
+  <div class="pub-list">
+    <div class="pub-item">
+      <span class="pub-num">10</span>
+      <div>
+        <div class="pub-title">Damage-State-Dependent Reversal of Foundation-Compliance Effects on the Seismic Fragility of Gravity-Designed RC Grid-Like Frames</div>
+        <div class="pub-meta">Shafiq, O., Wan Ahmad, S., Ayough, P., &amp; Wang, Y.-H. · 2026</div>
+      </div>
+      <span class="pub-q under-review">Under Review · Q1</span>
+    </div>
+    <div class="pub-item">
+      <span class="pub-num">11</span>
+      <div>
+        <div class="pub-title">Estimating Building Stiffness from Ambient Vibrations: A Critical Review of Inverse Methods, Uncertainty, and Low-Cost Seismic Networks</div>
+        <div class="pub-meta">Shafiq, O., Wan Ahmad, S., Ullah, S., Al-Sadoon, Z. A., Ayough, P., &amp; Wang, Y.-H. · 2026</div>
+      </div>
+      <span class="pub-q under-review">Under Review · Q1</span>
+    </div>
+    <div class="pub-item">
+      <span class="pub-num">12</span>
+      <div>
+        <div class="pub-title">A Pre-Codal Verification Protocol for Parametric Fragility Archetype Sweeps: Diagnosing the Mismatch Between Codal Assumptions and Parametric Sampling</div>
+        <div class="pub-meta">Shafiq, O., Wan Ahmad, S., Waseem, M., &amp; Adnan, A. · <em>Reliability Engineering &amp; System Safety</em> · 2026</div>
+      </div>
+      <span class="pub-q under-review">Submitted · Q1</span>
+    </div>
+    <div class="pub-item">
+      <span class="pub-num">13</span>
+      <div>
+        <div class="pub-title">Fixed-Base Demand Divergence Interpretation of the PSDM Scaling Exponent in RC Grid-Like Frames</div>
+        <div class="pub-meta">Shafiq, O., Wan Ahmad, S., Mohamad Arif, A. I., Khan, G., Laissy, M. Y., Faizan, M., &amp; Adnan, A. · <em>Construction</em> · 2026 · Revision submitted (Round 4)</div>
+      </div>
+      <span class="pub-q under-review">Revision R4 · Q3</span>
+    </div>
+    <div class="pub-item">
+      <span class="pub-num">14</span>
+      <div>
+        <div class="pub-title">A Five-Step Prescriptive-Based Design Protocol for Performance-Informed Seismic Screening of RC Grid-Like Frames</div>
+        <div class="pub-meta">Shafiq, O., Wan Ahmad, S., Shodmonqulova, N. U., &amp; Ishaq, F. · WSCC Conference (Scopus-indexed proceedings) · 2026</div>
+      </div>
+      <span class="pub-q under-review">Submitted · Conf.</span>
+    </div>
+    <div class="pub-item">
+      <span class="pub-num">15</span>
+      <div>
+        <div class="pub-title">An Automated Extended Incremental Dynamic Analysis Pipeline for Fragility Data Generation of RC Bare Frames in ETABS</div>
+        <div class="pub-meta">Shafiq, O., Wan Ahmad, S., He, J., &amp; Talha, M. · ResearchGate preprint · <a href="https://doi.org/10.13140/RG.2.2.33713.75368" target="_blank" rel="noopener">doi:10.13140/RG.2.2.33713.75368</a></div>
+      </div>
+      <span class="pub-q preprint">Preprint</span>
+    </div>
+  </div>
+
+  <h3 class="pub-group">In preparation</h3>
+  <div class="pub-list">
+    <div class="pub-item">
+      <span class="pub-num">·</span>
+      <div>
+        <div class="pub-title">Collapse Risk Assessment for RC Bare Frames Not Explicitly Designed for Seismic Resistance: A Critical Narrative Review of Class Generality, Screening Resolution, Domain Validity, and Model Transparency</div>
+        <div class="pub-meta">Shafiq, O., Wan Ahmad, S., &amp; Al-Sadoon, Z. A.</div>
+      </div>
+      <span class="pub-q q3">In Preparation</span>
+    </div>
+    <div class="pub-item">
+      <span class="pub-num">·</span>
+      <div>
+        <div class="pub-title">Quantifying Heterogeneity in the Seismic Fragility Literature: A PRISMA-Documented Systematic Review and Quantitative Synthesis of Dispersion Reporting</div>
+        <div class="pub-meta">Shafiq, O. (sole author)</div>
+      </div>
+      <span class="pub-q q3">In Preparation</span>
+    </div>
+    <div class="pub-item">
+      <span class="pub-num">·</span>
+      <div>
+        <div class="pub-title">Accuracy and Portability Trade-offs between Reduced Macroparameters and Component Features for RC Frame Drift-Capacity Surrogates</div>
+        <div class="pub-meta">Shafiq, O., Wan Ahmad, S., Laissy, M. Y., &amp; Adnan, A.</div>
+      </div>
+      <span class="pub-q q3">In Preparation</span>
+    </div>
+  </div>
+
+  <h3 class="pub-group">Books</h3>
+  <div class="pub-list">
+    <div class="pub-item">
+      <span class="pub-num">B1</span>
+      <div>
+        <div class="pub-title">Achieving High Strength Concrete in Challenging Areas</div>
+        <div class="pub-meta">Shafiq, O., Jabbar, A., &amp; Ullah, G. · Munich: GRIN Verlag · 2019 · ISBN (eBook) 9783346037336</div>
+      </div>
+      <span class="pub-q q2">Published</span>
+    </div>
+    <div class="pub-item">
+      <span class="pub-num">B2</span>
+      <div>
+        <div class="pub-title">Fragility at Scale: An Engineer's Guide to Automated Extended IDA with ETABS, C# and MATLAB</div>
+        <div class="pub-meta">Reviewer draft · ≈218 pp.</div>
+      </div>
+      <span class="pub-q q3">In Preparation</span>
+    </div>
+    <div class="pub-item">
+      <span class="pub-num">B3</span>
+      <div>
+        <div class="pub-title">The Simulation Campaign: An Experimental Method for Structural Engineering</div>
+        <div class="pub-meta">Manuscript draft · ≈228 pp.</div>
+      </div>
+      <span class="pub-q q3">In Preparation</span>
     </div>
   </div>
 </section>
@@ -1026,59 +1151,104 @@
 
   <div class="exp-list">
     <div class="exp-item">
-      <div class="exp-period">2024–2027<br>Malaysia</div>
-      <div>
-        <div class="exp-role">PhD Researcher — Computational Structural & Earthquake Engineering</div>
-        <div class="exp-org">Universiti Malaysia Pahang Al-Sultan Abdullah (UMPSA)</div>
-        <div class="exp-desc">Thesis: AI-integrated seismic fragility assessment and performance-based structural design. Supervisor: Ir. Ts. Dr. Saffuan bin Wan Ahmad. Originator of the EIDA Framework and transparent ML fragility equations.</div>
-      </div>
-    </div>
-    <div class="exp-item">
-      <div class="exp-period">2022–2026<br>Pakistan</div>
+      <div class="exp-period">2022–present<br>Pakistan</div>
       <div>
         <div class="exp-role">Design Engineer (Transportation)</div>
         <div class="exp-org">CEC Minconsult</div>
-        <div class="exp-desc">Led delivery of transportation projects individually valued at over $1M USD. Compiled the RAMS 2023 national reporting dataset for the NHA road network. Conducted Road Safety Audit on N-55 Indus Highway (KPRAP). Prepared Technical Sanctions for four Urban Mobility Projects in Sahiwal and Sialkot.</div>
+        <div class="exp-desc">
+          <ul>
+            <li>Supervised transportation projects individually valued at over $1M USD, reporting to the Principal Transportation Engineer.</li>
+            <li>Compiled RAMS 2023 reporting data for the NHA road network (CEC/PID partnership).</li>
+            <li>Performed the Road Safety Audit from Shikarpur to D.I. Khan on the N-55 Indus Highway (KPRAP).</li>
+            <li>Conducted Social Impact Assessment surveys for the Khyber Pakhtunkhwa Rural Accessibility Project.</li>
+            <li>Contributed to RRDP and KPRAP feasibility studies; prepared Technical Sanctions for four Urban Mobility Projects in Sahiwal and Sialkot.</li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="exp-item">
-      <div class="exp-period">2024–2025<br>Pakistan</div>
+      <div class="exp-period">2024–present<br>Pakistan</div>
       <div>
         <div class="exp-role">Visiting Lecturer</div>
         <div class="exp-org">University of Engineering and Technology (UET), Peshawar</div>
-        <div class="exp-desc">Delivered undergraduate courses in Structural Analysis, Dynamics, Transportation Engineering, and Building Construction. Designed coursework, assessments, and supervised laboratory experiments.</div>
-      </div>
-    </div>
-    <div class="exp-item">
-      <div class="exp-period">2022–2023<br>Pakistan</div>
-      <div>
-        <div class="exp-role">Structural Engineer</div>
-        <div class="exp-org">CEC Minconsult</div>
-        <div class="exp-desc">Reviewed and fully redesigned the Women's Business Development Centre, Kohat under KPCIP standards. Delivered foundation designs for multiple KPCIP buildings and culvert designs for RRDP and KPRAP road schemes.</div>
+        <div class="exp-desc">
+          <ul>
+            <li>Designed and delivered CE-117 Engineering Mechanics/Statics, CE-409 Steel Structures and CE-320 Reinforced Concrete Design I (Summer 2026), including course planners, instructor guides and student notes.</li>
+            <li>Taught Dynamics and Transportation Engineering-II (Summer 2024), Structural Analysis-I Lab, and Building Construction &amp; Drawing.</li>
+            <li>Designed coursework, assignments and assessments; supervised laboratory experiments.</li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="exp-item">
       <div class="exp-period">2020–present<br>Freelance</div>
       <div>
-        <div class="exp-role">Structural Engineer & Software Developer</div>
-        <div class="exp-org">Independent Practice</div>
-        <div class="exp-desc">Developed <a href="https://sourceforge.net/projects/conc/" target="_blank" rel="noopener" style="color:var(--gold); text-decoration:none;"><em>Conc</em></a> (RC beam/slab capacity checks and column interaction diagrams) and <a href="https://www.softpedia.com/get/Others/Home-Education/FlexPave.shtml" target="_blank" rel="noopener" style="color:var(--gold); text-decoration:none;"><em>FlexPave</em></a> (flexible pavement design and planning to AASHTO procedures) — both production-grade C# WPF .NET desktop applications deployed to practising engineers. Built FEM-based analysis tools for masonry structures in MATLAB.</div>
+        <div class="exp-role">Civil Engineer &amp; Programmer</div>
+        <div class="exp-org">Independent Practice · Multiple Clients</div>
+        <div class="exp-desc">
+          <ul>
+            <li>EIDA automation framework (C# &amp; MATLAB): seismic vulnerability tool with automated topology extraction, stochastic material assignment and real-time fragility curves.</li>
+            <li><a href="https://sourceforge.net/projects/conc/" target="_blank" rel="noopener"><em>Conc</em></a> and <a href="https://www.softpedia.com/get/Others/Home-Education/FlexPave.shtml" target="_blank" rel="noopener"><em>FlexPave</em></a> desktop applications (C#, WPF, .NET).</li>
+            <li>FEM-based software for numerical analysis of ancient masonry structures (MATLAB).</li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="exp-item">
-      <div class="exp-period">2021–2022<br>Pakistan</div>
+      <div class="exp-period">2022–2023<br>8 months</div>
+      <div>
+        <div class="exp-role">Structural Engineer</div>
+        <div class="exp-org">CEC Minconsult</div>
+        <div class="exp-desc">Reviewed and redesigned the Women's Business Development Centre, Kohat. Delivered foundation designs for buildings under the KP Cities Improvement Project and culvert designs for RRDP and KPRAP.</div>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-period">2021–2022<br>1 year</div>
       <div>
         <div class="exp-role">Site Engineer</div>
         <div class="exp-org">Pakhtunkhwa Highway Authority</div>
-        <div class="exp-desc">Managed on-site execution of highway works. Coordinated site staff, set daily production targets, and served as the direct interface between the Resident Engineer and contractor.</div>
+        <div class="exp-desc">Organised site staff and implemented daily targets in coordination with the Resident Engineer and contractor, reporting discrepancies from both ends.</div>
       </div>
     </div>
     <div class="exp-item">
-      <div class="exp-period">2019–2020<br>Pakistan</div>
+      <div class="exp-period">2019–2020<br>6 months</div>
       <div>
         <div class="exp-role">Trainee Civil Engineer</div>
-        <div class="exp-org">Pakhtunkhwa Highway Authority</div>
-        <div class="exp-desc">Operated Profilometer and Falling Weight Deflectometer (FWD) for network-level pavement condition surveys. Processed data through HDM-4 to support road maintenance policy decisions.</div>
+        <div class="exp-org">Pakhtunkhwa Highway Authority — Road Asset Management Unit</div>
+        <div class="exp-desc">Operated the Profilometer and Falling Weight Deflectometer (FWD) for road condition surveys, and used HDM-4 for policy assessment.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education" style="padding-top: 0;">
+  <div class="section-eyebrow">Education</div>
+  <h2 class="section-title">Structural engineering,<br>Peshawar to Pahang.</h2>
+
+  <div class="exp-list">
+    <div class="exp-item">
+      <div class="exp-period">2024–2027<br>Malaysia</div>
+      <div>
+        <div class="exp-role">Doctor of Philosophy — Structural Engineering</div>
+        <div class="exp-org">Universiti Malaysia Pahang Al-Sultan Abdullah (UMPSA)</div>
+        <div class="exp-desc">Thesis: AI-integrated seismic fragility assessment and performance-based structural design. Supervisor: Ir. Ts. Dr. Saffuan bin Wan Ahmad.</div>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-period">2020–2024<br>Pakistan</div>
+      <div>
+        <div class="exp-role">Master of Science — Structural Engineering</div>
+        <div class="exp-org">University of Engineering and Technology (UET), Peshawar</div>
+        <div class="exp-desc">Thesis: Development of Fragility Curves for Single-Span Small Bridges in Peshawar — published as a journal article (Publication 03).</div>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-period">2015–2019<br>Pakistan</div>
+      <div>
+        <div class="exp-role">Bachelor of Science — Civil Engineering</div>
+        <div class="exp-org">University of Engineering and Technology (UET), Peshawar</div>
+        <div class="exp-desc">Thesis: Achieving High Strength Concrete in Challenging Areas: A Case Study — published by GRIN Verlag, 2019.</div>
       </div>
     </div>
   </div>
@@ -1087,13 +1257,13 @@
 <!-- CONTACT -->
 <section id="contact">
   <div class="section-eyebrow">Contact</div>
-  <h2 class="section-title">Open to postdoc positions,<br>research collaborations & consulting.</h2>
+  <h2 class="section-title">Open to postdoc positions,<br>research collaborations &amp; consulting.</h2>
 
   <div class="contact-grid">
     <a href="mailto:omair.shafiq1998@gmail.com" class="contact-item">
       <span class="contact-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" focusable="false">
-          <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm-.4 4.25-7.08 5.31a.86.86 0 0 1-1.04 0L4.4 8.25V6.8l7.6 5.7 7.6-5.7v1.45Z"/>
+          <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm-.4 4.25-7.080 5.31a.86.86 0 0 1-1.04 0L4.4 8.25V6.8l7.6 5.7 7.6-5.7v1.45Z"/>
         </svg>
       </span>
       <div>
@@ -1104,7 +1274,7 @@
     <a href="https://linkedin.com/in/omair-shafiq" target="_blank" rel="noopener" class="contact-item">
       <span class="contact-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" focusable="false">
-          <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.34V8.98h3.42v1.57h.05c.48-.91 1.64-1.86 3.37-1.86 3.61 0 4.28 2.37 4.28 5.46v6.3ZM5.32 7.41a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12Zm1.78 13.04H3.54V8.98H7.1v11.47Z"/>
+          <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.950v5.66H9.34V8.98h3.42v1.57h.05c.48-.91 1.64-1.86 3.37-1.86 3.61 0 4.28 2.37 4.28 5.46v6.3ZM5.32 7.41a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12Zm1.78 13.04H3.54V8.98H7.1v11.47Z"/>
         </svg>
       </span>
       <div>
@@ -1122,7 +1292,7 @@
     <a href="https://www.youtube.com/@omairshafiq1998" target="_blank" rel="noopener" class="contact-item" aria-label="YouTube channel Omair Shafiq">
       <span class="contact-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" focusable="false">
-          <path d="M21.58 7.19a2.52 2.52 0 0 0-1.78-1.78C18.23 5 12 5 12 5s-6.23 0-7.8.41a2.52 2.52 0 0 0-1.78 1.78C2 8.76 2 12 2 12s0 3.24.42 4.81c.23.86.91 1.55 1.78 1.78C5.77 19 12 19 12 19s6.23 0 7.8-.41a2.52 2.52 0 0 0 1.78-1.78C22 15.24 22 12 22 12s0-3.24-.42-4.81ZM10 15V9l5.2 3L10 15Z"/>
+          <path d="M21.58 7.19a2.52 2.52 0 0 0-1.78-1.78C18.23 5 12 5 12 5s-6.23 0-7.8.41a2.52 2.52 0 0 0-1.78 1.78C2 8.76 2 12 2 12s0 3.24.42 4.81c.23.86.91 1.55 1.78 1.78C5.770 19 12 19 12 19s6.23 0 7.8-.41a2.52 2.52 0 0 0 1.78-1.78C22 15.24 22 12 22 12s0-3.24-.42-4.81ZM10 15V9l5.2 3L10 15Z"/>
         </svg>
       </span>
       <div>
@@ -1133,7 +1303,7 @@
     <a href="https://wa.me/601127588189" target="_blank" rel="noopener" class="contact-item" aria-label="WhatsApp Omair Shafiq">
       <span class="contact-icon" aria-hidden="true">
         <svg viewBox="0 0 32 32" focusable="false">
-          <path d="M16.02 3.5C9.17 3.5 3.6 9.04 3.6 15.84c0 2.18.58 4.31 1.68 6.18L3.5 28.5l6.64-1.72a12.5 12.5 0 0 0 5.88 1.48c6.85 0 12.43-5.53 12.43-12.34C28.45 9.04 22.87 3.5 16.02 3.5Zm0 22.65c-1.9 0-3.76-.5-5.38-1.45l-.38-.22-3.94 1.02 1.05-3.82-.25-.4a10.17 10.17 0 0 1-1.56-5.44c0-5.63 4.69-10.22 10.46-10.22 5.76 0 10.46 4.59 10.46 10.22 0 5.72-4.7 10.31-10.46 10.31Zm5.73-7.73c-.31-.16-1.85-.91-2.14-1.01-.29-.11-.5-.16-.71.16-.21.31-.82 1.01-1 1.22-.18.21-.37.24-.69.08-.31-.16-1.33-.49-2.54-1.56-.94-.84-1.57-1.87-1.75-2.18-.18-.31-.02-.48.14-.64.14-.14.31-.37.47-.55.16-.18.21-.31.31-.52.1-.21.05-.39-.03-.55-.08-.16-.71-1.71-.98-2.34-.26-.62-.52-.53-.71-.54h-.61c-.21 0-.55.08-.84.39-.29.31-1.1 1.07-1.1 2.62s1.13 3.05 1.29 3.26c.16.21 2.23 3.39 5.4 4.76.75.32 1.34.52 1.8.66.76.24 1.45.21 1.99.13.61-.09 1.85-.76 2.11-1.49.26-.73.26-1.35.18-1.49-.08-.13-.29-.21-.61-.37Z"/>
+          <path d="M16.02 3.5C9.17 3.5 3.6 9.04 3.6 15.84c0 2.18.58 4.31 1.68 6.18L3.5 28.5l6.64-1.72a12.5 12.5 0 0 0 5.88 1.48c6.85 0 12.43-5.53 12.43-12.34C28.45 9.04 22.87 3.5 16.02 3.5Zm0 22.65c-1.9 0-3.76-.5-5.38-1.45l-.38-.22-3.94 1.02 1.05-3.82-.25-.4a10.17 10.17 0 0 1-1.56-5.44c0-5.630 4.69-10.22 10.46-10.22 5.76 0 10.46 4.59 10.46 10.22 0 5.72-4.7 10.31-10.46 10.31Zm5.73-7.73c-.31-.16-1.85-.91-2.14-1.01-.29-.11-.5-.16-.71.16-.21.31-.82 1.01-1 1.22-.18.21-.37.24-.69.08-.31-.16-1.33-.49-2.54-1.56-.94-.84-1.57-1.87-1.75-2.18-.18-.31-.02-.48.14-.64.14-.14.31-.37.47-.55.16-.18.21-.31.31-.52.1-.21.05-.39-.03-.55-.08-.16-.71-1.71-.98-2.34-.26-.62-.52-.53-.71-.54h-.61c-.21 0-.55.08-.84.39-.29.31-1.1 1.07-1.1 2.62s1.13 3.05 1.29 3.26c.16.21 2.23 3.39 5.4 4.76.75.32 1.34.52 1.8.66.76.24 1.45.21 1.99.13.61-.09 1.85-.76 2.11-1.49.26-.73.26-1.35.18-1.49-.08-.13-.29-.21-.61-.37Z"/>
         </svg>
       </span>
       <div>
@@ -1261,7 +1431,6 @@ function renderFragilityChart(muDS1, muDS2, ag, riskClass) {
 
   const PGAmax = Math.max(muDS1, muDS2, ag) * 2.2;
 
-  // standard normal CDF
   function Phi(x) {
     return 0.5 * (1 + erf(x / Math.SQRT2));
   }
@@ -1291,7 +1460,6 @@ function renderFragilityChart(muDS1, muDS2, ag, riskClass) {
   const agProbDS2 = P(ag, muDS2);
   const riskColor = riskClass === 'low' ? 'var(--green-risk)' : riskClass === 'moderate' ? 'var(--amber-risk)' : 'var(--red-risk)';
 
-  // axis ticks
   let xTicks = '';
   for (let i = 0; i <= 4; i++) {
     const pga = PGAmax * i / 4;
@@ -1303,7 +1471,7 @@ function renderFragilityChart(muDS1, muDS2, ag, riskClass) {
   for (let i = 0; i <= 4; i++) {
     const prob = 1 - i/4;
     const y = mt + (i/4)*ph;
-    yTicks += `<text x="${ml-8}" y="${y.toFixed(1)+3}" font-size="10" fill="rgba(245,240,232,0.4)" font-family="DM Mono, monospace" text-anchor="end">${prob.toFixed(2)}</text>`;
+    yTicks += `<text x="${ml-8}" y="${(y+3).toFixed(1)}" font-size="10" fill="rgba(245,240,232,0.4)" font-family="DM Mono, monospace" text-anchor="end">${prob.toFixed(2)}</text>`;
     yTicks += `<line x1="${ml}" y1="${y.toFixed(1)}" x2="${W-mr}" y2="${y.toFixed(1)}" stroke="rgba(245,240,232,0.06)" stroke-width="1"/>`;
   }
 
@@ -1332,7 +1500,6 @@ function renderFragilityChart(muDS1, muDS2, ag, riskClass) {
       <span><i style="background:${riskColor};"></i>Site demand ag — exceedance P(DS1)=${agProbDS1.toFixed(2)}, P(DS2)=${agProbDS2.toFixed(2)}</span>
     </div>`;
 }
-
 
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Enter' && document.activeElement && document.activeElement.closest('.screener-card')) {
